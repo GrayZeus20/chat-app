@@ -19,6 +19,26 @@ if (empty($name) || empty($email) || empty($password)) {
     exit;
 }
 
+$stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(email) = LOWER(?)");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+if ($stmt->get_result()->fetch_assoc()) {
+    echo json_encode(['status' => 'error', 'message' => 'Email sudah terdaftar!']);
+    $stmt->close();
+    exit;
+}
+$stmt->close();
+
+$stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(name) = LOWER(?)");
+$stmt->bind_param("s", $name);
+$stmt->execute();
+if ($stmt->get_result()->fetch_assoc()) {
+    echo json_encode(['status' => 'error', 'message' => 'Nama sudah digunakan!']);
+    $stmt->close();
+    exit;
+}
+$stmt->close();
+
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
@@ -28,7 +48,7 @@ if ($stmt->execute()) {
     $_SESSION['user_id'] = $stmt->insert_id;
     echo json_encode(['status' => 'success']);
 } else {
-    echo json_encode(['status' => 'error', 'message' => $stmt->error]);
+    echo json_encode(['status' => 'error', 'message' => 'Gagal mendaftar, coba lagi']);
 }
 
 $stmt->close();

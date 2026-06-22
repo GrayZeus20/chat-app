@@ -18,7 +18,7 @@ if (empty($email) || empty($password)) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, password FROM users WHERE LOWER(email) = LOWER(?)");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
