@@ -14,13 +14,11 @@ jobs:
 
       - name: Create env.php from secrets
         run: |
-          cat > env.php << ENDOFFILE
-          <?php
-          define('DB_HOST', '${{ secrets.DB_HOST }}');
-          define('DB_USER', '${{ secrets.DB_USER }}');
-          define('DB_PASS', '${{ secrets.DB_PASS }}');
-          define('DB_NAME', '${{ secrets.DB_NAME }}');
-ENDOFFILE
+          echo "<?php" > env.php
+          echo "define('DB_HOST', '${{ secrets.DB_HOST }}');" >> env.php
+          echo "define('DB_USER', '${{ secrets.DB_USER }}');" >> env.php
+          echo "define('DB_PASS', '${{ secrets.DB_PASS }}');" >> env.php
+          echo "define('DB_NAME', '${{ secrets.DB_NAME }}');" >> env.php
 
       - name: Upload via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
