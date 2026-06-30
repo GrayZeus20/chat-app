@@ -1,4 +1,4 @@
-const CACHE = 'chat-app-v2';
+const CACHE = 'chat-app-v3';
 const PRECACHE_ASSETS = [
   'index.html',
   'manifest.json'
