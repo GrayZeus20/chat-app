@@ -32,6 +32,11 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
+  if (e.request.url.includes('api.php')) {
+    e.respondWith(fetch(e.request).catch(() => new Response(null, { status: 503 })));
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fetchPromise = fetch(e.request).then(response => {
