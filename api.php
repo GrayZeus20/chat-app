@@ -1,4 +1,6 @@
 <?php
+$sessionLifetime = 86400 * 30;
+session_set_cookie_params($sessionLifetime);
 ob_start();
 session_start();
 require_once __DIR__ . '/connection.php';
