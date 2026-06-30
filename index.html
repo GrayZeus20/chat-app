@@ -435,14 +435,35 @@ async function loadChatTitle() {
 
 async function loadMessages() {
     try {
-        const res = await fetch('api.php?action=getMessages&receiver_id=' + receiverId);
-        const data = await res.json();
-        if (data.status === 'error') { showAuth(); return; }
+        const url = 'api.php?action=getMessages&receiver_id=' + receiverId;
+        console.log('fetching:', url);
+        const res = await fetch(url);
+        if (!res.ok) {
+            console.error('HTTP error:', res.status, res.statusText);
+            showAuth();
+            return;
+        }
+        const text = await res.text();
+        console.log('response text:', text.substring(0, 200));
+        let data;
+        try { data = JSON.parse(text); } catch (e) {
+            console.error('JSON parse error:', e, 'body:', text.substring(0, 500));
+            showAuth();
+            return;
+        }
+        if (data.status === 'error') {
+            console.error('API error:', data.message);
+            showAuth();
+            return;
+        }
         userId = data.user_id;
         wrapperChat.innerHTML = '';
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content));
         scrollToBottom();
-    } catch (err) { showAuth(); }
+    } catch (err) {
+        console.error('loadMessages catch:', err);
+        showAuth();
+    }
 }
 
 function appendMessage(messageId, senderId, content) {

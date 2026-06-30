@@ -1,9 +1,17 @@
 <?php
+ob_start();
 session_start();
 require_once __DIR__ . '/connection.php';
 require_once __DIR__ . '/config.php';
 
 header('Content-Type: application/json');
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        ob_clean();
+        echo json_encode(['status' => 'error', 'message' => 'Internal server error']);
+    }
+});
 
 $action = $_GET['action'] ?? '';
 
@@ -108,6 +116,7 @@ function handleGetUsers() {
         $users[] = $row;
     }
     $stmt->close();
+    session_write_close();
     echo json_encode(['status' => 'success', 'users' => $users]);
 }
 
@@ -125,13 +134,23 @@ function handleGetMessages() {
     }
     $stmt = $conn->prepare("SELECT id, sender_id, receiver_id, content, created_at FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY created_at ASC");
     $stmt->bind_param("iiii", $userId, $receiverId, $receiverId, $userId);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        echo json_encode(['status' => 'error', 'message' => 'Query failed: ' . $stmt->error]);
+        $stmt->close();
+        return;
+    }
     $result = $stmt->get_result();
+    if (!$result) {
+        echo json_encode(['status' => 'error', 'message' => 'Result failed: ' . $stmt->error]);
+        $stmt->close();
+        return;
+    }
     $messages = [];
     while ($row = $result->fetch_assoc()) {
         $messages[] = $row;
     }
     $stmt->close();
+    session_write_close();
     echo json_encode(['status' => 'success', 'messages' => $messages, 'user_id' => $userId]);
 }
 
@@ -374,6 +393,7 @@ function handleGetProfile() {
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
     $stmt->close();
+    session_write_close();
     if ($user) {
         echo json_encode(['status' => 'success', 'user' => $user]);
     } else {
@@ -398,6 +418,7 @@ function handleGetUserName() {
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
     $stmt->close();
+    session_write_close();
     if ($user) {
         echo json_encode(['status' => 'success', 'name' => $user['name']]);
     } else {
