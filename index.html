@@ -392,7 +392,10 @@ async function loadUsers() {
     try {
         const res = await fetch('api.php?action=getUsers');
         const data = await res.json();
-        if (data.status === 'error') { showAuth(); return; }
+        if (data.status === 'error') {
+            document.getElementById('user-list').innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pengguna. Silakan refresh.</div>';
+            return;
+        }
         const container = document.getElementById('user-list');
         container.innerHTML = '';
         data.users.forEach((user, index) => {
@@ -413,7 +416,9 @@ async function loadUsers() {
             `;
             container.appendChild(div);
         });
-    } catch (err) { showAuth(); }
+    } catch (err) {
+        document.getElementById('user-list').innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan refresh.</div>';
+    }
 }
 
 function escapeHtml(text) {
@@ -439,21 +444,17 @@ async function loadMessages() {
         console.log('fetching:', url);
         const res = await fetch(url);
         if (!res.ok) {
-            console.error('HTTP error:', res.status, res.statusText);
-            showAuth();
+            wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>';
             return;
         }
         const text = await res.text();
-        console.log('response text:', text.substring(0, 200));
         let data;
         try { data = JSON.parse(text); } catch (e) {
-            console.error('JSON parse error:', e, 'body:', text.substring(0, 500));
-            showAuth();
+            wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>';
             return;
         }
         if (data.status === 'error') {
-            console.error('API error:', data.message);
-            showAuth();
+            wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>';
             return;
         }
         userId = data.user_id;
@@ -461,8 +462,7 @@ async function loadMessages() {
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content));
         scrollToBottom();
     } catch (err) {
-        console.error('loadMessages catch:', err);
-        showAuth();
+        wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan refresh.</div>';
     }
 }
 
