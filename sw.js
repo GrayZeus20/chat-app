@@ -1,6 +1,8 @@
 const CACHE = 'chat-app-v3';
 const PRECACHE_ASSETS = [
   'index.html',
+  'login.html',
+  'chat.html',
   'manifest.json'
 ];
 
