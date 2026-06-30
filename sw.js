@@ -1,5 +1,5 @@
-const CACHE = 'chat-app-v1';
-const ASSETS = [
+const CACHE = 'chat-app-v2';
+const PRECACHE_ASSETS = [
   'index.html',
   'manifest.json'
 ];
@@ -7,19 +7,35 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
   self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE).then(cache => cache.addAll(PRECACHE_ASSETS))
   );
 });
 
 self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    )
+  );
   e.waitUntil(clients.claim());
 });
 
 self.addEventListener('fetch', (e) => {
+  if (e.request.method !== 'GET') return;
+
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).catch(() =>
+        caches.match('index.html')
+      )
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fetchPromise = fetch(e.request).then(response => {
-        if (response && response.ok && e.request.method === 'GET') {
+        if (response && response.ok) {
           const clone = response.clone();
           caches.open(CACHE).then(cache => cache.put(e.request, clone));
         }
