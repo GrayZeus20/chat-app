@@ -37,3 +37,5 @@ jobs:
             database.sql
             .gitignore
             README.md
+            composer.json
+            composer.lock
