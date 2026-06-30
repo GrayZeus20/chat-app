@@ -114,7 +114,9 @@ function showAccounts() {
     document.getElementById('accounts-view').classList.remove('hidden');
     document.getElementById('chat-view').classList.add('hidden');
     receiverId = null;
-    Pusher.unsubscribe('chat');
+    if (pusher) {
+        pusher.unsubscribe('chat');
+    }
 }
 
 function showChat(id) {

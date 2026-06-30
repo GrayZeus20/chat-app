@@ -6,7 +6,6 @@ ini_set('session.gc_divisor', 100);
 session_set_cookie_params(['lifetime' => $sessionLifetime, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
 ob_start();
 session_start();
-require_once __DIR__ . '/connection.php';
 require_once __DIR__ . '/config.php';
 
 header('Content-Type: application/json');
@@ -19,6 +18,11 @@ register_shutdown_function(function () {
 });
 
 $action = $_GET['action'] ?? '';
+
+// checkSession tidak butuh database — biar tetap jalan meski MySQL down
+if ($action !== 'checkSession') {
+    require_once __DIR__ . '/connection.php';
+}
 
 switch ($action) {
     case 'login': handleLogin(); break;
@@ -433,8 +437,10 @@ function handleGetUserName() {
 
 function handleCheckSession() {
     if (isset($_SESSION['user_id'])) {
+        session_write_close();
         echo json_encode(['status' => 'success', 'user_id' => $_SESSION['user_id']]);
     } else {
+        session_write_close();
         echo json_encode(['status' => 'error', 'message' => 'Not logged in']);
     }
 }
