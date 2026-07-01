@@ -98,7 +98,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
         <div class="flex-1 overflow-y-auto bg-gray-50 md:bg-white min-h-0" id="user-list"></div>
     </div>
 
-    <div id="chat-view" class="hidden flex-col flex-1 min-h-0">
+    <div id="chat-view" class="hidden flex flex-col flex-1 min-h-0">
         <div class="bg-blue-600 px-4 sm:px-5 py-3 sm:py-4 text-white flex items-center shrink-0 relative">
             <button id="back-to-accounts" class="hover:bg-blue-500 rounded-lg p-2 transition">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19L5 12L12 5"/></svg>
