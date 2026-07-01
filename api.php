@@ -52,18 +52,21 @@ function handleLogin() {
         echo json_encode(['status' => 'error', 'message' => 'Email dan password harus diisi!']);
         return;
     }
+    session_write_close();
     $stmt = $conn->prepare("SELECT id, password FROM users WHERE LOWER(email) = LOWER(?)");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
+    $stmt->close();
     if ($user && password_verify($password, $user['password'])) {
+        session_start();
         $_SESSION['user_id'] = $user['id'];
+        session_write_close();
         echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Email atau password salah!']);
     }
-    $stmt->close();
 }
 
 function handleRegister() {
@@ -80,6 +83,7 @@ function handleRegister() {
         echo json_encode(['status' => 'error', 'message' => 'Semua field harus diisi!']);
         return;
     }
+    session_write_close();
     $stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(email) = LOWER(?)");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -102,7 +106,9 @@ function handleRegister() {
     $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $email, $hashedPassword);
     if ($stmt->execute()) {
+        session_start();
         $_SESSION['user_id'] = $stmt->insert_id;
+        session_write_close();
         echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Gagal mendaftar, coba lagi']);

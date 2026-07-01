@@ -1,35 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>App Chat</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#3b82f6">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="icon-192.png">
-</head>
-<body class="bg-gray-100">
-<div class="flex min-h-dvh items-center justify-center">
-    <div class="text-gray-400 text-sm">Memuat...</div>
-</div>
-<script>
-async function checkSession() {
-    try {
-        const res = await fetch('api.php?action=checkSession');
-        const data = await res.json();
-        window.location.replace(data.status === 'success' ? 'chat.html' : 'login.html');
-    } catch (e) {
-        window.location.replace('login.html');
-    }
-}
-checkSession();
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-</script>
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Redirecting...</title></head>
+<body>
+<script>window.location.replace('index.php');</script>
 </body>
 </html>
