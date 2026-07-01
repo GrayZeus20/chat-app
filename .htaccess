@@ -1,24 +1,14 @@
-RewriteEngine On
-RewriteBase /
+DirectoryIndex index.php
 
-# Redirect all requests to index.php unless file/directory exists
+# Redirect non-file requests to index.php
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L]
 
 # Security: block access to sensitive files
 <FilesMatch "\.(sql|md|env\.php|log)$">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </FilesMatch>
 
 # Security: block access to vendor directory
-<IfModule mod_rewrite.c>
-    RewriteRule ^vendor/ - [F,L]
-</IfModule>
-
-# Increase upload limits
-php_value upload_max_filesize 10M
-php_value post_max_size 10M
-php_value max_execution_time 300
-php_value max_input_time 300
+RewriteRule ^vendor/ - [F,L]
