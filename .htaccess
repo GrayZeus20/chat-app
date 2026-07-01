@@ -1,6 +1,1 @@
 DirectoryIndex index.php
-
-RewriteEngine On
-RewriteRule ^index\.html$ /index.php [R=301,L]
-RewriteRule ^login\.html$ /login.php [R=301,L]
-RewriteRule ^chat\.html$ /chat.php [R=301,L]
