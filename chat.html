@@ -72,6 +72,7 @@
             <div class="w-10"></div>
         </div>
         <div id="chat-container" class="flex-1 overflow-y-auto min-h-0 px-3 sm:px-4 py-4 bg-[#f0f4f8] md:bg-gray-50">
+            <div id="chat-loading" class="hidden text-center text-gray-400 text-sm py-8">Memuat pesan...</div>
             <div class="flex flex-col space-y-2" id="wrapper-chat"></div>
         </div>
         <form id="form-chat">
@@ -93,6 +94,20 @@ const wrapperChat = document.getElementById('wrapper-chat');
 const chatContainer = document.getElementById('chat-container');
 const form = document.getElementById('form-chat');
 const contentInput = document.getElementById('content');
+
+async function apiFetch(url, options) {
+    const res = await fetch(url, options);
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch (e) {
+        throw new Error('Invalid JSON response');
+    }
+    if (data.status === 'error' && data.message === 'Unauthorized') {
+        window.location.replace('login.html');
+        throw new Error('Unauthorized');
+    }
+    return data;
+}
 
 async function checkSession() {
     try {
@@ -119,14 +134,21 @@ function showAccounts() {
     }
 }
 
+let chatSwitching = false;
+
 function showChat(id) {
+    if (chatSwitching) return;
+    if (id === receiverId) return;
+    chatSwitching = true;
     receiverId = id;
     document.getElementById('accounts-view').classList.add('hidden');
     document.getElementById('chat-view').classList.remove('hidden');
     wrapperChat.innerHTML = '';
-    loadChatTitle();
-    loadMessages();
-    initPusher();
+    document.getElementById('chat-loading').classList.remove('hidden');
+    loadChatTitle().then(() => loadMessages()).then(() => { initPusher(); }).finally(() => {
+        document.getElementById('chat-loading').classList.add('hidden');
+        chatSwitching = false;
+    });
 }
 
 document.getElementById('back-to-accounts').addEventListener('click', showAccounts);
@@ -156,8 +178,7 @@ settingsBtn.addEventListener('click', openSettings);
 
 async function loadProfile() {
     try {
-        const res = await fetch('api.php?action=getProfile');
-        const data = await res.json();
+        const data = await apiFetch('api.php?action=getProfile');
         if (data.status === 'success') {
             const u = data.user;
             document.getElementById('settings-name').textContent = u.name.charAt(0).toUpperCase() + u.name.slice(1);
@@ -173,8 +194,7 @@ document.getElementById('settings-edit-profile-btn').addEventListener('click', a
     section.classList.remove('hidden');
     document.getElementById('settings-msg').classList.add('hidden');
     try {
-        const res = await fetch('api.php?action=getProfile');
-        const data = await res.json();
+        const data = await apiFetch('api.php?action=getProfile');
         if (data.status === 'success') {
             document.getElementById('set-name').value = data.user.name;
             document.getElementById('set-email').value = data.user.email;
@@ -200,7 +220,7 @@ document.getElementById('set-save-btn').addEventListener('click', async () => {
         return;
     }
     try {
-        const res = await fetch('api.php?action=updateProfile', {
+        const data = await apiFetch('api.php?action=updateProfile', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -210,7 +230,6 @@ document.getElementById('set-save-btn').addEventListener('click', async () => {
                 newPassword: document.getElementById('set-new-password').value
             })
         });
-        const data = await res.json();
         if (data.status === 'success') {
             msg.textContent = 'Profil berhasil diperbarui';
             msg.className = 'text-xs text-green-600';
@@ -233,12 +252,7 @@ document.getElementById('set-save-btn').addEventListener('click', async () => {
 // User list
 async function loadUsers() {
     try {
-        const res = await fetch('api.php?action=getUsers');
-        const data = await res.json();
-        if (data.status === 'error') {
-            document.getElementById('user-list').innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pengguna. Silakan refresh.</div>';
-            return;
-        }
+        const data = await apiFetch('api.php?action=getUsers');
         const container = document.getElementById('user-list');
         container.innerHTML = '';
         data.users.forEach((user, index) => {
@@ -273,8 +287,7 @@ function escapeHtml(text) {
 // Chat
 async function loadChatTitle() {
     try {
-        const res = await fetch('api.php?action=getUserName&id=' + receiverId);
-        const data = await res.json();
+        const data = await apiFetch('api.php?action=getUserName&id=' + receiverId);
         if (data.status === 'success') {
             document.getElementById('chat-title').textContent = data.name.charAt(0).toUpperCase() + data.name.slice(1);
         }
@@ -283,18 +296,7 @@ async function loadChatTitle() {
 
 async function loadMessages() {
     try {
-        const url = 'api.php?action=getMessages&receiver_id=' + receiverId;
-        const res = await fetch(url);
-        if (!res.ok) {
-            wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>';
-            return;
-        }
-        const text = await res.text();
-        let data;
-        try { data = JSON.parse(text); } catch (e) {
-            wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>';
-            return;
-        }
+        const data = await apiFetch('api.php?action=getMessages&receiver_id=' + receiverId);
         if (data.status === 'error') {
             wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>';
             return;
@@ -304,6 +306,7 @@ async function loadMessages() {
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content));
         scrollToBottom();
     } catch (err) {
+        if (err.message === 'Unauthorized') throw err;
         wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan refresh.</div>';
     }
 }
@@ -411,12 +414,11 @@ async function saveEdit(messageId, bubble, newContent) {
     if (!newContent || editingMessageId) return;
     editingMessageId = messageId;
     try {
-        const res = await fetch('api.php?action=editMessage', {
+        await apiFetch('api.php?action=editMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ messageId, content: newContent })
         });
-        await res.json();
     } catch (err) {}
     bubble.innerHTML = '';
     bubble.className = 'bg-blue-500 text-white p-3 rounded-2xl rounded-br-sm shadow-sm';
@@ -433,15 +435,17 @@ function cancelEdit(messageId, bubble, originalText) {
 async function deleteMessage(messageId, wrapper) {
     if (!confirm('Hapus pesan ini?')) return;
     try {
-        const res = await fetch('api.php?action=deleteMessage', {
+        const data = await apiFetch('api.php?action=deleteMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ messageId })
         });
-        const data = await res.json();
         if (data.status === 'success') { wrapper.remove(); }
         else { alert('Gagal menghapus: ' + data.message); }
-    } catch (err) { alert('Gagal menghapus pesan'); }
+    } catch (err) {
+        if (err.message === 'Unauthorized') throw err;
+        alert('Gagal menghapus pesan');
+    }
 }
 
 function scrollToBottom() {
@@ -456,12 +460,11 @@ form.addEventListener('submit', async (event) => {
     appendMessage(tempId, userId, chatContent);
     scrollToBottom();
     try {
-        const res = await fetch('api.php?action=saveChat', {
+        const data = await apiFetch('api.php?action=saveChat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: chatContent, receiverId: receiverId })
         });
-        const data = await res.json();
         if (data.status === 'success' && data.message_id) {
             const el = wrapperChat.querySelector(`[data-message-id="${tempId}"]`);
             if (el) el.dataset.messageId = data.message_id;

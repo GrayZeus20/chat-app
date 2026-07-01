@@ -1,4 +1,4 @@
-const CACHE = 'chat-app-v3';
+const CACHE = 'chat-app-v4';
 const PRECACHE_ASSETS = [
   'index.html',
   'login.html',
@@ -28,7 +28,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request).catch(() =>
-        caches.match('index.html')
+        caches.match(e.request).then(cached => cached || caches.match('index.html'))
       )
     );
     return;

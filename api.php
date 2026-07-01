@@ -116,6 +116,7 @@ function handleGetUsers() {
         echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
         return;
     }
+    session_write_close();
     $stmt = $conn->prepare("SELECT id, name FROM users WHERE id != ? ORDER BY name ASC");
     $stmt->bind_param("i", $_SESSION['user_id']);
     $stmt->execute();
@@ -125,7 +126,6 @@ function handleGetUsers() {
         $users[] = $row;
     }
     $stmt->close();
-    session_write_close();
     echo json_encode(['status' => 'success', 'users' => $users]);
 }
 
@@ -141,6 +141,7 @@ function handleGetMessages() {
         echo json_encode(['status' => 'error', 'message' => 'receiver_id required']);
         return;
     }
+    session_write_close();
     $stmt = $conn->prepare("SELECT id, sender_id, receiver_id, content, created_at FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY created_at ASC");
     $stmt->bind_param("iiii", $userId, $receiverId, $receiverId, $userId);
     if (!$stmt->execute()) {
@@ -159,7 +160,6 @@ function handleGetMessages() {
         $messages[] = $row;
     }
     $stmt->close();
-    session_write_close();
     echo json_encode(['status' => 'success', 'messages' => $messages, 'user_id' => $userId]);
 }
 
@@ -177,6 +177,7 @@ function handleSaveChat() {
     $content = $data['content'];
     $receiverId = (int)($data['receiverId'] ?? 0);
     $senderId = $_SESSION['user_id'];
+    session_write_close();
     if (!$receiverId) {
         echo json_encode(['status' => 'error', 'message' => 'receiverId required']);
         return;
@@ -216,6 +217,7 @@ function handleEditMessage() {
     $messageId = (int)($data['messageId'] ?? 0);
     $content = trim($data['content'] ?? '');
     $senderId = $_SESSION['user_id'];
+    session_write_close();
     if (!$messageId || empty($content)) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
         return;
@@ -266,6 +268,7 @@ function handleDeleteMessage() {
     $data = json_decode(file_get_contents('php://input'), true);
     $messageId = (int)($data['messageId'] ?? 0);
     $senderId = $_SESSION['user_id'];
+    session_write_close();
     if (!$messageId) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
         return;
@@ -315,6 +318,7 @@ function handleUpdateProfile() {
     }
     $data = json_decode(file_get_contents('php://input'), true);
     $userId = $_SESSION['user_id'];
+    session_write_close();
     $name = trim($data['name'] ?? '');
     $email = trim($data['email'] ?? '');
     $currentPassword = $data['currentPassword'] ?? '';
@@ -396,13 +400,13 @@ function handleGetProfile() {
         echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
         return;
     }
+    session_write_close();
     $stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
     $stmt->bind_param("i", $_SESSION['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
     $stmt->close();
-    session_write_close();
     if ($user) {
         echo json_encode(['status' => 'success', 'user' => $user]);
     } else {
@@ -421,13 +425,13 @@ function handleGetUserName() {
         echo json_encode(['status' => 'error', 'message' => 'Invalid id']);
         return;
     }
+    session_write_close();
     $stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
     $stmt->close();
-    session_write_close();
     if ($user) {
         echo json_encode(['status' => 'success', 'name' => $user['name']]);
     } else {
