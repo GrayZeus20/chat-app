@@ -24,7 +24,7 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#3b82f6">
+    <meta name="theme-color" content="#2ea6ff">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -33,27 +33,56 @@ if (!isset($_SESSION['user_id'])) {
 * { -webkit-tap-highlight-color: transparent; }
 input, button, a, .cursor-pointer { touch-action: manipulation; }
 #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
-#chat-view .group:last-child { margin-bottom: 0; }
+
+.bubble-own {
+  background: #2ea6ff;
+  color: white;
+  border-radius: 18px 18px 4px 18px;
+  padding: 8px 14px;
+  max-width: 88%;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+.bubble-other {
+  background: white;
+  color: #222;
+  border-radius: 18px 18px 18px 4px;
+  padding: 8px 14px;
+  max-width: 88%;
+  word-wrap: break-word;
+  line-height: 1.4;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+@media (min-width: 768px) {
+  .bubble-own { max-width: 55%; }
+  .bubble-other { max-width: 55%; }
+}
+
+/* Hide back button on desktop */
+@media (min-width: 768px) {
+  #back-to-accounts { display: none; }
+}
+
+/* Mobile: chat view slides over */
 @media (max-width: 767px) {
   #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; }
-  .bubble-own { max-width: 88%; }
-  .bubble-other { max-width: 88%; }
+  #chat-view { position: absolute; inset: 0; z-index: 10; }
+  #accounts-view { position: relative; z-index: 1; }
 }
-@media (min-width: 768px) {
-  .bubble-own { max-width: 65%; }
-  .bubble-other { max-width: 65%; }
-}
-@media (hover: none) and (pointer: coarse) {
-  #chat-view .group button:first-child { opacity: 1 !important; }
-}
+
+/* Sidebar scroll */
+#user-list { overscroll-behavior: contain; }
 </style>
 </head>
-<body class="bg-gray-100 md:bg-gray-50">
+<body class="bg-gray-100 md:bg-[#e7ebf0]">
 
-<div id="app-section" class="h-dvh md:h-[90vh] flex flex-col w-full max-w-2xl md:mx-auto md:my-0 md:mt-[5vh] bg-white md:rounded-2xl md:shadow-xl md:shadow-gray-200/50 md:border md:border-gray-200/50 overflow-hidden relative">
+<div id="app-section" class="h-dvh md:h-screen flex flex-col md:flex-row w-full bg-white md:bg-[#e7ebf0] overflow-hidden relative">
+
+    <!-- Settings overlay & panel -->
     <div id="settings-overlay" class="fixed inset-0 bg-black/40 z-20 hidden opacity-0 transition-opacity duration-200" onclick="closeSettings()"></div>
     <div id="settings-panel" class="fixed left-0 top-0 h-full w-72 bg-white z-30 shadow-2xl -translate-x-full transition-transform duration-200 ease-out">
-        <div class="bg-blue-600 p-5 text-white">
+        <div class="bg-[#2ea6ff] p-5 text-white">
             <div class="flex items-center gap-3">
                 <div id="settings-avatar" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-xl font-bold">?</div>
                 <div class="min-w-0">
@@ -69,7 +98,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
                 <input id="set-email" type="email" placeholder="Email" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input id="set-new-password" type="password" placeholder="New password" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input id="set-current-password" type="password" placeholder="Current password *" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button id="set-save-btn" class="w-full bg-blue-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-blue-500 transition">Save Changes</button>
+                <button id="set-save-btn" class="w-full bg-[#2ea6ff] text-white text-sm font-semibold py-2 rounded-lg hover:bg-[#1e96ef] transition">Save Changes</button>
                 <button id="set-cancel-btn" class="w-full text-gray-500 text-sm py-1.5 hover:text-gray-700 transition">Cancel</button>
             </div>
             <div id="settings-menu">
@@ -85,39 +114,53 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
         </div>
     </div>
 
-    <div id="accounts-view" class="flex flex-col flex-1 min-h-0">
-        <div class="bg-blue-600 px-4 sm:px-5 py-3 sm:py-4 text-white flex items-center justify-center shrink-0 relative">
-            <button id="settings-btn" class="absolute left-4 sm:left-5 hover:bg-blue-500 rounded-lg p-2 transition">
+    <!-- Sidebar: User list -->
+    <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-80 md:border-r md:border-gray-200 md:bg-white min-h-0">
+        <div class="bg-[#2ea6ff] px-4 py-3 text-white flex items-center justify-center shrink-0 relative">
+            <button id="settings-btn" class="absolute left-4 hover:bg-[#1e96ef] rounded-lg p-2 transition">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="6" r="4" stroke="#ffffff" stroke-width="1.5"/>
                     <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
             </button>
-            <span class="font-semibold text-base sm:text-lg">Pesan</span>
+            <span class="font-semibold text-base">Pesan</span>
         </div>
         <div class="flex-1 overflow-y-auto bg-gray-50 md:bg-white min-h-0" id="user-list"></div>
     </div>
 
-    <div id="chat-view" class="hidden flex flex-col flex-1 min-h-0">
-        <div class="bg-blue-600 px-4 sm:px-5 py-3 sm:py-4 text-white flex items-center shrink-0 relative">
-            <button id="back-to-accounts" class="hover:bg-blue-500 rounded-lg p-2 transition">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19L5 12L12 5"/></svg>
-            </button>
-            <span id="chat-title" class="font-semibold text-base sm:text-lg truncate px-2 flex-1 text-center">Chat</span>
-            <div class="w-10"></div>
+    <!-- Chat Area -->
+    <div id="chat-view" class="hidden md:flex flex-col flex-1 min-h-0 min-w-0 bg-[#e7ebf0]">
+
+        <!-- Empty state (desktop: shown when no chat selected) -->
+        <div id="empty-state" class="hidden md:flex flex-1 flex-col items-center justify-center text-gray-400 px-6">
+            <svg class="w-24 h-24 text-gray-300 mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <p class="text-lg font-medium text-gray-500">Pilih user untuk mulai chat</p>
+            <p class="text-sm text-gray-400 mt-1">Pilih percakapan dari sidebar kiri</p>
         </div>
-        <div id="chat-container" class="flex-1 overflow-y-auto min-h-0 px-3 sm:px-4 py-4 bg-[#f0f4f8] md:bg-gray-50">
-            <div id="chat-loading" class="hidden text-center text-gray-400 text-sm py-8">Memuat pesan...</div>
-            <div class="flex flex-col space-y-2" id="wrapper-chat"></div>
-        </div>
-        <form id="form-chat" class="shrink-0">
-            <div class="bg-white px-2 sm:px-4 py-2 border-t border-gray-200 flex items-center gap-2">
-                <input type="text" name="content" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 transition min-h-[44px]" id="content" autocomplete="off">
-                <button type="submit" class="bg-blue-600 text-white rounded-full w-[44px] h-[44px] hover:bg-blue-500 active:scale-95 transition-all shadow-md shadow-blue-200 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/></svg>
+
+        <!-- Chat content -->
+        <div id="chat-inner" class="hidden flex-col flex-1 min-h-0">
+            <div class="bg-[#2ea6ff] px-4 py-3 text-white flex items-center shrink-0 relative">
+                <button id="back-to-accounts" class="hover:bg-[#1e96ef] rounded-lg p-2 transition mr-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19L5 12L12 5"/></svg>
                 </button>
+                <span id="chat-title" class="font-semibold text-base truncate">Chat</span>
             </div>
-        </form>
+            <div id="chat-container" class="flex-1 overflow-y-auto min-h-0 px-3 py-4 bg-[#e7ebf0]">
+                <div id="chat-loading" class="hidden text-center text-gray-400 text-sm py-8">Memuat pesan...</div>
+                <div class="flex flex-col space-y-1" id="wrapper-chat"></div>
+            </div>
+            <form id="form-chat" class="shrink-0">
+                <div class="bg-white px-3 py-2 flex items-center gap-2">
+                    <input type="text" name="content" placeholder="Tulis pesan..." class="flex-1 border-0 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] bg-[#f0f4f8] transition min-h-[44px]" id="content" autocomplete="off">
+                    <button type="submit" class="bg-[#2ea6ff] text-white rounded-full w-[44px] h-[44px] hover:bg-[#1e96ef] active:scale-95 transition-all flex items-center justify-center shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/></svg>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -129,6 +172,10 @@ const wrapperChat = document.getElementById('wrapper-chat');
 const chatContainer = document.getElementById('chat-container');
 const form = document.getElementById('form-chat');
 const contentInput = document.getElementById('content');
+
+function isDesktop() {
+    return window.innerWidth >= 768;
+}
 
 async function apiFetch(url, options) {
     const res = await fetch(url, options);
@@ -145,9 +192,13 @@ async function apiFetch(url, options) {
 }
 
 function showAccounts() {
-    document.getElementById('accounts-view').classList.remove('hidden');
-    document.getElementById('chat-view').classList.add('hidden');
     receiverId = null;
+    if (!isDesktop()) {
+        document.getElementById('accounts-view').classList.remove('hidden');
+        document.getElementById('chat-view').classList.add('hidden');
+    }
+    document.getElementById('empty-state').classList.remove('hidden');
+    document.getElementById('chat-inner').classList.add('hidden');
     if (pusher) {
         pusher.unsubscribe('chat');
     }
@@ -160,8 +211,12 @@ function showChat(id) {
     if (id === receiverId) return;
     chatSwitching = true;
     receiverId = id;
-    document.getElementById('accounts-view').classList.add('hidden');
-    document.getElementById('chat-view').classList.remove('hidden');
+    if (!isDesktop()) {
+        document.getElementById('accounts-view').classList.add('hidden');
+        document.getElementById('chat-view').classList.remove('hidden');
+    }
+    document.getElementById('empty-state').classList.add('hidden');
+    document.getElementById('chat-inner').classList.remove('hidden');
     wrapperChat.innerHTML = '';
     document.getElementById('chat-loading').classList.remove('hidden');
     loadChatTitle().then(() => loadMessages()).then(() => { initPusher(); }).finally(() => {
@@ -278,15 +333,14 @@ async function loadUsers() {
             const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-amber-500', 'bg-teal-500', 'bg-pink-500'];
             const color = colors[index % colors.length];
             const div = document.createElement('div');
-            div.className = 'flex items-center px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-100 active:bg-gray-200 transition border-b border-gray-100 cursor-pointer min-h-[56px]';
+            div.className = 'flex items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer min-h-[56px]';
             div.onclick = () => showChat(user.id);
             div.innerHTML = `
-                <div class="w-11 h-11 sm:w-12 sm:h-12 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base sm:text-lg shrink-0 shadow-sm">${initial}</div>
-                <div class="ml-3 sm:ml-4 flex-1 min-w-0">
+                <div class="w-11 h-11 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div>
+                <div class="ml-3 flex-1 min-w-0">
                     <h2 class="text-[15px] font-semibold text-gray-900">${escapeHtml(name)}</h2>
-                    <p class="text-sm text-gray-400 truncate">Tap to start chatting</p>
+                    <p class="text-xs text-gray-400 truncate">Tap to start chatting</p>
                 </div>
-                <svg class="w-5 h-5 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
             `;
             container.appendChild(div);
         });
@@ -330,12 +384,12 @@ async function loadMessages() {
 function appendMessage(messageId, senderId, content) {
     const isOwn = senderId == userId;
     const wrapper = document.createElement('div');
-    wrapper.className = 'flex ' + (isOwn ? 'justify-end' : 'justify-start');
+    wrapper.className = 'flex ' + (isOwn ? 'justify-end' : 'justify-start') + ' px-1 py-0.5';
     wrapper.dataset.messageId = messageId;
 
     if (!isOwn) {
         const bubble = document.createElement('div');
-        bubble.className = 'bg-white text-gray-800 p-3 rounded-2xl rounded-bl-sm bubble-other shadow-sm border border-gray-100';
+        bubble.className = 'bubble-other';
         bubble.textContent = content;
         wrapper.appendChild(bubble);
         wrapperChat.appendChild(wrapper);
@@ -343,15 +397,15 @@ function appendMessage(messageId, senderId, content) {
     }
 
     const container = document.createElement('div');
-    container.className = 'group relative bubble-own';
+    container.className = 'group relative';
 
     const bubble = document.createElement('div');
-    bubble.className = 'bg-blue-500 text-white p-3 rounded-2xl rounded-br-sm shadow-sm pr-8';
+    bubble.className = 'bubble-own';
     bubble.textContent = content;
     container.appendChild(bubble);
 
     const dotBtn = document.createElement('button');
-    dotBtn.className = 'absolute top-1 right-1 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity p-1.5 rounded-full hover:bg-black/10 text-white/80';
+    dotBtn.className = 'absolute top-1 right-1 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity p-1 rounded-full hover:bg-black/10 text-white/80';
     dotBtn.type = 'button';
     dotBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
     dotBtn.onclick = function(e) { e.stopPropagation(); showMenu(dotBtn, messageId, content); };
@@ -403,7 +457,7 @@ function editMessage(messageId, bubble) {
     actions.className = 'flex gap-1 mt-1 justify-end';
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = 'text-xs bg-blue-600 text-white px-2.5 py-1 rounded-lg hover:bg-blue-500 transition';
+    saveBtn.className = 'text-xs bg-[#2ea6ff] text-white px-2.5 py-1 rounded-lg hover:bg-[#1e96ef] transition';
     saveBtn.textContent = 'Save';
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
@@ -437,14 +491,14 @@ async function saveEdit(messageId, bubble, newContent) {
         });
     } catch (err) {}
     bubble.innerHTML = '';
-    bubble.className = 'bg-blue-500 text-white p-3 rounded-2xl rounded-br-sm shadow-sm';
+    bubble.className = 'bubble-own';
     bubble.textContent = newContent;
     editingMessageId = null;
 }
 
 function cancelEdit(messageId, bubble, originalText) {
     bubble.innerHTML = '';
-    bubble.className = 'bg-blue-500 text-white p-3 rounded-2xl rounded-br-sm shadow-sm';
+    bubble.className = 'bubble-own';
     bubble.textContent = originalText;
 }
 
@@ -515,7 +569,7 @@ function initPusher() {
         if (!isForThisChat) return;
         const wrapper = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`);
         if (!wrapper) return;
-        const bubble = wrapper.querySelector('.bg-blue-500, .bg-white');
+        const bubble = wrapper.querySelector('.bubble-own, .bubble-other');
         if (bubble) bubble.textContent = data.content;
     });
     channel.bind('delete', function(data) {
