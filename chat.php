@@ -29,10 +29,28 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="apple-touch-icon" href="icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<style>
+* { -webkit-tap-highlight-color: transparent; }
+input, button, a, .cursor-pointer { touch-action: manipulation; }
+#form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
+#chat-view .group:last-child { margin-bottom: 0; }
+@media (max-width: 767px) {
+  #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; }
+  .bubble-own { max-width: 88%; }
+  .bubble-other { max-width: 88%; }
+}
+@media (min-width: 768px) {
+  .bubble-own { max-width: 65%; }
+  .bubble-other { max-width: 65%; }
+}
+@media (hover: none) and (pointer: coarse) {
+  #chat-view .group button:first-child { opacity: 1 !important; }
+}
+</style>
 </head>
 <body class="bg-gray-100 md:bg-gray-50">
 
-<div id="app-section" class="h-dvh flex flex-col w-full max-w-2xl md:mx-auto md:my-0 md:h-[90vh] md:mt-[5vh] bg-white md:rounded-2xl md:shadow-xl md:shadow-gray-200/50 md:border md:border-gray-200/50 overflow-hidden relative">
+<div id="app-section" class="h-dvh md:h-[90vh] flex flex-col w-full max-w-2xl md:mx-auto md:my-0 md:mt-[5vh] bg-white md:rounded-2xl md:shadow-xl md:shadow-gray-200/50 md:border md:border-gray-200/50 overflow-hidden relative">
     <div id="settings-overlay" class="fixed inset-0 bg-black/40 z-20 hidden opacity-0 transition-opacity duration-200" onclick="closeSettings()"></div>
     <div id="settings-panel" class="fixed left-0 top-0 h-full w-72 bg-white z-30 shadow-2xl -translate-x-full transition-transform duration-200 ease-out">
         <div class="bg-blue-600 p-5 text-white">
@@ -77,7 +95,7 @@ if (!isset($_SESSION['user_id'])) {
             </button>
             <span class="font-semibold text-base sm:text-lg">Pesan</span>
         </div>
-        <div class="flex-1 overflow-y-auto bg-gray-50 md:bg-white" id="user-list"></div>
+        <div class="flex-1 overflow-y-auto bg-gray-50 md:bg-white min-h-0" id="user-list"></div>
     </div>
 
     <div id="chat-view" class="hidden flex-col flex-1 min-h-0">
@@ -92,11 +110,11 @@ if (!isset($_SESSION['user_id'])) {
             <div id="chat-loading" class="hidden text-center text-gray-400 text-sm py-8">Memuat pesan...</div>
             <div class="flex flex-col space-y-2" id="wrapper-chat"></div>
         </div>
-        <form id="form-chat">
-            <div class="bg-white px-3 sm:px-4 py-2.5 sm:py-3 border-t border-gray-200 flex items-center gap-2">
-                <input type="text" name="content" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 transition" id="content" autocomplete="off">
-                <button type="submit" class="bg-blue-600 text-white rounded-full p-2 sm:p-2.5 hover:bg-blue-500 active:scale-95 transition-all shadow-md shadow-blue-200 flex items-center justify-center shrink-0">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/></svg>
+        <form id="form-chat" class="shrink-0">
+            <div class="bg-white px-2 sm:px-4 py-2 border-t border-gray-200 flex items-center gap-2">
+                <input type="text" name="content" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 transition min-h-[44px]" id="content" autocomplete="off">
+                <button type="submit" class="bg-blue-600 text-white rounded-full w-[44px] h-[44px] hover:bg-blue-500 active:scale-95 transition-all shadow-md shadow-blue-200 flex items-center justify-center shrink-0">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/></svg>
                 </button>
             </div>
         </form>
@@ -260,7 +278,7 @@ async function loadUsers() {
             const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-amber-500', 'bg-teal-500', 'bg-pink-500'];
             const color = colors[index % colors.length];
             const div = document.createElement('div');
-            div.className = 'flex items-center px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-100 active:bg-gray-200 transition border-b border-gray-100 cursor-pointer';
+            div.className = 'flex items-center px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-100 active:bg-gray-200 transition border-b border-gray-100 cursor-pointer min-h-[56px]';
             div.onclick = () => showChat(user.id);
             div.innerHTML = `
                 <div class="w-11 h-11 sm:w-12 sm:h-12 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base sm:text-lg shrink-0 shadow-sm">${initial}</div>
@@ -317,7 +335,7 @@ function appendMessage(messageId, senderId, content) {
 
     if (!isOwn) {
         const bubble = document.createElement('div');
-        bubble.className = 'bg-white text-gray-800 p-3 rounded-2xl rounded-bl-sm max-w-[85%] sm:max-w-[75%] md:max-w-[65%] shadow-sm border border-gray-100';
+        bubble.className = 'bg-white text-gray-800 p-3 rounded-2xl rounded-bl-sm bubble-other shadow-sm border border-gray-100';
         bubble.textContent = content;
         wrapper.appendChild(bubble);
         wrapperChat.appendChild(wrapper);
@@ -325,7 +343,7 @@ function appendMessage(messageId, senderId, content) {
     }
 
     const container = document.createElement('div');
-    container.className = 'group relative max-w-[85%] sm:max-w-[75%] md:max-w-[65%]';
+    container.className = 'group relative bubble-own';
 
     const bubble = document.createElement('div');
     bubble.className = 'bg-blue-500 text-white p-3 rounded-2xl rounded-br-sm shadow-sm pr-8';
@@ -333,7 +351,7 @@ function appendMessage(messageId, senderId, content) {
     container.appendChild(bubble);
 
     const dotBtn = document.createElement('button');
-    dotBtn.className = 'absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-black/10 text-white/80';
+    dotBtn.className = 'absolute top-1 right-1 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity p-1.5 rounded-full hover:bg-black/10 text-white/80';
     dotBtn.type = 'button';
     dotBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
     dotBtn.onclick = function(e) { e.stopPropagation(); showMenu(dotBtn, messageId, content); };
