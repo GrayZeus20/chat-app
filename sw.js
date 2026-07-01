@@ -1,8 +1,8 @@
-const CACHE = 'chat-app-v4';
+const CACHE = 'chat-app-v5';
 const PRECACHE_ASSETS = [
-  'index.html',
-  'login.html',
-  'chat.html',
+  'index.php',
+  'login.php',
+  'chat.php',
   'manifest.json'
 ];
 
@@ -28,7 +28,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request).catch(() =>
-        caches.match(e.request).then(cached => cached || caches.match('index.html'))
+        caches.match(e.request).then(cached => cached || caches.match('index.php'))
       )
     );
     return;
