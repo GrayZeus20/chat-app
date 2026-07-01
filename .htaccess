@@ -1,4 +1,4 @@
-DirectoryIndex index.php
+DirectoryIndex login.php
 
 # Prevent directory listing
 Options -Indexes
