@@ -10,5 +10,4 @@ RewriteRule ^(.*)$ index.php [L]
     Require all denied
 </FilesMatch>
 
-# Security: block access to vendor directory
 RewriteRule ^vendor/ - [F,L]
