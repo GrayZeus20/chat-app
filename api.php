@@ -1,8 +1,7 @@
 <?php
 $sessionLifetime = 86400 * 30;
-ini_set('session.gc_maxlifetime', $sessionLifetime);
-ini_set('session.gc_probability', 1);
-ini_set('session.gc_divisor', 100);
+@ini_set('session.gc_maxlifetime', $sessionLifetime);
+@ini_set('session.gc_probability', 0);
 session_set_cookie_params(['lifetime' => $sessionLifetime, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
 ob_start();
 session_start();
