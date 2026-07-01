@@ -1,18 +1,11 @@
 DirectoryIndex login.php
-
-# Prevent directory listing
 Options -Indexes
 
-# Deny access to vendor directory (Composer packages)
-RewriteRule ^vendor/ - [F,L]
-
-# Deny access to sensitive files
-<FilesMatch "^(env\.php|composer\.json|composer\.lock)$">
-Deny from all
-</FilesMatch>
-
-# LiteSpeed / InfinityFree: fix potential 403 on session temp
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /
+RewriteRule ^vendor/ - [F,L]
 </IfModule>
+
+<FilesMatch "^(env\.php|composer\.json|composer\.lock)$">
+Require all denied
+</FilesMatch>
