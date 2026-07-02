@@ -193,14 +193,16 @@ function handleSaveChat() {
     if ($stmt->execute()) {
         $messageId = $stmt->insert_id;
         if (isPusherConfigured()) {
-            require_once __DIR__ . '/vendor/autoload.php';
-            $options = ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true];
-            $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
-            $pusher->trigger('chat', 'receive', [
-                'message_id' => $messageId, 'sender_id' => $senderId,
-                'receiver_id' => $receiverId, 'content' => $content,
-                'created_at' => date('c')
-            ]);
+            try {
+                require_once __DIR__ . '/vendor/autoload.php';
+                $options = ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true];
+                $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
+                $pusher->trigger('chat', 'receive', [
+                    'message_id' => $messageId, 'sender_id' => $senderId,
+                    'receiver_id' => $receiverId, 'content' => $content,
+                    'created_at' => date('c')
+                ]);
+            } catch (Throwable $e) {}
         }
         echo json_encode(['status' => 'success', 'message_id' => $messageId]);
     } else {
@@ -246,13 +248,15 @@ function handleEditMessage() {
     $stmt->bind_param("si", $content, $messageId);
     if ($stmt->execute()) {
         if (isPusherConfigured()) {
-            require_once __DIR__ . '/vendor/autoload.php';
-            $options = ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true];
-            $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
-            $pusher->trigger('chat', 'edit', [
-                'message_id' => $messageId, 'content' => $content,
-                'sender_id' => $senderId, 'receiver_id' => $message['receiver_id']
-            ]);
+            try {
+                require_once __DIR__ . '/vendor/autoload.php';
+                $options = ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true];
+                $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
+                $pusher->trigger('chat', 'edit', [
+                    'message_id' => $messageId, 'content' => $content,
+                    'sender_id' => $senderId, 'receiver_id' => $message['receiver_id']
+                ]);
+            } catch (Throwable $e) {}
         }
         echo json_encode(['status' => 'success']);
     } else {
@@ -297,13 +301,15 @@ function handleDeleteMessage() {
     $stmt->bind_param("i", $messageId);
     if ($stmt->execute()) {
         if (isPusherConfigured()) {
-            require_once __DIR__ . '/vendor/autoload.php';
-            $options = ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true];
-            $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
-            $pusher->trigger('chat', 'delete', [
-                'message_id' => $messageId, 'sender_id' => $senderId,
-                'receiver_id' => $message['receiver_id']
-            ]);
+            try {
+                require_once __DIR__ . '/vendor/autoload.php';
+                $options = ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true];
+                $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
+                $pusher->trigger('chat', 'delete', [
+                    'message_id' => $messageId, 'sender_id' => $senderId,
+                    'receiver_id' => $message['receiver_id']
+                ]);
+            } catch (Throwable $e) {}
         }
         echo json_encode(['status' => 'success']);
     } else {
