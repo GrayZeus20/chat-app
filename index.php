@@ -574,6 +574,25 @@ async function deleteMessage(messageId, item) {
     } catch (err) { if (err.message === 'Unauthorized') throw err; alert('Gagal menghapus pesan'); }
 }
 
+function attachMessageActions(item, messageId) {
+    const bubble = item.querySelector('.bubble-own');
+    if (!bubble) return;
+    let act = null;
+    bubble.style.cursor = 'pointer';
+    bubble.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isEditing) return;
+        if (act && act.parentNode) { act.remove(); act = null; return; }
+        document.querySelectorAll('.msg-actions').forEach(m => m.remove());
+        act = document.createElement('div');
+        act.className = 'msg-actions';
+        act.innerHTML = '<button class="edit-action">Edit</button><button class="delete-action">Hapus</button>';
+        item.appendChild(act);
+        act.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; editMessage(messageId, bubble); });
+        act.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; deleteMessage(messageId, item); });
+    });
+}
+
 function scrollToBottom() { chatContainer.scrollTop = chatContainer.scrollHeight; }
 
 form.addEventListener('submit', async (event) => {
@@ -587,7 +606,7 @@ form.addEventListener('submit', async (event) => {
         const data = await apiFetch('api.php?action=saveChat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: chatContent, receiverId }) });
         if (data.status === 'success' && data.message_id) {
             const el = wrapperChat.querySelector(`[data-message-id="${tempId}"]`);
-            if (el) { el.dataset.messageId = data.message_id; const meta = el.querySelector('.msg-meta span'); if (meta && meta.textContent === 'Mengirim...') { meta.textContent = formatTime(new Date().toISOString()); } }
+            if (el) { el.dataset.messageId = data.message_id; const meta = el.querySelector('.msg-meta span'); if (meta && meta.textContent === 'Mengirim...') { meta.textContent = formatTime(new Date().toISOString()); } attachMessageActions(el, data.message_id); }
         }
     } catch (err) { console.error('Error:', err); }
     contentInput.value = '';
