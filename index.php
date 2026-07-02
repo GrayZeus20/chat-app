@@ -49,8 +49,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
 .read-receipt { font-size: 12px; color: #2ea6ff; }
 .user-item.active { background: #e0f0ff; }
 .user-item.active h2 { color: #1a73e8; }
-.msg-actions { position: absolute; right: 0; top: 100%; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 30; min-width: 120px; overflow: hidden; display: none; }
-.msg-actions.show { display: block; }
+.msg-actions { position: absolute; right: 0; top: 100%; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 30; min-width: 120px; overflow: hidden; }
 .msg-actions button { display: block; width: 100%; padding: 10px 16px; text-align: left; font-size: 13px; background: none; border: none; cursor: pointer; transition: background 0.15s; }
 .msg-actions button:hover { background: #f3f4f6; }
 .msg-item { position: relative; }
@@ -293,6 +292,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 let userId = null;
 let receiverId = null;
 let editingMessageId = null;
+let isEditing = false;
 const wrapperChat = document.getElementById('wrapper-chat');
 const chatContainer = document.getElementById('chat-container');
 const form = document.getElementById('form-chat');
@@ -474,14 +474,24 @@ function appendMessage(messageId, senderId, content, createdAt) {
     item.appendChild(bubble);
     item.appendChild(buildMeta(isOwn, timeText));
     if (isOwn && messageId && !String(messageId).startsWith('temp-')) {
-        const actions = document.createElement('div');
-        actions.className = 'msg-actions';
-        actions.innerHTML = '<button class="edit-action">Edit</button><button class="delete-action">Hapus</button>';
-        item.appendChild(actions);
         bubble.style.cursor = 'pointer';
-        bubble.addEventListener('click', function(e) { e.stopPropagation(); document.querySelectorAll('.msg-actions.show').forEach(m => m.classList.remove('show')); actions.classList.toggle('show'); });
-        actions.querySelector('.edit-action').addEventListener('click', function(e) { e.stopPropagation(); actions.classList.remove('show'); editMessage(messageId, bubble); });
-        actions.querySelector('.delete-action').addEventListener('click', function(e) { e.stopPropagation(); actions.classList.remove('show'); deleteMessage(messageId, item); });
+        let actions = null;
+        bubble.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (isEditing) return;
+            if (actions && actions.parentNode) {
+                actions.remove();
+                actions = null;
+                return;
+            }
+            document.querySelectorAll('.msg-actions').forEach(m => m.remove());
+            actions = document.createElement('div');
+            actions.className = 'msg-actions';
+            actions.innerHTML = '<button class="edit-action">Edit</button><button class="delete-action">Hapus</button>';
+            item.appendChild(actions);
+            actions.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; editMessage(messageId, bubble); });
+            actions.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; deleteMessage(messageId, item); });
+        });
     }
     const lastWrapper = wrapperChat.lastElementChild;
     const sameSender = lastWrapper && lastWrapper.dataset.senderId == String(senderId);
@@ -499,9 +509,10 @@ function appendMessage(messageId, senderId, content, createdAt) {
     wrapperChat.appendChild(wrapper);
 }
 
-document.addEventListener('click', function(e) { document.querySelectorAll('.msg-actions.show').forEach(menu => { if (!menu.contains(e.target)) { menu.classList.remove('show'); } }); });
+document.addEventListener('click', function(e) { document.querySelectorAll('.msg-actions').forEach(menu => { if (menu.parentNode && !menu.contains(e.target)) { menu.remove(); } }); });
 
 function editMessage(messageId, bubble) {
+    isEditing = true;
     const originalText = bubble.textContent;
     const input = document.createElement('input'); input.type = 'text'; input.value = originalText; input.className = 'w-full bg-white text-gray-800 p-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm';
     const actions = document.createElement('div'); actions.className = 'flex gap-1 mt-1 justify-end';
@@ -519,10 +530,10 @@ async function saveEdit(messageId, bubble, newContent) {
     newContent = newContent.trim(); if (!newContent || editingMessageId) return;
     editingMessageId = messageId;
     try { await apiFetch('api.php?action=editMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messageId, content: newContent }) }); } catch (err) {}
-    bubble.innerHTML = ''; bubble.className = 'bubble-own'; bubble.textContent = newContent; editingMessageId = null;
+    bubble.innerHTML = ''; bubble.className = 'bubble-own'; bubble.textContent = newContent; editingMessageId = null; isEditing = false;
 }
 
-function cancelEdit(messageId, bubble, originalText) { bubble.innerHTML = ''; bubble.className = 'bubble-own'; bubble.textContent = originalText; }
+function cancelEdit(messageId, bubble, originalText) { bubble.innerHTML = ''; bubble.className = 'bubble-own'; bubble.textContent = originalText; isEditing = false; }
 
 async function deleteMessage(messageId, item) {
     if (!confirm('Hapus pesan ini?')) return;
