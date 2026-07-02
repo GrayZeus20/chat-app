@@ -331,6 +331,7 @@ function showChat(id) {
     if (id === receiverId) return;
     chatSwitching = true;
     receiverId = id;
+    console.log('showChat: receiverId =', receiverId);
     setActiveUser(id);
     if (!isDesktop()) { document.getElementById('accounts-view').classList.add('hidden'); document.getElementById('chat-view').classList.remove('hidden'); }
     document.getElementById('empty-state').classList.add('hidden');
@@ -436,7 +437,7 @@ async function loadChatTitle() {
 async function loadMessages() {
     try {
         const data = await apiFetch('api.php?action=getMessages&receiver_id=' + receiverId);
-        if (data.status === 'error') { wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Gagal memuat pesan. Silakan refresh.</div>'; return; }
+        if (data.status === 'error') { wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">' + escapeHtml(data.message) + '</div>'; return; }
         userId = data.user_id;
         wrapperChat.innerHTML = '';
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content, msg.created_at));
