@@ -12,7 +12,7 @@ register_shutdown_function(function () {
     $error = error_get_last();
     if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
         if (ob_get_level()) { ob_clean(); }
-        echo json_encode(['status' => 'error', 'message' => 'Internal server error']);
+        echo json_encode(['status' => 'error', 'message' => 'Internal server error: ' . ($error['message'] ?? 'unknown')]);
     }
 });
 
