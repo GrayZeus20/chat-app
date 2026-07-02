@@ -7,5 +7,20 @@ RewriteRule ^vendor/ - [F,L]
 </IfModule>
 
 <FilesMatch "^(env\.php|composer\.json|composer\.lock)$">
+<IfModule mod_authz_core.c>
 Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+Deny from all
+</IfModule>
 </FilesMatch>
+
+# Allow PHP files explicitly (override any parent .htaccess denials)
+<Files "*.php">
+<IfModule mod_authz_core.c>
+Require all granted
+</IfModule>
+<IfModule !mod_authz_core.c>
+Allow from all
+</IfModule>
+</Files>
