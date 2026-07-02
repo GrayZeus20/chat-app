@@ -198,7 +198,8 @@ function handleSaveChat() {
             $pusher = new Pusher\Pusher(PUSHER_APP_KEY, PUSHER_APP_SECRET, PUSHER_APP_ID, $options);
             $pusher->trigger('chat', 'receive', [
                 'message_id' => $messageId, 'sender_id' => $senderId,
-                'receiver_id' => $receiverId, 'content' => $content
+                'receiver_id' => $receiverId, 'content' => $content,
+                'created_at' => date('c')
             ]);
         }
         echo json_encode(['status' => 'success', 'message_id' => $messageId]);

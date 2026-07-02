@@ -113,6 +113,38 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
 
 /* Read receipt */
 .read-receipt { font-size: 12px; color: #2ea6ff; }
+
+/* Active user in sidebar */
+.user-item.active { background: #e0f0ff; }
+.user-item.active h2 { color: #1a73e8; }
+
+/* Message action popover */
+.msg-actions {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 30;
+    min-width: 120px;
+    overflow: hidden;
+    display: none;
+}
+.msg-actions.show { display: block; }
+.msg-actions button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 13px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.msg-actions button:hover { background: #f3f4f6; }
+.msg-item { position: relative; }
 </style>
 </head>
 <body class="bg-gray-100 md:bg-[#e7ebf0]">
@@ -172,7 +204,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
     <div id="chat-view" class="hidden md:flex flex flex-col flex-1 min-h-0 min-w-0 bg-[#e7ebf0]">
 
         <!-- Empty state (desktop: shown when no chat selected) -->
-        <div id="empty-state" class="hidden md:flex absolute inset-0 z-20 flex-col items-center justify-center text-gray-400 px-6 bg-[#e7ebf0]">
+        <div id="empty-state" class="hidden absolute inset-0 z-20 flex-col items-center justify-center text-gray-400 px-6 bg-[#e7ebf0]">
             <svg class="w-24 h-24 text-gray-300 mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
@@ -232,6 +264,7 @@ async function apiFetch(url, options) {
 
 function showAccounts() {
     receiverId = null;
+    document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
     if (!isDesktop()) {
         document.getElementById('accounts-view').classList.remove('hidden');
         document.getElementById('chat-view').classList.add('hidden');
@@ -245,11 +278,18 @@ function showAccounts() {
 
 let chatSwitching = false;
 
+function setActiveUser(id) {
+    document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
+    const active = document.querySelector(`.user-item[data-user-id="${id}"]`);
+    if (active) active.classList.add('active');
+}
+
 function showChat(id) {
     if (chatSwitching) return;
     if (id === receiverId) return;
     chatSwitching = true;
     receiverId = id;
+    setActiveUser(id);
     if (!isDesktop()) {
         document.getElementById('accounts-view').classList.add('hidden');
         document.getElementById('chat-view').classList.remove('hidden');
@@ -372,7 +412,8 @@ async function loadUsers() {
             const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-amber-500', 'bg-teal-500', 'bg-pink-500'];
             const color = colors[index % colors.length];
             const div = document.createElement('div');
-            div.className = 'flex items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer min-h-[56px]';
+            div.className = 'user-item flex items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer min-h-[56px]';
+            div.dataset.userId = user.id;
             div.onclick = () => showChat(user.id);
             div.innerHTML = `
                 <div class="w-11 h-11 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div>
@@ -412,7 +453,7 @@ async function loadMessages() {
         }
         userId = data.user_id;
         wrapperChat.innerHTML = '';
-        data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content));
+        data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content, msg.created_at));
         scrollToBottom();
     } catch (err) {
         if (err.message === 'Unauthorized') throw err;
@@ -427,13 +468,6 @@ function buildMeta(isOwn, timeText) {
     const meta = document.createElement('div');
     meta.className = 'msg-meta ' + (isOwn ? 'msg-meta-own' : 'msg-meta-other');
     meta.innerHTML = `<span>${escapeHtml(timeText)}</span>`;
-    if (isOwn) {
-        const receipt = document.createElement('span');
-        receipt.className = 'read-receipt';
-        receipt.textContent = '✓✓';
-        receipt.title = 'Dibaca';
-        meta.appendChild(receipt);
-    }
     return meta;
 }
 
@@ -443,9 +477,23 @@ function buildMeta(isOwn, timeText) {
  * style), each as its own .msg-item carrying its own data-message-id so
  * edit/delete events from Pusher can target the exact bubble.
  */
-function appendMessage(messageId, senderId, content) {
+function formatTime(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+
+function appendMessage(messageId, senderId, content, createdAt) {
     const isOwn = senderId == userId;
-    const timeText = messageId && String(messageId).startsWith('temp-') ? 'Mengirim...' : 'Terkirim';
+    let timeText;
+    if (messageId && String(messageId).startsWith('temp-')) {
+        timeText = 'Mengirim...';
+    } else if (createdAt) {
+        timeText = formatTime(createdAt);
+    } else {
+        timeText = '';
+    }
 
     const item = document.createElement('div');
     item.className = 'msg-item';
@@ -456,6 +504,29 @@ function appendMessage(messageId, senderId, content) {
     bubble.textContent = content;
     item.appendChild(bubble);
     item.appendChild(buildMeta(isOwn, timeText));
+
+    if (isOwn && messageId && !String(messageId).startsWith('temp-')) {
+        const actions = document.createElement('div');
+        actions.className = 'msg-actions';
+        actions.innerHTML = '<button class="edit-action">Edit</button><button class="delete-action">Hapus</button>';
+        item.appendChild(actions);
+        bubble.style.cursor = 'pointer';
+        bubble.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelectorAll('.msg-actions.show').forEach(m => m.classList.remove('show'));
+            actions.classList.toggle('show');
+        });
+        actions.querySelector('.edit-action').addEventListener('click', function(e) {
+            e.stopPropagation();
+            actions.classList.remove('show');
+            editMessage(messageId, bubble);
+        });
+        actions.querySelector('.delete-action').addEventListener('click', function(e) {
+            e.stopPropagation();
+            actions.classList.remove('show');
+            deleteMessage(messageId, item);
+        });
+    }
 
     const lastWrapper = wrapperChat.lastElementChild;
     const sameSender = lastWrapper && lastWrapper.dataset.senderId == String(senderId);
@@ -480,17 +551,10 @@ function appendMessage(messageId, senderId, content) {
     wrapperChat.appendChild(wrapper);
 }
 
-function showMenu(btn, messageId, content) {
-    document.querySelectorAll('#chat-view .group > div:last-child').forEach(m => {
-        if (m !== btn.nextElementSibling) m.classList.add('hidden');
-    });
-    btn.nextElementSibling.classList.toggle('hidden');
-}
-
 document.addEventListener('click', function(e) {
-    document.querySelectorAll('#chat-view .group > div:last-child').forEach(menu => {
-        if (!menu.classList.contains('hidden') && !menu.contains(e.target)) {
-            menu.classList.add('hidden');
+    document.querySelectorAll('.msg-actions.show').forEach(menu => {
+        if (!menu.contains(e.target)) {
+            menu.classList.remove('show');
         }
     });
 });
@@ -550,7 +614,7 @@ function cancelEdit(messageId, bubble, originalText) {
     bubble.textContent = originalText;
 }
 
-async function deleteMessage(messageId, wrapper) {
+async function deleteMessage(messageId, item) {
     if (!confirm('Hapus pesan ini?')) return;
     try {
         const data = await apiFetch('api.php?action=deleteMessage', {
@@ -558,7 +622,14 @@ async function deleteMessage(messageId, wrapper) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ messageId })
         });
-        if (data.status === 'success') { wrapper.remove(); }
+        if (data.status === 'success') {
+            const col = item.parentElement;
+            const block = col ? col.parentElement : null;
+            item.remove();
+            if (col && col.children.length === 0 && block) {
+                block.remove();
+            }
+        }
         else { alert('Gagal menghapus: ' + data.message); }
     } catch (err) {
         if (err.message === 'Unauthorized') throw err;
@@ -585,7 +656,13 @@ form.addEventListener('submit', async (event) => {
         });
         if (data.status === 'success' && data.message_id) {
             const el = wrapperChat.querySelector(`[data-message-id="${tempId}"]`);
-            if (el) el.dataset.messageId = data.message_id;
+            if (el) {
+                el.dataset.messageId = data.message_id;
+                const meta = el.querySelector('.msg-meta span');
+                if (meta && meta.textContent === 'Mengirim...') {
+                    meta.textContent = formatTime(new Date().toISOString());
+                }
+            }
         }
     } catch (err) { console.error('Error:', err); }
     contentInput.value = '';
@@ -593,6 +670,7 @@ form.addEventListener('submit', async (event) => {
 
 contentInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
         form.dispatchEvent(new Event('submit'));
     }
 });
@@ -609,7 +687,7 @@ function initPusher() {
     channel.bind('receive', function(data) {
         if (data.sender_id == userId) return;
         if (data.sender_id != receiverId) return;
-        appendMessage(data.message_id, data.sender_id, data.content);
+        appendMessage(data.message_id, data.sender_id, data.content, data.created_at);
         scrollToBottom();
     });
     channel.bind('edit', function(data) {
