@@ -169,7 +169,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
     </div>
 
     <!-- Chat Area -->
-    <div id="chat-view" class="hidden md:flex flex-col flex-1 min-h-0 min-w-0 bg-[#e7ebf0]">
+    <div id="chat-view" class="hidden md:flex flex flex-col flex-1 min-h-0 min-w-0 bg-[#e7ebf0]">
 
         <!-- Empty state (desktop: shown when no chat selected) -->
         <div id="empty-state" class="hidden md:flex absolute inset-0 z-20 flex-col items-center justify-center text-gray-400 px-6 bg-[#e7ebf0]">
@@ -181,7 +181,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
         </div>
 
         <!-- Chat content -->
-        <div id="chat-inner" class="hidden flex-col flex-1 min-h-0">
+        <div id="chat-inner" class="hidden flex flex-col flex-1 min-h-0">
             <div class="bg-[#2ea6ff] px-4 py-3 text-white flex items-center shrink-0 relative">
                 <button id="back-to-accounts" class="hover:bg-[#1e96ef] rounded-lg p-2 transition mr-1">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19L5 12L12 5"/></svg>
@@ -200,6 +200,8 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
 
 <script>
 let userId = null;
