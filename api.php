@@ -12,6 +12,7 @@ register_shutdown_function(function () {
     $error = error_get_last();
     if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
         ob_clean();
+        @file_put_contents(__DIR__ . '/api-error.log', date('c') . ' ' . json_encode($error) . PHP_EOL, FILE_APPEND);
         echo json_encode(['status' => 'error', 'message' => 'Internal server error']);
     }
 });
