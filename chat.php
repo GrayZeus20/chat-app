@@ -2,12 +2,7 @@
 $sessionLifetime = 86400 * 30;
 @ini_set('session.gc_maxlifetime', $sessionLifetime);
 @ini_set('session.gc_probability', 0);
-session_set_cookie_params([
-    'lifetime' => $sessionLifetime,
-    'path' => '/',
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
+session_set_cookie_params(['lifetime' => $sessionLifetime, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -16,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -34,32 +29,31 @@ if (!isset($_SESSION['user_id'])) {
 input, button, a, .cursor-pointer { touch-action: manipulation; }
 #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
-.bubble-own {
-  background: #2ea6ff;
-  color: white;
-  border-radius: 18px 18px 4px 18px;
-  padding: 8px 14px;
-  max-width: 88%;
-  word-wrap: break-word;
-  line-height: 1.4;
-}
-.bubble-other {
-  background: white;
-  color: #222;
-  border-radius: 18px 18px 18px 4px;
-  padding: 8px 14px;
-  max-width: 88%;
-  word-wrap: break-word;
-  line-height: 1.4;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-}
+/* Same-sender vertical grouping (WhatsApp/Telegram style) */
+#empty-state.hidden { display: none !important; }
+#wrapper-chat > .msg-block { display: flex; flex-direction: column; }
+#wrapper-chat > .msg-block + .msg-block { margin-top: 10px; }
 
+/* A group of consecutive messages from the same sender stacks vertically */
+.msg-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 88%;
+}
 @media (min-width: 768px) {
-  .bubble-own { max-width: 55%; }
-  .bubble-other { max-width: 55%; }
+  .msg-col { max-width: 55%; }
 }
+.msg-col-own { justify-content: flex-end; align-items: flex-end; }
+.msg-col-other { justify-content: flex-start; align-items: flex-start; }
+.msg-col-own .msg-col { align-items: flex-end; }
+.msg-col-other .msg-col { align-items: flex-start; }
 
-/* Hide back button on desktop */
+/* Each individual message (bubble + its meta row) */
+.msg-item { display: flex; flex-direction: column; max-width: 100%; }
+.msg-col-own .msg-item { align-items: flex-end; }
+.msg-col-other .msg-item { align-items: flex-start; }
+
 @media (min-width: 768px) {
   #back-to-accounts { display: none; }
 }
@@ -73,6 +67,52 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
 
 /* Sidebar scroll */
 #user-list { overscroll-behavior: contain; }
+
+/* Chat bubbles */
+.bubble-own {
+  background: #2ea6ff;
+  color: white;
+  border-radius: 16px 16px 4px 16px;
+  padding: 8px 12px;
+  max-width: 100%;
+  word-wrap: break-word;
+  line-height: 1.35;
+  font-size: 14px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.06);
+}
+.bubble-other {
+  background: white;
+  color: #222;
+  border-radius: 16px 16px 16px 4px;
+  padding: 8px 12px;
+  max-width: 100%;
+  word-wrap: break-word;
+  line-height: 1.35;
+  font-size: 14px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+/* Consecutive bubbles from the same sender get tighter corners, like WA/Telegram */
+.msg-item:not(:last-child) .bubble-own { border-radius: 16px 16px 4px 16px; }
+.msg-item:not(:first-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
+.msg-item:not(:first-child):not(:last-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
+.msg-item:not(:first-child) .bubble-other { border-radius: 4px 16px 16px 16px; }
+
+/* Meta row (time / read receipt) */
+.msg-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0.85;
+}
+.msg-meta-own { justify-content: flex-end; color: #9aa5b1; }
+.msg-meta-other { justify-content: flex-start; color: #6b7280; }
+
+/* Read receipt */
+.read-receipt { font-size: 12px; color: #2ea6ff; }
 </style>
 </head>
 <body class="bg-gray-100 md:bg-[#e7ebf0]">
@@ -94,21 +134,21 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
         <div class="p-3 space-y-1">
             <div id="settings-form-section" class="px-3 py-4 space-y-3 hidden">
                 <div id="settings-msg" class="text-xs hidden"></div>
-                <input id="set-name" type="text" placeholder="Name" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input id="set-name" type="text" placeholder="Nama" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input id="set-email" type="email" placeholder="Email" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input id="set-new-password" type="password" placeholder="New password" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input id="set-current-password" type="password" placeholder="Current password *" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button id="set-save-btn" class="w-full bg-[#2ea6ff] text-white text-sm font-semibold py-2 rounded-lg hover:bg-[#1e96ef] transition">Save Changes</button>
-                <button id="set-cancel-btn" class="w-full text-gray-500 text-sm py-1.5 hover:text-gray-700 transition">Cancel</button>
+                <input id="set-new-password" type="password" placeholder="Kata sandi baru" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input id="set-current-password" type="password" placeholder="Kata sandi saat ini *" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button id="set-save-btn" class="w-full bg-[#2ea6ff] text-white text-sm font-semibold py-2 rounded-lg hover:bg-[#1e96ef] transition">Simpan Perubahan</button>
+                <button id="set-cancel-btn" class="w-full text-gray-500 text-sm py-1.5 hover:text-gray-700 transition">Batal</button>
             </div>
             <div id="settings-menu">
                 <button id="settings-edit-profile-btn" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                    Edit Profile
+                    Edit Profil
                 </button>
-                <button onclick="if(confirm('Apakah Anda Ingin Logout ?')){ window.location.href='logout.php'; }" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.8954 21 19 21H15"/><path d="M10 17L15 12L10 7"/><path d="M15 12H3"/></svg>
-                    Logout
+                <button onclick="if(confirm('Apakah Anda Ingin Keluar ?')){ window.location.href='logout.php'; }" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1044 21 19 21H15"/><path d="M10 17L15 12L10 7"/><path d="M15 12H3"/></svg>
+                    Keluar
                 </button>
             </div>
         </div>
@@ -120,7 +160,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
             <button id="settings-btn" class="absolute left-4 hover:bg-[#1e96ef] rounded-lg p-2 transition">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="6" r="4" stroke="#ffffff" stroke-width="1.5"/>
-                    <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.791 19 17C19 17.3453 18.923 17.6804 18.775 18" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
             </button>
             <span class="font-semibold text-base">Pesan</span>
@@ -132,9 +172,9 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
     <div id="chat-view" class="hidden md:flex flex-col flex-1 min-h-0 min-w-0 bg-[#e7ebf0]">
 
         <!-- Empty state (desktop: shown when no chat selected) -->
-        <div id="empty-state" class="hidden md:flex flex-1 flex-col items-center justify-center text-gray-400 px-6">
+        <div id="empty-state" class="hidden md:flex absolute inset-0 z-20 flex-col items-center justify-center text-gray-400 px-6 bg-[#e7ebf0]">
             <svg class="w-24 h-24 text-gray-300 mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
             <p class="text-lg font-medium text-gray-500">Pilih user untuk mulai chat</p>
             <p class="text-sm text-gray-400 mt-1">Pilih percakapan dari sidebar kiri</p>
@@ -150,7 +190,7 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
             </div>
             <div id="chat-container" class="flex-1 overflow-y-auto min-h-0 px-3 py-4 bg-[#e7ebf0]">
                 <div id="chat-loading" class="hidden text-center text-gray-400 text-sm py-8">Memuat pesan...</div>
-                <div class="flex flex-col space-y-1" id="wrapper-chat"></div>
+                <div id="wrapper-chat"></div>
             </div>
             <form id="form-chat" class="shrink-0">
                 <div class="bg-white px-3 py-2 flex items-center gap-2">
@@ -160,9 +200,6 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
                     </button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
 
 <script>
 let userId = null;
@@ -287,7 +324,7 @@ document.getElementById('set-save-btn').addEventListener('click', async () => {
     msg.classList.add('hidden');
     const currentPassword = document.getElementById('set-current-password').value;
     if (!currentPassword) {
-        msg.textContent = 'Password saat ini wajib diisi';
+        msg.textContent = 'Kata sandi saat ini wajib diisi';
         msg.className = 'text-xs text-red-500';
         msg.classList.remove('hidden');
         return;
@@ -339,7 +376,7 @@ async function loadUsers() {
                 <div class="w-11 h-11 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div>
                 <div class="ml-3 flex-1 min-w-0">
                     <h2 class="text-[15px] font-semibold text-gray-900">${escapeHtml(name)}</h2>
-                    <p class="text-xs text-gray-400 truncate">Tap to start chatting</p>
+                    <p class="text-xs text-gray-400 truncate">Ketuk untuk mulai chat</p>
                 </div>
             `;
             container.appendChild(div);
@@ -381,54 +418,63 @@ async function loadMessages() {
     }
 }
 
+/**
+ * Builds the small "time / read-receipt" row shown under a bubble.
+ */
+function buildMeta(isOwn, timeText) {
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta ' + (isOwn ? 'msg-meta-own' : 'msg-meta-other');
+    meta.innerHTML = `<span>${escapeHtml(timeText)}</span>`;
+    if (isOwn) {
+        const receipt = document.createElement('span');
+        receipt.className = 'read-receipt';
+        receipt.textContent = '✓✓';
+        receipt.title = 'Dibaca';
+        meta.appendChild(receipt);
+    }
+    return meta;
+}
+
+/**
+ * Appends a single message. Consecutive messages from the same sender
+ * are stacked vertically inside the same .msg-col group (WhatsApp/Telegram
+ * style), each as its own .msg-item carrying its own data-message-id so
+ * edit/delete events from Pusher can target the exact bubble.
+ */
 function appendMessage(messageId, senderId, content) {
     const isOwn = senderId == userId;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'flex ' + (isOwn ? 'justify-end' : 'justify-start') + ' px-1 py-0.5';
-    wrapper.dataset.messageId = messageId;
+    const timeText = messageId && String(messageId).startsWith('temp-') ? 'Mengirim...' : 'Terkirim';
 
-    if (!isOwn) {
-        const bubble = document.createElement('div');
-        bubble.className = 'bubble-other';
-        bubble.textContent = content;
-        wrapper.appendChild(bubble);
-        wrapperChat.appendChild(wrapper);
-        return;
-    }
-
-    const container = document.createElement('div');
-    container.className = 'group relative';
+    const item = document.createElement('div');
+    item.className = 'msg-item';
+    item.dataset.messageId = messageId;
 
     const bubble = document.createElement('div');
-    bubble.className = 'bubble-own';
+    bubble.className = isOwn ? 'bubble-own' : 'bubble-other';
     bubble.textContent = content;
-    container.appendChild(bubble);
+    item.appendChild(bubble);
+    item.appendChild(buildMeta(isOwn, timeText));
 
-    const dotBtn = document.createElement('button');
-    dotBtn.className = 'absolute top-1 right-1 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity p-1 rounded-full hover:bg-black/10 text-white/80';
-    dotBtn.type = 'button';
-    dotBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
-    dotBtn.onclick = function(e) { e.stopPropagation(); showMenu(dotBtn, messageId, content); };
-    container.appendChild(dotBtn);
+    const lastWrapper = wrapperChat.lastElementChild;
+    const sameSender = lastWrapper && lastWrapper.dataset.senderId == String(senderId);
 
-    const menu = document.createElement('div');
-    menu.className = 'absolute right-full top-0 mr-2 bg-white rounded-xl shadow-lg border border-gray-200 py-1 z-10 hidden min-w-[120px]';
-    menu.innerHTML = `
-        <button class="edit-btn flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition" data-message-id="${messageId}">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Edit
-        </button>
-        <button class="delete-btn flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition" data-message-id="${messageId}">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            Delete
-        </button>
-    `;
-    container.appendChild(menu);
+    if (sameSender) {
+        const existingColumn = lastWrapper.querySelector('.msg-col');
+        if (existingColumn) {
+            existingColumn.appendChild(item);
+            return;
+        }
+    }
 
-    menu.querySelector('.edit-btn').onclick = function() { menu.classList.add('hidden'); editMessage(messageId, bubble); };
-    menu.querySelector('.delete-btn').onclick = function() { menu.classList.add('hidden'); deleteMessage(messageId, wrapper); };
+    const wrapper = document.createElement('div');
+    wrapper.dataset.senderId = senderId;
+    wrapper.className = 'msg-block ' + (isOwn ? 'msg-col-own' : 'msg-col-other');
 
-    wrapper.appendChild(container);
+    const col = document.createElement('div');
+    col.className = 'msg-col';
+    col.appendChild(item);
+
+    wrapper.appendChild(col);
     wrapperChat.appendChild(wrapper);
 }
 
@@ -458,11 +504,11 @@ function editMessage(messageId, bubble) {
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'text-xs bg-[#2ea6ff] text-white px-2.5 py-1 rounded-lg hover:bg-[#1e96ef] transition';
-    saveBtn.textContent = 'Save';
+    saveBtn.textContent = 'Simpan';
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
     cancelBtn.className = 'text-xs bg-gray-200 text-gray-600 px-2.5 py-1 rounded-lg hover:bg-gray-300 transition';
-    cancelBtn.textContent = 'Cancel';
+    cancelBtn.textContent = 'Batal';
     actions.appendChild(cancelBtn);
     actions.appendChild(saveBtn);
     bubble.innerHTML = '';
@@ -567,16 +613,24 @@ function initPusher() {
     channel.bind('edit', function(data) {
         const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId);
         if (!isForThisChat) return;
-        const wrapper = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`);
-        if (!wrapper) return;
-        const bubble = wrapper.querySelector('.bubble-own, .bubble-other');
-        if (bubble) bubble.textContent = data.content;
+        const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`);
+        if (item) {
+            const bubble = item.querySelector('.bubble-own, .bubble-other');
+            if (bubble) bubble.textContent = data.content;
+        }
     });
     channel.bind('delete', function(data) {
         const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId);
         if (!isForThisChat) return;
-        const wrapper = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`);
-        if (wrapper) wrapper.remove();
+        const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`);
+        if (item) {
+            const col = item.parentElement;
+            const block = col ? col.parentElement : null;
+            item.remove();
+            if (col && col.children.length === 0 && block) {
+                block.remove();
+            }
+        }
     });
 }
 
