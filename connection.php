@@ -19,13 +19,15 @@ if (file_exists(__DIR__ . '/env.php')) {
     $database   = "chat_app";
 }
 
-$conn = @new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
+try {
+    $conn = new mysqli($servername, $username, $password, $database);
+    if ($conn->connect_error) {
+        throw new Exception($conn->connect_error);
+    }
+    $conn->set_charset('utf8mb4');
+} catch (Throwable $e) {
     header('Content-Type: application/json');
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Database connection failed']);
     exit;
 }
-
-$conn->set_charset('utf8mb4');
