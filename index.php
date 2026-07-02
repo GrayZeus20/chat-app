@@ -559,7 +559,7 @@ let channel = null;
 
 function initPusher() {
     if (pusher) { pusher.disconnect(); }
-    pusher = new Pusher('cd37a9cac61b05b6944b', { cluster: 'ap1' });
+    pusher = new Pusher('579716c8e98cf3fb7f38', { cluster: 'ap1' });
     channel = pusher.subscribe('chat');
     channel.bind('receive', function(data) { if (data.sender_id == userId) return; if (data.sender_id != receiverId) return; appendMessage(data.message_id, data.sender_id, data.content, data.created_at); scrollToBottom(); });
     channel.bind('edit', function(data) { const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId); if (!isForThisChat) return; const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`); if (item) { const bubble = item.querySelector('.bubble-own, .bubble-other'); if (bubble) bubble.textContent = data.content; } });
