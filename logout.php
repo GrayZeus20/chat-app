@@ -5,5 +5,5 @@ $sessionLifetime = 86400 * 30;
 session_set_cookie_params(['lifetime' => $sessionLifetime, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
 session_start();
 session_destroy();
-header('Location: login.php');
+header('Location: index.php');
 exit;

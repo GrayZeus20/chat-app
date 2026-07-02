@@ -1,7 +1,6 @@
 const CACHE = 'chat-app-v5';
 const PRECACHE_ASSETS = [
-  'login.php',
-  'chat.php',
+  'index.php',
   'manifest.json'
 ];
 

@@ -2,7 +2,7 @@
   "name": "App Chat",
   "short_name": "Chat",
   "description": "Aplikasi Chat Real-time",
-  "start_url": "login.php",
+  "start_url": "index.php",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f0f4f8",
