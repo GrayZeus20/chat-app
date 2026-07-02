@@ -1,7 +1,9 @@
 const CACHE = 'chat-app-v5';
 const PRECACHE_ASSETS = [
   'index.php',
-  'manifest.json'
+  'manifest.json',
+  'icon-192.png',
+  'icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {

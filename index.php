@@ -53,6 +53,23 @@ input, button, a, .cursor-pointer { touch-action: manipulation; }
 .msg-actions button { display: block; width: 100%; padding: 10px 16px; text-align: left; font-size: 13px; background: none; border: none; cursor: pointer; transition: background 0.15s; }
 .msg-actions button:hover { background: #f3f4f6; }
 .msg-item { position: relative; }
+
+/* Logout modal */
+.logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(2px); animation: fadeIn 0.15s ease; }
+.logout-overlay.show { display: flex; }
+.logout-card { background: white; border-radius: 20px; padding: 28px 24px 20px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: scaleIn 0.2s ease; }
+.logout-card svg { margin: 0 auto 12px; }
+.logout-card h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
+.logout-card p { font-size: 14px; color: #6b7280; margin-bottom: 24px; line-height: 1.4; }
+.logout-card .btn-group { display: flex; gap: 10px; }
+.logout-card button { flex: 1; padding: 11px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
+.logout-card .btn-cancel { background: #f3f4f6; color: #4b5563; }
+.logout-card .btn-cancel:hover { background: #e5e7eb; }
+.logout-card .btn-logout { background: #ef4444; color: white; }
+.logout-card .btn-logout:hover { background: #dc2626; }
+.logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body class="bg-gray-100 md:bg-gray-50" style="font-family: 'Inter', system-ui, -apple-system, sans-serif;">
@@ -210,6 +227,19 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 
 <div id="app-section" class="h-dvh md:h-screen flex flex-col md:flex-row w-full bg-white md:bg-[#e7ebf0] overflow-hidden relative">
 
+    <div id="logout-overlay" class="logout-overlay" onclick="if(event.target===this)closeLogoutModal()">
+        <div class="logout-card">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <h3>Keluar</h3>
+            <p>Apakah Anda yakin ingin keluar dari akun ini?</p>
+            <div class="btn-group">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Batal</button>
+                <button class="btn-logout" onclick="window.location.href='logout.php'">Keluar</button>
+            </div>
+        </div>
+    </div>
     <div id="settings-overlay" class="fixed inset-0 bg-black/40 z-20 hidden opacity-0 transition-opacity duration-200" onclick="closeSettings()"></div>
     <div id="settings-panel" class="fixed left-0 top-0 h-full w-72 bg-white z-30 shadow-2xl -translate-x-full transition-transform duration-200 ease-out">
         <div class="bg-[#2ea6ff] p-5 text-white">
@@ -236,7 +266,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                     Edit Profil
                 </button>
-                <button onclick="if(confirm('Apakah Anda Ingin Keluar ?')){ window.location.href='logout.php'; }" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+                <button onclick="showLogoutModal()" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1044 21 19 21H15"/><path d="M10 17L15 12L10 7"/><path d="M15 12H3"/></svg>
                     Keluar
                 </button>
@@ -576,6 +606,9 @@ function initPusher() {
     channel.bind('edit', function(data) { const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId); if (!isForThisChat) return; const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`); if (item) { const bubble = item.querySelector('.bubble-own, .bubble-other'); if (bubble) bubble.textContent = data.content; } });
     channel.bind('delete', function(data) { const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId); if (!isForThisChat) return; const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`); if (item) { const col = item.parentElement; const block = col ? col.parentElement : null; item.remove(); if (col && col.children.length === 0 && block) { block.remove(); } } });
 }
+
+function showLogoutModal() { document.getElementById('logout-overlay').classList.add('show'); }
+function closeLogoutModal() { document.getElementById('logout-overlay').classList.remove('show'); }
 
 loadUsers();
 loadProfile();
