@@ -20,6 +20,7 @@ session_start();
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <style>
 * { -webkit-tap-highlight-color: transparent; }
+html, body { overscroll-behavior: none; }
 input, button, a, .cursor-pointer { touch-action: manipulation; }
 #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); background: white; }
 @media (max-width: 767px) { #form-chat { box-shadow: 0 -2px 10px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; } }
@@ -440,20 +441,20 @@ async function loadUsers() {
     try {
         const data = await apiFetch('api.php?action=getUsers');
         const container = document.getElementById('user-list');
-        container.innerHTML = '';
-        data.users.forEach((user, index) => {
-            const name = user.name.charAt(0).toUpperCase() + user.name.slice(1);
-            const initial = user.name.charAt(0).toUpperCase();
-            const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-amber-500', 'bg-teal-500', 'bg-pink-500'];
-            const color = colors[index % colors.length];
-            const div = document.createElement('div');
-            div.className = 'user-item flex items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer min-h-[56px]';
-            div.dataset.userId = user.id;
-            div.onclick = () => showChat(user.id);
-            div.innerHTML = `<div class="w-11 h-11 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div><div class="ml-3 flex-1 min-w-0"><h2 class="text-[15px] font-semibold text-gray-900">${escapeHtml(name)}</h2><p class="text-xs text-gray-400 truncate">Ketuk untuk mulai chat</p></div>`;
-            container.appendChild(div);
-        });
-    } catch (err) { document.getElementById('user-list').innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan refresh.</div>'; }
+    container.innerHTML = '';
+    data.users.forEach((user, index) => {
+        const name = user.name.charAt(0).toUpperCase() + user.name.slice(1);
+        const initial = user.name.charAt(0).toUpperCase();
+        const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-amber-500', 'bg-teal-500', 'bg-pink-500'];
+        const color = colors[index % colors.length];
+        const div = document.createElement('div');
+        div.className = 'user-item flex items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer min-h-[56px]';
+        div.dataset.userId = user.id;
+        div.onclick = () => showChat(user.id);
+        div.innerHTML = `<div class="w-11 h-11 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div><div class="ml-3 flex-1 min-w-0"><h2 class="text-[15px] font-semibold text-gray-900">${escapeHtml(name)}</h2><p class="text-xs text-gray-400 truncate">Ketuk untuk mulai chat</p></div>`;
+        container.appendChild(div);
+    });
+} catch (err) { document.getElementById('user-list').innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan periksa jaringan Anda.</div>'; }
 }
 
 function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
@@ -473,7 +474,7 @@ async function loadMessages() {
         wrapperChat.innerHTML = '';
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content, msg.created_at));
         scrollToBottom();
-    } catch (err) { if (err.message === 'Unauthorized') throw err; wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan refresh.</div>'; }
+    } catch (err) { if (err.message === 'Unauthorized') throw err; wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan periksa jaringan Anda.</div>'; }
 }
 
 function buildMeta(isOwn, timeText) {

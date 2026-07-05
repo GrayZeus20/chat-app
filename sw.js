@@ -26,11 +26,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
 
   if (e.request.mode === 'navigate') {
-    e.respondWith(
-      fetch(e.request).catch(() =>
-        caches.match(e.request).then(cached => cached || caches.match('index.php'))
-      )
-    );
+    e.respondWith(fetch(e.request).catch(() => caches.match('index.php')));
     return;
   }
 
