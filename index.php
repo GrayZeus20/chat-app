@@ -40,70 +40,69 @@ session_start();
     .dark #form-chat { background: #1f2937; }
     .dark .bubble-other { background: #374151; color: #f9fafb; }
     .dark .bg-\[\#e7ebf0\] { background-color: #111827; }
-</style>
-html, body { overscroll-behavior: none; }
-input, button, a, .cursor-pointer { touch-action: manipulation; }
-#form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); background: white; }
-@media (max-width: 767px) { #form-chat { box-shadow: 0 -2px 10px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; } }
-#empty-state.hidden { display: none !important; }
-#wrapper-chat > .msg-block { display: flex; flex-direction: column; }
-#wrapper-chat > .msg-block + .msg-block { margin-top: 10px; }
-.msg-col { display: flex; flex-direction: column; gap: 3px; max-width: 88%; }
-@media (min-width: 768px) { .msg-col { max-width: 55%; } }
-.msg-col-own { justify-content: flex-end; align-items: flex-end; }
-.msg-col-other { justify-content: flex-start; align-items: flex-start; }
-.msg-col-own .msg-col { align-items: flex-end; }
-.msg-col-other .msg-col { align-items: flex-start; }
-.msg-item { display: flex; flex-direction: column; max-width: 100%; }
-.msg-col-own .msg-item { align-items: flex-end; }
-.msg-col-other .msg-item { align-items: flex-start; }
-@media (min-width: 768px) { #back-to-accounts { display: none; } }
-@media (max-width: 767px) { #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; } #chat-view { position: fixed; inset: 0; z-index: 10; } #accounts-view { position: relative; z-index: 1; } }
-#user-list { overscroll-behavior: contain; }
-.bubble-own { background: #2ea6ff; color: white; border-radius: 16px 16px 4px 16px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); }
-.bubble-other { background: white; color: #222; border-radius: 16px 16px 16px 4px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); }
+    html, body { overscroll-behavior: none; }
+    input, button, a, .cursor-pointer { touch-action: manipulation; }
+    #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); background: white; }
+    @media (max-width: 767px) { #form-chat { box-shadow: 0 -2px 10px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; } }
+    #empty-state.hidden { display: none !important; }
+    #wrapper-chat > .msg-block { display: flex; flex-direction: column; }
+    #wrapper-chat > .msg-block + .msg-block { margin-top: 10px; }
+    .msg-col { display: flex; flex-direction: column; gap: 3px; max-width: 88%; }
+    @media (min-width: 768px) { .msg-col { max-width: 55%; } }
+    .msg-col-own { justify-content: flex-end; align-items: flex-end; }
+    .msg-col-other { justify-content: flex-start; align-items: flex-start; }
+    .msg-col-own .msg-col { align-items: flex-end; }
+    .msg-col-other .msg-col { align-items: flex-start; }
+    .msg-item { display: flex; flex-direction: column; max-width: 100%; }
+    .msg-col-own .msg-item { align-items: flex-end; }
+    .msg-col-other .msg-item { align-items: flex-start; }
+    @media (min-width: 768px) { #back-to-accounts { display: none; } }
+    @media (max-width: 767px) { #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; } #chat-view { position: fixed; inset: 0; z-index: 10; } #accounts-view { position: relative; z-index: 1; } }
+    #user-list { overscroll-behavior: contain; }
+    .bubble-own { background: #2ea6ff; color: white; border-radius: 16px 16px 4px 16px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); }
+    .bubble-other { background: white; color: #222; border-radius: 16px 16px 16px 4px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); }
     .dark .bubble-other { background: #374151; color: #f9fafb; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-.msg-item:not(:last-child) .bubble-own { border-radius: 16px 16px 4px 16px; }
-.msg-item:not(:first-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
-.msg-item:not(:first-child):not(:last-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
-.msg-item:not(:first-child) .bubble-other { border-radius: 4px 16px 16px 16px; }
-.msg-meta { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 11px; line-height: 1; opacity: 0.85; }
-.msg-meta-own { justify-content: flex-end; color: #9aa5b1; }
-.msg-meta-other { justify-content: flex-start; color: #6b7280; }
-.read-receipt { font-size: 12px; color: #2ea6ff; }
-.user-item.active { background: #e0f0ff; }
+    .msg-item:not(:last-child) .bubble-own { border-radius: 16px 16px 4px 16px; }
+    .msg-item:not(:first-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
+    .msg-item:not(:first-child):not(:last-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
+    .msg-item:not(:first-child) .bubble-other { border-radius: 4px 16px 16px 16px; }
+    .msg-meta { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 11px; line-height: 1; opacity: 0.85; }
+    .msg-meta-own { justify-content: flex-end; color: #9aa5b1; }
+    .msg-meta-other { justify-content: flex-start; color: #6b7280; }
+    .read-receipt { font-size: 12px; color: #2ea6ff; }
+    .user-item.active { background: #e0f0ff; }
     .dark .user-item.active { background: #1e3a8a; }
     .user-item.active h2 { color: #1a73e8; }
     .dark .user-item.active h2 { color: #60a5fa; }
-.msg-actions { position: absolute; right: 0; top: 100%; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 30; min-width: 120px; overflow: hidden; }
-.dark .msg-actions { background: #374151; }
-.msg-actions button { display: block; width: 100%; padding: 10px 16px; text-align: left; font-size: 13px; background: none; border: none; cursor: pointer; transition: background 0.15s; color: #374151; }
-.dark .msg-actions button { color: #e5e7eb; }
-.msg-actions button:hover { background: #f3f4f6; }
-.dark .msg-actions button:hover { background: #4b5563; }
-.msg-item { position: relative; }
-
-/* Logout modal */
-.logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(2px); animation: fadeIn 0.15s ease; }
-.logout-overlay.show { display: flex; }
-.logout-card { background: white; border-radius: 20px; padding: 28px 24px 20px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: scaleIn 0.2s ease; }
-.dark .logout-card { background: #1f2937; }
-.logout-card svg { margin: 0 auto 12px; }
-.logout-card h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
-.dark .logout-card h3 { color: #f9fafb; }
-.logout-card p { font-size: 14px; color: #6b7280; margin-bottom: 24px; line-height: 1.4; }
-.dark .logout-card p { color: #9ca3af; }
-.logout-card .btn-group { display: flex; gap: 10px; }
-.logout-card button { flex: 1; padding: 11px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
-.logout-card .btn-cancel { background: #f3f4f6; color: #4b5563; }
-.dark .logout-card .btn-cancel { background: #374151; color: #d1d5db; }
-.logout-card .btn-cancel:hover { background: #e5e7eb; }
-.dark .logout-card .btn-cancel:hover { background: #4b5563; }
-.logout-card .btn-logout { background: #ef4444; color: white; }
-.logout-card .btn-logout:hover { background: #dc2626; }
-.logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .msg-actions { position: absolute; right: 0; top: 100%; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 30; min-width: 120px; overflow: hidden; }
+    .dark .msg-actions { background: #374151; }
+    .msg-actions button { display: block; width: 100%; padding: 10px 16px; text-align: left; font-size: 13px; background: none; border: none; cursor: pointer; transition: background 0.15s; color: #374151; }
+    .dark .msg-actions button { color: #e5e7eb; }
+    .msg-actions button:hover { background: #f3f4f6; }
+    .dark .msg-actions button:hover { background: #4b5563; }
+    .msg-item { position: relative; }
+    
+    /* Logout modal */
+    .logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(2px); animation: fadeIn 0.15s ease; }
+    .logout-overlay.show { display: flex; }
+    .logout-card { background: white; border-radius: 20px; padding: 28px 24px 20px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: scaleIn 0.2s ease; }
+    .dark .logout-card { background: #1f2937; }
+    .logout-card svg { margin: 0 auto 12px; }
+    .logout-card h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
+    .dark .logout-card h3 { color: #f9fafb; }
+    .logout-card p { font-size: 14px; color: #6b7280; margin-bottom: 24px; line-height: 1.4; }
+    .dark .logout-card p { color: #9ca3af; }
+    .logout-card .btn-group { display: flex; gap: 10px; }
+    .logout-card button { flex: 1; padding: 11px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
+    .logout-card .btn-cancel { background: #f3f4f6; color: #4b5563; }
+    .dark .logout-card .btn-cancel { background: #374151; color: #d1d5db; }
+    .logout-card .btn-cancel:hover { background: #e5e7eb; }
+    .dark .logout-card .btn-cancel:hover { background: #4b5563; }
+    .logout-card .btn-logout { background: #ef4444; color: white; }
+    .logout-card .btn-logout:hover { background: #dc2626; }
+    .logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-950 md:bg-gray-50 dark:md:bg-gray-950" style="font-family: 'Inter', system-ui, -apple-system, sans-serif;">
