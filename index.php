@@ -329,7 +329,8 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         </div>
     </div>
     <div id="settings-overlay" class="fixed inset-0 bg-black/40 z-20 hidden opacity-0 transition-opacity duration-200" onclick="closeSettings()"></div>
-                 <div class="bg-[#2ea6ff] dark:bg-[#1e40af] p-5 text-white">
+    <div id="settings-panel" class="fixed inset-y-0 left-0 z-30 w-72 bg-white dark:bg-gray-900 shadow-xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="bg-[#2ea6ff] dark:bg-[#1e40af] p-5 text-white">
             <div class="flex items-center gap-3">
                 <div id="settings-avatar" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-xl font-bold">?</div>
                 <div class="min-w-0">
@@ -338,7 +339,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                 </div>
             </div>
         </div>
-        <div class="p-3 space-y-1">
+        <div class="p-3 space-y-1 flex-1 overflow-y-auto">
             <div id="settings-form-section" class="px-3 py-4 space-y-3 hidden">
                 <div id="settings-msg" class="text-xs hidden"></div>
                 <input id="set-name" type="text" placeholder="Nama" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -364,6 +365,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                 </button>
             </div>
         </div>
+    </div>
 
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-80 md:border-r md:border-gray-200 dark:md:border-gray-800 md:bg-white dark:md:bg-gray-900 min-h-0">
         <div class="bg-[#2ea6ff] px-4 py-3 text-white flex items-center justify-center shrink-0 relative">
