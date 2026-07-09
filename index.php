@@ -119,7 +119,7 @@ session_start();
             </div>
         </div>
         <h2 id="auth-title" class="mt-8 text-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Selamat Datang</h2>
-        <p id="auth-subtitle" class="mt-3 text-center text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Masuk untuk melanjutkan ke App Chat</p>
+        <p id="auth-subtitle" class="mt-3 text-center text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Masuk untuk melanjutkan ke App Chat</p>
     </div>
 
     <div class="mt-8 w-full max-w-sm mx-auto">
@@ -153,7 +153,7 @@ session_start();
                     </div>
                 </div>
                 <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ea6ff] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2ea6ff, #1e96ef);">Masuk</button>
-                <p class="text-center text-sm text-gray-500 dark:text-gray-400">Belum punya akun? <a href="#" id="show-register" class="font-semibold hover:brightness-110 transition" style="color: #2ea6ff;">Daftar</a></p>
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Belum punya akun? <a href="#" id="show-register" class="font-semibold hover:brightness-110 transition" style="color: #2ea6ff;">Daftar</a></p>
             </form>
 
             <form id="register-form" class="space-y-5 hidden">
@@ -189,7 +189,7 @@ session_start();
                     </div>
                 </div>
                 <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ea6ff] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2ea6ff, #1e96ef);">Buat Akun</button>
-                <p class="text-center text-sm text-gray-500 dark:text-gray-400">Sudah punya akun? <a href="#" id="show-login" class="font-semibold hover:brightness-110 transition" style="color: #2ea6ff;">Masuk</a></p>
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Sudah punya akun? <a href="#" id="show-login" class="font-semibold hover:brightness-110 transition" style="color: #2ea6ff;">Masuk</a></p>
             </form>
         </div>
     </div>
