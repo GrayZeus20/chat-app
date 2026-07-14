@@ -13,12 +13,96 @@ session_start();
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#2ea6ff">
+    <meta name="theme-color" content="#2563eb">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
-        tailwind.config = { darkMode: 'class' }
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#2563eb",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#dbeafe",
+                        "on-primary-container": "#1e40af",
+                        "secondary": "#475569",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#f1f5f9",
+                        "on-secondary-container": "#1e293b",
+                        "tertiary": "#7c3aed",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#ede9fe",
+                        "on-tertiary-container": "#5b21b6",
+                        "error": "#dc2626",
+                        "on-error": "#ffffff",
+                        "error-container": "#fee2e2",
+                        "on-error-container": "#991b1b",
+                        "background": "#f8f9ff",
+                        "on-background": "#0f172a",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#0f172a",
+                        "surface-variant": "#e2e8f0",
+                        "on-surface-variant": "#475569",
+                        "outline": "#94a3b8",
+                        "outline-variant": "#cbd5e1",
+                        "inverse-surface": "#1e293b",
+                        "inverse-on-surface": "#f1f5f9",
+                        "inverse-primary": "#93c5fd",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container": "#e5edff",
+                        "surface-container-high": "#dbe6fe",
+                        "surface-container-highest": "#d1dfff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "2xl": "48px",
+                        "sm": "8px",
+                        "unit": "8px",
+                        "xs": "4px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
     </script>
     <script>
     // Theme initialization
@@ -59,7 +143,7 @@ session_start();
     @media (min-width: 768px) { #back-to-accounts { display: none; } }
     @media (max-width: 767px) { #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; } #chat-view { position: fixed; inset: 0; z-index: 10; } #accounts-view { position: relative; z-index: 1; } }
     #user-list { overscroll-behavior: contain; }
-    .bubble-own { background: #2ea6ff; color: white; border-radius: 16px 16px 4px 16px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); }
+    .bubble-own { background: var(--color-primary); color: white; border-radius: 16px 16px 4px 16px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); }
     .bubble-other { background: white; color: #222; border-radius: 16px 16px 16px 4px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); }
     .dark .bubble-other { background: #374151; color: #f9fafb; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     .msg-item:not(:last-child) .bubble-own { border-radius: 16px 16px 4px 16px; }
@@ -69,7 +153,7 @@ session_start();
     .msg-meta { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 11px; line-height: 1; opacity: 0.85; }
     .msg-meta-own { justify-content: flex-end; color: #9aa5b1; }
     .msg-meta-other { justify-content: flex-start; color: #6b7280; }
-    .read-receipt { font-size: 12px; color: #2ea6ff; }
+    .read-receipt { font-size: 12px; color: var(--color-primary); }
     .user-item.active { background: #e0f0ff; }
     .dark .user-item.active { background: #1e3a8a; }
     .user-item.active h2 { color: #1a73e8; }
@@ -112,7 +196,7 @@ session_start();
 <div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 dark:bg-gray-900" style="background: linear-gradient(135deg, #eef6ff 0%, #e7f3ff 50%, #f0f9ff 100%);">
     <div class="w-full max-w-sm mx-auto">
         <div class="flex justify-center">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200/50" style="background: linear-gradient(135deg, #2ea6ff, #1e96ef);">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200/50" style="background: linear-gradient(135deg, #2563eb, #1e96ef);">
                 <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
@@ -136,7 +220,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                         </div>
-                        <input id="login-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] focus:border-transparent transition">
+                        <input id="login-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
                     </div>
                 </div>
                 <div>
@@ -145,15 +229,15 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
                         </div>
-                        <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-10 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] focus:border-transparent transition">
+                        <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-10 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
                         <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
                             <svg class="h-5 w-5 eye-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                             <svg class="h-5 w-5 eye-closed hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ea6ff] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2ea6ff, #1e96ef);">Masuk</button>
-                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Belum punya akun? <a href="#" id="show-register" class="font-semibold hover:brightness-110 transition" style="color: #2ea6ff;">Daftar</a></p>
+                <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2563eb, #1e96ef);">Masuk</button>
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Belum punya akun? <a href="#" id="show-register" class="font-semibold hover:brightness-110 transition" style="color: #2563eb;">Daftar</a></p>
             </form>
 
             <form id="register-form" class="space-y-5 hidden">
@@ -163,7 +247,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                         </div>
-                         <input id="reg-name" type="text" required placeholder="Nama Anda" autocomplete="name" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] focus:border-transparent transition">
+                         <input id="reg-name" type="text" required placeholder="Nama Anda" autocomplete="name" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
                     </div>
                 </div>
                 <div>
@@ -172,7 +256,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                         </div>
-                            <input id="reg-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] focus:border-transparent transition">
+                            <input id="reg-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
                     </div>
                 </div>
                 <div>
@@ -181,15 +265,15 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
                         </div>
-                            <input id="reg-password" type="password" required placeholder="••••••••" autocomplete="new-password" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-10 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] focus:border-transparent transition">
+                            <input id="reg-password" type="password" required placeholder="••••••••" autocomplete="new-password" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-10 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
                             <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
                                 <svg class="h-5 w-5 eye-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                 <svg class="h-5 w-5 eye-closed hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
                             </button>
                     </div>
                 </div>
-                <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2ea6ff] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2ea6ff, #1e96ef);">Buat Akun</button>
-                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Sudah punya akun? <a href="#" id="show-login" class="font-semibold hover:brightness-110 transition" style="color: #2ea6ff;">Masuk</a></p>
+                <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2563eb, #1e96ef);">Buat Akun</button>
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Sudah punya akun? <a href="#" id="show-login" class="font-semibold hover:brightness-110 transition" style="color: #2563eb;">Masuk</a></p>
             </form>
         </div>
     </div>
@@ -330,7 +414,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     </div>
     <div id="settings-overlay" class="fixed inset-0 bg-black/40 z-20 hidden opacity-0 transition-opacity duration-200" onclick="closeSettings()"></div>
     <div id="settings-panel" class="fixed inset-y-0 left-0 z-30 w-72 bg-white dark:bg-gray-900 shadow-xl transform -translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="bg-[#2ea6ff] dark:bg-[#1e40af] p-5 text-white">
+        <div class="bg-[#2563eb] dark:bg-[#1e40af] p-5 text-white">
             <div class="flex items-center gap-3">
                 <div id="settings-avatar" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-xl font-bold">?</div>
                 <div class="min-w-0">
@@ -346,7 +430,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                 <input id="set-email" type="email" placeholder="Email" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input id="set-new-password" type="password" placeholder="Kata sandi baru" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input id="set-current-password" type="password" placeholder="Kata sandi saat ini *" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button id="set-save-btn" class="w-full bg-[#2ea6ff] dark:bg-blue-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-[#1e96ef] transition">Simpan Perubahan</button>
+                <button id="set-save-btn" class="w-full bg-[#2563eb] dark:bg-blue-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-[#1e96ef] transition">Simpan Perubahan</button>
                 <button id="set-cancel-btn" class="w-full text-gray-500 text-sm py-1.5 hover:text-gray-700 transition">Batal</button>
             </div>
             <div id="settings-menu">
@@ -368,7 +452,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     </div>
 
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-80 md:border-r md:border-gray-200 dark:md:border-gray-800 md:bg-white dark:md:bg-gray-900 min-h-0">
-        <div class="bg-[#2ea6ff] px-4 py-3 text-white flex items-center justify-center shrink-0 relative">
+        <div class="bg-[#2563eb] px-4 py-3 text-white flex items-center justify-center shrink-0 relative">
              <button id="settings-btn" aria-label="Pengaturan" class="absolute left-4 hover:bg-[#1e96ef] rounded-lg p-2 transition">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="6" r="4" stroke="#ffffff" stroke-width="1.5"/>
@@ -390,7 +474,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         </div>
 
         <div id="chat-inner" class="hidden flex flex-col flex-1 min-h-0">
-            <div class="bg-[#2ea6ff] dark:bg-blue-900 px-4 py-3 text-white flex items-center shrink-0 relative">
+            <div class="bg-[#2563eb] dark:bg-blue-900 px-4 py-3 text-white flex items-center shrink-0 relative">
                  <button id="back-to-accounts" aria-label="Kembali ke Daftar Pesan" class="hover:bg-[#1e96ef] rounded-lg p-2 transition mr-1">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19L5 12L12 5"/></svg>
                 </button>
@@ -402,8 +486,8 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
             </div>
             <form id="form-chat" class="shrink-0">
                 <div class="bg-white px-3 py-2 flex items-center gap-2">
-                    <input type="text" name="content" placeholder="Tulis pesan..." class="flex-1 border-0 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2ea6ff] bg-[#f0f4f8] dark:bg-gray-700 dark:text-white transition min-h-[44px]" id="content" autocomplete="off">
-                     <button type="submit" aria-label="Kirim Pesan" class="bg-[#2ea6ff] text-white rounded-full w-[44px] h-[44px] hover:bg-[#1e96ef] active:scale-95 transition-all flex items-center justify-center shrink-0">
+                    <input type="text" name="content" placeholder="Tulis pesan..." class="flex-1 border-0 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] bg-[#f0f4f8] dark:bg-gray-700 dark:text-white transition min-h-[44px]" id="content" autocomplete="off">
+                     <button type="submit" aria-label="Kirim Pesan" class="bg-[#2563eb] text-white rounded-full w-[44px] h-[44px] hover:bg-[#1e96ef] active:scale-95 transition-all flex items-center justify-center shrink-0">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/></svg>
                     </button>
                 </div>
@@ -639,7 +723,7 @@ function editMessage(messageId, bubble) {
     const originalText = bubble.textContent;
     const input = document.createElement('input'); input.type = 'text'; input.value = originalText; input.className = 'w-full bg-white text-gray-800 p-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm';
     const actions = document.createElement('div'); actions.className = 'flex gap-1 mt-1 justify-end';
-    const saveBtn = document.createElement('button'); saveBtn.type = 'button'; saveBtn.className = 'text-xs bg-[#2ea6ff] text-white px-2.5 py-1 rounded-lg hover:bg-[#1e96ef] transition'; saveBtn.textContent = 'Simpan';
+    const saveBtn = document.createElement('button'); saveBtn.type = 'button'; saveBtn.className = 'text-xs bg-[#2563eb] text-white px-2.5 py-1 rounded-lg hover:bg-[#1e96ef] transition'; saveBtn.textContent = 'Simpan';
     const cancelBtn = document.createElement('button'); cancelBtn.type = 'button'; cancelBtn.className = 'text-xs bg-gray-200 text-gray-600 px-2.5 py-1 rounded-lg hover:bg-gray-300 transition'; cancelBtn.textContent = 'Batal';
     actions.appendChild(cancelBtn); actions.appendChild(saveBtn);
     bubble.innerHTML = ''; bubble.className = 'bg-white p-2 rounded-2xl rounded-br-sm shadow-sm border border-gray-200';
