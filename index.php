@@ -81,43 +81,45 @@ session_start();
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #34343d; }
 
         /* ========== DARK MODE OVERRIDES ========== */
-        .dark { background-color: #13131b; color: #e4e1ed; }
-        .dark .bg-background { background-color: #13131b; }
-        .dark .text-on-background { color: #e4e1ed; }
-        .dark .bg-surface { background-color: #1b1b23; }
-        .dark .text-on-surface { color: #e4e1ed; }
-        .dark .bg-surface-dim { background-color: #13131b; }
-        .dark .bg-surface-container { background-color: #292932; }
-        .dark .bg-surface-container-low { background-color: #1b1b23; }
-        .dark .bg-surface-container-high { background-color: #34343d; }
-        .dark .bg-surface-container-highest { background-color: #3e3e47; }
-        .dark .text-on-surface-variant { color: #c7c4d7; }
-        .dark .bg-surface-bright { background-color: #393841; }
-        .dark .border-outline-variant { border-color: #464554; }
-        .dark .text-outline { color: #908fa0; }
-        .dark .text-primary { color: #c0c1ff; }
-        .dark .bg-primary { background-color: #c0c1ff; }
-        .dark .text-on-primary { color: #1000a9; }
-        .dark .bg-primary-container { background-color: #8083ff; }
-        .dark .text-on-primary-container { color: #e1e0ff; }
-        .dark .text-error { color: #ffb4ab; }
-        .dark .bg-error-container { background-color: #93000a; color: #ffdad6; }
-        .dark .bg-inverse-surface { background-color: #e4e1ed; }
-        .dark .text-inverse-on-surface { color: #303038; }
-        .dark .shadow-xl { box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .dark .shadow-lg { box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
-        .dark .shadow-md { box-shadow: 0 3px 12px rgba(0,0,0,0.3); }
-        .dark .hover\:bg-surface-container:hover { background-color: #292932; }
-        .dark .placeholder-outline::placeholder { color: #908fa0; }
-        .dark .border-outline-variant\/50 { border-color: rgba(70,69,84,0.5); }
-        .dark .border-outline-variant\/30 { border-color: rgba(70,69,84,0.3); }
+        .dark { background-color: #13131b !important; color: #e4e1ed !important; }
+        .dark body { background-color: #13131b !important; color: #e4e1ed !important; }
+        .dark .bg-background { background-color: #13131b !important; }
+        .dark .text-on-background { color: #e4e1ed !important; }
+        .dark .bg-surface { background-color: #1b1b23 !important; }
+        .dark .text-on-surface { color: #e4e1ed !important; }
+        .dark .bg-surface-dim { background-color: #13131b !important; }
+        .dark .bg-surface-container { background-color: #292932 !important; }
+        .dark .bg-surface-container-low { background-color: #1b1b23 !important; }
+        .dark .bg-surface-container-high { background-color: #34343d !important; }
+        .dark .bg-surface-container-highest { background-color: #3e3e47 !important; }
+        .dark .text-on-surface-variant { color: #c7c4d7 !important; }
+        .dark .bg-surface-bright { background-color: #393841 !important; }
+        .dark .border-outline-variant { border-color: #464554 !important; }
+        .dark .text-outline { color: #908fa0 !important; }
+        .dark .text-primary { color: #c0c1ff !important; }
+        .dark .bg-primary { background-color: #c0c1ff !important; }
+        .dark .text-on-primary { color: #1000a9 !important; }
+        .dark .bg-primary-container { background-color: #8083ff !important; }
+        .dark .text-on-primary-container { color: #e1e0ff !important; }
+        .dark .text-error { color: #ffb4ab !important; }
+        .dark .bg-error-container { background-color: #93000a !important; color: #ffdad6 !important; }
+        .dark .bg-inverse-surface { background-color: #e4e1ed !important; }
+        .dark .text-inverse-on-surface { color: #303038 !important; }
+        .dark .shadow-xl { box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important; }
+        .dark .shadow-lg { box-shadow: 0 6px 24px rgba(0,0,0,0.4) !important; }
+        .dark .shadow-md { box-shadow: 0 3px 12px rgba(0,0,0,0.3) !important; }
+        .dark .hover\:bg-surface-container:hover { background-color: #292932 !important; }
+        .dark .hover\:bg-surface-container-high:hover { background-color: #34343d !important; }
+        .dark .placeholder-outline::placeholder { color: #908fa0 !important; }
+        .dark .border-outline-variant\/50 { border-color: rgba(70,69,84,0.5) !important; }
+        .dark .border-outline-variant\/30 { border-color: rgba(70,69,84,0.3) !important; }
 
         /* ========== LIGHT MODE CONTRAST FIX ========== */
         .placeholder-outline::placeholder { color: #64748b; opacity: 1; }
         .msg-meta { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 11px; }
         .msg-meta-own { justify-content: flex-end; color: #64748b; font-weight: 500; }
         .msg-meta-other { justify-content: flex-start; color: #64748b; font-weight: 500; }
-        .dark .msg-meta-own, .dark .msg-meta-other { color: #a1a1aa; }
+        .dark .msg-meta-own, .dark .msg-meta-other { color: #a1a1aa !important; }
 
         /* ========== CHAT BUBBLES ========== */
         .bubble-own {
@@ -128,7 +130,7 @@ session_start();
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
             user-select: none; -webkit-user-select: none;
         }
-        .dark .bubble-own { background-color: #c0c1ff; color: #1000a9; box-shadow: 0 2px 8px rgba(128,131,255,0.2); }
+        .dark .bubble-own { background-color: #c0c1ff !important; color: #1000a9 !important; box-shadow: 0 2px 8px rgba(128,131,255,0.2) !important; }
         .bubble-other {
             background-color: #ffffff; color: #1e293b;
             border-radius: 20px 20px 20px 6px;
@@ -138,7 +140,7 @@ session_start();
             user-select: none; -webkit-user-select: none;
             border: 1px solid #e2e8f0;
         }
-        .dark .bubble-other { background-color: #292932; color: #e4e1ed; border-color: #464554; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+        .dark .bubble-other { background-color: #292932 !important; color: #e4e1ed !important; border-color: #464554 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; }
 
         .msg-item:not(:last-child) .bubble-own { border-radius: 20px 20px 6px 20px; }
         .msg-item:not(:first-child) .bubble-own { border-radius: 20px 6px 6px 20px; }
@@ -156,8 +158,8 @@ session_start();
         .msg-status { font-size: 14px; margin-left: 2px; vertical-align: middle; }
         .msg-status-sent { color: #94a3b8; }
         .msg-status-read { color: #2563eb; }
-        .dark .msg-status-sent { color: #908fa0; }
-        .dark .msg-status-read { color: #c0c1ff; }
+        .dark .msg-status-sent { color: #908fa0 !important; }
+        .dark .msg-status-read { color: #c0c1ff !important; }
 
         /* ========== MESSAGE ACTIONS ========== */
         .msg-actions {
@@ -167,35 +169,35 @@ session_start();
             min-width: 130px; overflow: hidden; margin-top: 4px;
             border: 1px solid #e2e8f0;
         }
-        .dark .msg-actions { background: #292932; border-color: #464554; }
+        .dark .msg-actions { background-color: #292932 !important; border-color: #464554 !important; }
         .msg-actions button {
             display: flex; align-items: center; gap: 8px;
             width: 100%; padding: 10px 16px; text-align: left;
             font-size: 13px; background: none; border: none;
             cursor: pointer; transition: background 0.15s; color: #1e293b;
         }
-        .dark .msg-actions button { color: #e4e1ed; }
+        .dark .msg-actions button { color: #e4e1ed !important; }
         .msg-actions button:hover { background: #f1f5f9; }
-        .dark .msg-actions button:hover { background: #34343d; }
+        .dark .msg-actions button:hover { background-color: #34343d !important; }
 
         /* ========== USER ITEM ========== */
         .user-item { transition: all 0.15s; }
         .user-item.active { background: #d9eafd; border-left: 3px solid #2563eb; }
-        .dark .user-item.active { background: #1f1f27; border-left-color: #c0c1ff; }
+        .dark .user-item.active { background-color: #1f1f27 !important; border-left-color: #c0c1ff !important; }
         .user-item.active h2 { color: #2563eb; }
-        .dark .user-item.active h2 { color: #c0c1ff; }
+        .dark .user-item.active h2 { color: #c0c1ff !important; }
 
         /* ========== MESSAGE INPUT ========== */
         #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
         @media (max-width: 767px) {
             #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; }
-            .dark #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
+            .dark #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.3) !important; }
         }
 
         /* ========== SETTINGS PANEL ========== */
         .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 20; display: none; align-items: stretch; backdrop-filter: blur(4px); animation: fadeIn 0.2s ease; }
         .settings-overlay.show { display: flex; }
-        .dark .settings-overlay { background: rgba(0,0,0,0.6); }
+        .dark .settings-overlay { background: rgba(0,0,0,0.6) !important; }
 
         /* ========== LOGOUT MODAL ========== */
         .logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); animation: fadeIn 0.15s ease; }
@@ -206,17 +208,17 @@ session_start();
             text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.15);
             animation: scaleIn 0.2s ease; border: 1px solid #e2e8f0;
         }
-        .dark .logout-card { background: #1f1f27; border-color: #464554; }
+        .dark .logout-card { background-color: #1f1f27 !important; border-color: #464554 !important; }
         .logout-card h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
-        .dark .logout-card h3 { color: #e4e1ed; }
+        .dark .logout-card h3 { color: #e4e1ed !important; }
         .logout-card p { font-size: 14px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
-        .dark .logout-card p { color: #908fa0; }
+        .dark .logout-card p { color: #908fa0 !important; }
         .logout-card .btn-group { display: flex; gap: 10px; }
         .logout-card button { flex: 1; padding: 12px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
         .logout-card .btn-cancel { background: #f1f5f9; color: #475569; }
-        .dark .logout-card .btn-cancel { background: #34343d; color: #c7c4d7; }
+        .dark .logout-card .btn-cancel { background: #34343d !important; color: #c7c4d7 !important; }
         .logout-card .btn-cancel:hover { background: #e2e8f0; }
-        .dark .logout-card .btn-cancel:hover { background: #464554; }
+        .dark .logout-card .btn-cancel:hover { background: #464554 !important; }
         .logout-card .btn-logout { background: #dc2626; color: white; }
         .logout-card .btn-logout:hover { background: #b91c1c; }
         .logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
