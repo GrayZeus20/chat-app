@@ -9,14 +9,14 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Chats</title>
+    <title>Ngobrol</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#13131b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#2563eb">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="icon-192.png">
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -243,13 +243,11 @@ session_start();
 <!-- ==================== AUTH SECTION ==================== -->
 <div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 bg-background">
     <div class="w-full max-w-sm mx-auto">
-        <div class="flex justify-center">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 bg-primary">
-                <span class="material-symbols-outlined text-on-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">chat</span>
+            <div class="flex justify-center">
+                <img src="logo.png" alt="Ngobrol" class="h-16 w-16">
             </div>
-        </div>
         <h2 id="auth-title" class="mt-8 text-center text-display font-display text-on-background">Selamat Datang</h2>
-        <p id="auth-subtitle" class="mt-2 text-center text-body text-on-surface-variant">Masuk untuk melanjutkan ke Chats</p>
+        <p id="auth-subtitle" class="mt-2 text-center text-body text-on-surface-variant">Masuk untuk melanjutkan ke Ngobrol</p>
     </div>
     <div class="mt-8 w-full max-w-sm mx-auto">
         <div class="bg-surface dark:bg-surface-container rounded-2xl shadow-xl border border-outline-variant/50 px-8 sm:px-10 py-10">
@@ -329,8 +327,8 @@ session_start();
 </div>
 
 <script>
-document.getElementById('show-register').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('login-form').classList.add('hidden'); document.getElementById('register-form').classList.remove('hidden'); document.getElementById('auth-title').textContent = 'Buat Akun'; document.getElementById('auth-subtitle').textContent = 'Bergabung dengan Chats dan mulai chatting'; });
-document.getElementById('show-login').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('register-form').classList.add('hidden'); document.getElementById('login-form').classList.remove('hidden'); document.getElementById('auth-title').textContent = 'Selamat Datang'; document.getElementById('auth-subtitle').textContent = 'Masuk untuk melanjutkan ke Chats'; });
+document.getElementById('show-register').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('login-form').classList.add('hidden'); document.getElementById('register-form').classList.remove('hidden'); document.getElementById('auth-title').textContent = 'Buat Akun'; document.getElementById('auth-subtitle').textContent = 'Bergabung dengan Ngobrol dan mulai chatting'; });
+document.getElementById('show-login').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('register-form').classList.add('hidden'); document.getElementById('login-form').classList.remove('hidden'); document.getElementById('auth-title').textContent = 'Selamat Datang'; document.getElementById('auth-subtitle').textContent = 'Masuk untuk melanjutkan ke Ngobrol'; });
 document.querySelectorAll('.toggle-password').forEach(btn => { btn.addEventListener('click', () => { const input = btn.closest('.relative').querySelector('input'); const isPassword = input.type === 'password'; input.type = isPassword ? 'text' : 'password'; btn.querySelector('.eye-open').classList.toggle('hidden', isPassword); btn.querySelector('.eye-closed').classList.toggle('hidden', !isPassword); }); });
 document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault(); document.getElementById('auth-error').classList.add('hidden');
@@ -434,12 +432,10 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     <!-- ==================== ACCOUNTS VIEW (SIDEBAR) ==================== -->
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-[320px] md:border-r md:border-outline-variant bg-surface dark:bg-surface-container-low min-h-0">
         <div class="bg-surface dark:bg-surface-container-low px-5 py-4 flex items-center justify-between shrink-0 border-b border-outline-variant/50">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
-                    <span class="material-symbols-outlined text-on-primary-container text-[22px]" style="font-variation-settings: 'FILL' 1;">chat</span>
-                </div>
-                <span class="text-headline font-display font-bold text-on-background">Chats</span>
-            </div>
+            <a href="/" class="flex items-center gap-3">
+                <img src="logo.png" alt="Ngobrol" class="h-9 w-auto">
+                <span class="text-headline font-display font-bold text-on-background">Ngobrol</span>
+            </a>
             <button id="settings-btn" aria-label="Pengaturan" class="w-10 h-10 rounded-full hover:bg-surface-container dark:hover:bg-surface-container-high flex items-center justify-center transition text-on-surface-variant">
                 <span class="material-symbols-outlined text-[22px]">settings</span>
             </button>

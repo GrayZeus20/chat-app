@@ -1,6 +1,6 @@
 {
-  "name": "App Chat",
-  "short_name": "Chat",
+  "name": "Ngobrol",
+  "short_name": "Ngobrol",
   "description": "Aplikasi Chat Real-time",
   "start_url": "index.php",
   "scope": "/",
@@ -10,17 +10,17 @@
   "theme_color": "#2ea6ff",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "logo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

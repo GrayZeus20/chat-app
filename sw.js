@@ -1,9 +1,8 @@
-const CACHE = 'chat-app-v5';
+const CACHE = 'ngobrol-v1';
 const PRECACHE_ASSETS = [
   'index.php',
   'manifest.json',
-  'icon-192.png',
-  'icon-512.png'
+  'logo.png'
 ];
 
 self.addEventListener('install', (e) => {
