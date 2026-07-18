@@ -4,276 +4,316 @@ $sessionLifetime = 86400 * 30;
 @ini_set('session.gc_probability', 0);
 session_set_cookie_params(['lifetime' => $sessionLifetime, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
 session_start();
-?><!doctype html>
+?><!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ChatSphere</title>
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#13131b" media="(prefers-color-scheme: dark)">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
+                    colors: {
                         "primary": "#2563eb",
                         "on-primary": "#ffffff",
-                        "primary-container": "#dbeafe",
+                        "primary-container": "#d9eafd",
                         "on-primary-container": "#1e40af",
-                        "secondary": "#475569",
-                        "on-secondary": "#ffffff",
-                        "secondary-container": "#f1f5f9",
-                        "on-secondary-container": "#1e293b",
-                        "tertiary": "#7c3aed",
+                        "secondary": "#bccdcc",
+                        "on-secondary": "#1e293b",
+                        "secondary-container": "#e2eeed",
+                        "on-secondary-container": "#2d4a48",
+                        "tertiary": "#9aa6b2",
                         "on-tertiary": "#ffffff",
-                        "tertiary-container": "#ede9fe",
-                        "on-tertiary-container": "#5b21b6",
+                        "tertiary-container": "#dce4eb",
+                        "on-tertiary-container": "#3b4a56",
                         "error": "#dc2626",
                         "on-error": "#ffffff",
                         "error-container": "#fee2e2",
                         "on-error-container": "#991b1b",
-                        "background": "#f8f9ff",
-                        "on-background": "#0f172a",
-                        "surface": "#f8f9ff",
-                        "on-surface": "#0f172a",
+                        "background": "#f8fafc",
+                        "on-background": "#1e293b",
+                        "surface": "#ffffff",
+                        "on-surface": "#1e293b",
+                        "surface-dim": "#f1f5f9",
                         "surface-variant": "#e2e8f0",
-                        "on-surface-variant": "#475569",
+                        "on-surface-variant": "#64748b",
                         "outline": "#94a3b8",
-                        "outline-variant": "#cbd5e1",
+                        "outline-variant": "#e2e8f0",
                         "inverse-surface": "#1e293b",
-                        "inverse-on-surface": "#f1f5f9",
+                        "inverse-on-surface": "#f8fafc",
                         "inverse-primary": "#93c5fd",
-                        "surface-bright": "#f8f9ff",
-                        "surface-dim": "#cbdbf5",
+                        "surface-bright": "#ffffff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eff4ff",
-                        "surface-container": "#e5edff",
-                        "surface-container-high": "#dbe6fe",
-                        "surface-container-highest": "#d1dfff"
+                        "surface-container-low": "#f8fafc",
+                        "surface-container": "#f1f5f9",
+                        "surface-container-high": "#e8eef6",
+                        "surface-container-highest": "#dde5f0"
                     },
                     "borderRadius": {
-                        "DEFAULT": "0.5rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
                         "full": "9999px"
                     },
                     "spacing": {
-                        "margin-desktop": "32px",
-                        "xl": "32px",
-                        "md": "16px",
-                        "gutter": "16px",
-                        "margin-mobile": "16px",
-                        "2xl": "48px",
-                        "sm": "8px",
-                        "unit": "8px",
-                        "xs": "4px",
-                        "lg": "24px"
+                        "sidebar": "300px",
+                        "gutter": "24px"
                     },
                     "fontFamily": {
-                        "headline-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "headline-md": ["Inter"],
-                        "body-lg": ["Inter"],
-                        "label-md": ["Inter"],
-                        "label-sm": ["Inter"],
-                        "display-lg": ["Inter"],
-                        "headline-lg-mobile": ["Inter"]
+                        "display": ["Inter"],
+                        "body": ["Inter"]
                     },
                     "fontSize": {
-                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
-                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
-                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
-                        "display-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
-                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                        "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "tiny": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500"}]
                     }
                 },
             },
         }
     </script>
     <script>
-    // Theme initialization
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-</script>
-<style>
-    /* Add smooth transitions for theme changes */
-    body { transition: background-color 0.2s, color 0.2s; }
-    .dark .bg-white { background-color: #1f2937; }
-    .dark .text-gray-900 { color: #f9fafb; }
-    .dark .text-gray-500 { color: #9ca3af; }
-    .dark .text-gray-700 { color: #d1d5db; }
-    .dark .bg-gray-100 { background-color: #111827; }
-    .dark .bg-gray-50 { background-color: #030712; }
-    .dark #form-chat { background: #1f2937; }
-    .dark .bubble-other { background: #374151; color: #f9fafb; }
-    .dark .bg-\[\#e7ebf0\] { background-color: #111827; }
-    html, body { overscroll-behavior: none; }
-    input, button, a, .cursor-pointer { touch-action: manipulation; }
-    #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); background: white; }
-    @media (max-width: 767px) { #form-chat { box-shadow: 0 -2px 10px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; } }
-    #empty-state.hidden { display: none !important; }
-    #wrapper-chat > .msg-block { display: flex; flex-direction: column; }
-    #wrapper-chat > .msg-block + .msg-block { margin-top: 10px; }
-    .msg-col { display: flex; flex-direction: column; gap: 3px; max-width: 88%; }
-    @media (min-width: 768px) { .msg-col { max-width: 55%; } }
-    .msg-col-own { justify-content: flex-end; align-items: flex-end; }
-    .msg-col-other { justify-content: flex-start; align-items: flex-start; }
-    .msg-col-own .msg-col { align-items: flex-end; }
-    .msg-col-other .msg-col { align-items: flex-start; }
-    .msg-item { display: flex; flex-direction: column; max-width: 100%; }
-    .msg-col-own .msg-item { align-items: flex-end; }
-    .msg-col-other .msg-item { align-items: flex-start; }
-    @media (min-width: 768px) { #back-to-accounts { display: none; } }
-    @media (max-width: 767px) { #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; } #chat-view { position: fixed; inset: 0; z-index: 10; } #accounts-view { position: relative; z-index: 1; } }
-    #user-list { overscroll-behavior: contain; }
-    .bubble-own { background: var(--color-primary); color: white; border-radius: 16px 16px 4px 16px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.06); }
-    .bubble-other { background: white; color: #222; border-radius: 16px 16px 16px 4px; padding: 8px 12px; max-width: 100%; word-wrap: break-word; line-height: 1.35; font-size: 14px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); }
-    .dark .bubble-other { background: #374151; color: #f9fafb; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-    .msg-item:not(:last-child) .bubble-own { border-radius: 16px 16px 4px 16px; }
-    .msg-item:not(:first-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
-    .msg-item:not(:first-child):not(:last-child) .bubble-own { border-radius: 16px 4px 4px 16px; }
-    .msg-item:not(:first-child) .bubble-other { border-radius: 4px 16px 16px 16px; }
-    .msg-meta { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 11px; line-height: 1; opacity: 0.85; }
-    .msg-meta-own { justify-content: flex-end; color: #9aa5b1; }
-    .msg-meta-other { justify-content: flex-start; color: #6b7280; }
-    .read-receipt { font-size: 12px; color: var(--color-primary); }
-    .user-item.active { background: #e0f0ff; }
-    .dark .user-item.active { background: #1e3a8a; }
-    .user-item.active h2 { color: #1a73e8; }
-    .dark .user-item.active h2 { color: #60a5fa; }
-    .msg-actions { position: absolute; right: 0; top: 100%; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 30; min-width: 120px; overflow: hidden; }
-    .dark .msg-actions { background: #374151; }
-    .msg-actions button { display: block; width: 100%; padding: 10px 16px; text-align: left; font-size: 13px; background: none; border: none; cursor: pointer; transition: background 0.15s; color: #374151; }
-    .dark .msg-actions button { color: #e5e7eb; }
-    .msg-actions button:hover { background: #f3f4f6; }
-    .dark .msg-actions button:hover { background: #4b5563; }
-    .msg-item { position: relative; }
-    
-    /* Logout modal */
-    .logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(2px); animation: fadeIn 0.15s ease; }
-    .logout-overlay.show { display: flex; }
-    .logout-card { background: white; border-radius: 20px; padding: 28px 24px 20px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: scaleIn 0.2s ease; }
-    .dark .logout-card { background: #1f2937; }
-    .logout-card svg { margin: 0 auto 12px; }
-    .logout-card h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
-    .dark .logout-card h3 { color: #f9fafb; }
-    .logout-card p { font-size: 14px; color: #6b7280; margin-bottom: 24px; line-height: 1.4; }
-    .dark .logout-card p { color: #9ca3af; }
-    .logout-card .btn-group { display: flex; gap: 10px; }
-    .logout-card button { flex: 1; padding: 11px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
-    .logout-card .btn-cancel { background: #f3f4f6; color: #4b5563; }
-    .dark .logout-card .btn-cancel { background: #374151; color: #d1d5db; }
-    .logout-card .btn-cancel:hover { background: #e5e7eb; }
-    .dark .logout-card .btn-cancel:hover { background: #4b5563; }
-    .logout-card .btn-logout { background: #ef4444; color: white; }
-    .logout-card .btn-logout:hover { background: #dc2626; }
-    .logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-</style>
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; overscroll-behavior: none; transition: background-color 0.3s, color 0.3s; }
+        input, button, a, .cursor-pointer { touch-action: manipulation; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #34343d; }
+
+        /* Chat Bubbles */
+        .bubble-own {
+            background: var(--color-primary); color: #ffffff;
+            border-radius: 20px 20px 6px 20px;
+            padding: 10px 14px; max-width: 100%; word-wrap: break-word;
+            line-height: 1.4; font-size: 14px;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+        }
+        .bubble-other {
+            background: #ffffff; color: #1e293b;
+            border-radius: 20px 20px 20px 6px;
+            padding: 10px 14px; max-width: 100%; word-wrap: break-word;
+            line-height: 1.4; font-size: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .dark .bubble-other { background: #292932; color: #e4e1ed; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+        .dark .bubble-own { box-shadow: 0 2px 8px rgba(128, 131, 255, 0.2); }
+
+        .msg-item:not(:last-child) .bubble-own { border-radius: 20px 20px 6px 20px; }
+        .msg-item:not(:first-child) .bubble-own { border-radius: 20px 6px 6px 20px; }
+        .msg-item:not(:first-child):not(:last-child) .bubble-own { border-radius: 20px 6px 6px 20px; }
+        .msg-item:not(:first-child) .bubble-other { border-radius: 6px 20px 20px 20px; }
+
+        .msg-item { position: relative; display: flex; flex-direction: column; max-width: 100%; }
+        .msg-col { display: flex; flex-direction: column; gap: 4px; max-width: 80%; }
+        @media (min-width: 768px) { .msg-col { max-width: 55%; } }
+        .msg-col-own { justify-content: flex-end; align-items: flex-end; }
+        .msg-col-other { justify-content: flex-start; align-items: flex-start; }
+        .msg-block { display: flex; flex-direction: column; }
+        .msg-block + .msg-block { margin-top: 12px; }
+        .msg-meta { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 11px; }
+        .msg-meta-own { justify-content: flex-end; color: #94a3b8; }
+        .msg-meta-other { justify-content: flex-start; color: #94a3b8; }
+        .dark .msg-meta-own, .dark .msg-meta-other { color: #908fa0; }
+
+        /* Message Actions */
+        .msg-actions {
+            position: absolute; right: 0; top: 100%;
+            background: #ffffff; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12); z-index: 30;
+            min-width: 130px; overflow: hidden; margin-top: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        .dark .msg-actions { background: #292932; border-color: #464554; }
+        .msg-actions button {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; padding: 10px 16px; text-align: left;
+            font-size: 13px; background: none; border: none;
+            cursor: pointer; transition: background 0.15s; color: #1e293b;
+        }
+        .dark .msg-actions button { color: #e4e1ed; }
+        .msg-actions button:hover { background: #f1f5f9; }
+        .dark .msg-actions button:hover { background: #34343d; }
+
+        /* User Item */
+        .user-item { transition: all 0.15s; }
+        .user-item.active { background: #d9eafd; border-left: 3px solid #2563eb; }
+        .dark .user-item.active { background: #1f1f27; border-left-color: #c0c1ff; }
+        .user-item.active h2 { color: #2563eb; }
+        .dark .user-item.active h2 { color: #c0c1ff; }
+
+        /* Message Input */
+        #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
+        @media (max-width: 767px) {
+            #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; }
+            .dark #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
+        }
+
+        /* Settings Panel */
+        .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 20; display: none; align-items: stretch; backdrop-filter: blur(4px); animation: fadeIn 0.2s ease; }
+        .settings-overlay.show { display: flex; }
+
+        /* Logout Modal */
+        .logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); animation: fadeIn 0.15s ease; }
+        .logout-overlay.show { display: flex; }
+        .logout-card {
+            background: #ffffff; border-radius: 24px;
+            padding: 32px 24px 24px; max-width: 340px; width: 100%;
+            text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+            animation: scaleIn 0.2s ease; border: 1px solid #e2e8f0;
+        }
+        .dark .logout-card { background: #1f1f27; border-color: #464554; }
+        .logout-card svg { margin: 0 auto 16px; }
+        .logout-card h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+        .dark .logout-card h3 { color: #e4e1ed; }
+        .logout-card p { font-size: 14px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
+        .dark .logout-card p { color: #908fa0; }
+        .logout-card .btn-group { display: flex; gap: 10px; }
+        .logout-card button { flex: 1; padding: 12px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
+        .logout-card .btn-cancel { background: #f1f5f9; color: #475569; }
+        .dark .logout-card .btn-cancel { background: #34343d; color: #c7c4d7; }
+        .logout-card .btn-cancel:hover { background: #e2e8f0; }
+        .dark .logout-card .btn-cancel:hover { background: #464554; }
+        .logout-card .btn-logout { background: #dc2626; color: white; }
+        .logout-card .btn-logout:hover { background: #b91c1c; }
+        .logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
+
+        /* Layout */
+        #empty-state.hidden { display: none !important; }
+        @media (min-width: 768px) { #back-to-accounts { display: none; } }
+        @media (max-width: 767px) {
+            #app-section { height: 100dvh; max-width: 100%; border-radius: 0; box-shadow: none; border: none; }
+            #chat-view { position: fixed; inset: 0; z-index: 10; }
+            #accounts-view { position: relative; z-index: 1; }
+        }
+        #user-list { overscroll-behavior: contain; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+    </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-950 md:bg-gray-50 dark:md:bg-gray-950" style="font-family: 'Inter', system-ui, -apple-system, sans-serif;">
+<body class="bg-background text-on-background">
 
 <?php if (!isset($_SESSION['user_id'])): ?>
-<h1 class="sr-only">Masuk ke App Chat</h1>
-<div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 dark:bg-gray-900" style="background: linear-gradient(135deg, #eef6ff 0%, #e7f3ff 50%, #f0f9ff 100%);">
+
+<!-- ==================== AUTH SECTION ==================== -->
+<div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 bg-background dark:bg-background">
     <div class="w-full max-w-sm mx-auto">
         <div class="flex justify-center">
-            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200/50" style="background: linear-gradient(135deg, #2563eb, #1e96ef);">
-                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 bg-primary">
+                <span class="material-symbols-outlined text-white text-[28px]" style="font-variation-settings: 'FILL' 1;">chat</span>
             </div>
         </div>
-        <h2 id="auth-title" class="mt-8 text-center text-2xl sm:text-3xl font-bold text-dark">Selamat Datang</h2>
-        <p id="auth-subtitle" class="mt-3 text-center text-sm text-dark leading-relaxed">Masuk untuk melanjutkan ke App Chat</p>
+        <h2 id="auth-title" class="mt-8 text-center text-display font-display text-on-background">Selamat Datang</h2>
+        <p id="auth-subtitle" class="mt-2 text-center text-body text-on-surface-variant">Masuk untuk melanjutkan ke ChatSphere</p>
     </div>
 
     <div class="mt-8 w-full max-w-sm mx-auto">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-gray-200/60 dark:shadow-gray-900/60 px-8 sm:px-10 py-10">
-            <div id="auth-error" role="alert" class="hidden bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
-                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+        <div class="bg-surface dark:bg-surface-container rounded-2xl shadow-xl border border-outline-variant/50 px-8 sm:px-10 py-10">
+            <div id="auth-error" role="alert" class="hidden bg-error-container text-error text-body px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">error</span>
                 <span id="auth-error-text"></span>
             </div>
 
             <form id="login-form" class="space-y-5">
                 <div>
-                    <label for="login-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                    <div class="mt-2 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                    <label for="login-email" class="block text-label font-medium text-on-surface-variant mb-2">Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-[20px] text-outline">mail</span>
                         </div>
-                        <input id="login-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
+                        <input id="login-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-3 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                     </div>
                 </div>
                 <div>
-                    <label for="login-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kata Sandi</label>
-                    <div class="mt-2 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                    <label for="login-password" class="block text-label font-medium text-on-surface-variant mb-2">Kata Sandi</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-[20px] text-outline">lock</span>
                         </div>
-                        <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-10 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
-                        <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
-                            <svg class="h-5 w-5 eye-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                            <svg class="h-5 w-5 eye-closed hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                        <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-11 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface-variant transition">
+                            <span class="material-symbols-outlined eye-open text-[20px]">visibility</span>
+                            <span class="material-symbols-outlined eye-closed hidden text-[20px]">visibility_off</span>
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2563eb, #1e96ef);">Masuk</button>
-                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Belum punya akun? <a href="#" id="show-register" class="font-semibold hover:brightness-110 transition" style="color: #2563eb;">Daftar</a></p>
+                <button type="submit" class="flex w-full justify-center items-center gap-2 rounded-xl px-4 py-3 text-body font-semibold text-on-primary bg-primary shadow-lg shadow-primary/20 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all hover:shadow-xl hover:shadow-primary/30 hover:brightness-110">
+                    <span class="material-symbols-outlined text-[20px]">login</span>
+                    Masuk
+                </button>
+                <p class="text-center text-body text-on-surface-variant">Belum punya akun? <a href="#" id="show-register" class="font-semibold text-primary hover:underline">Daftar</a></p>
             </form>
 
             <form id="register-form" class="space-y-5 hidden">
                 <div>
-                    <label for="reg-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
-                    <div class="mt-2 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                    <label for="reg-name" class="block text-label font-medium text-on-surface-variant mb-2">Nama</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-[20px] text-outline">person</span>
                         </div>
-                         <input id="reg-name" type="text" required placeholder="Nama Anda" autocomplete="name" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
+                        <input id="reg-name" type="text" required placeholder="Nama Anda" autocomplete="name" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-3 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                     </div>
                 </div>
                 <div>
-                    <label for="reg-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                    <div class="mt-2 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                    <label for="reg-email" class="block text-label font-medium text-on-surface-variant mb-2">Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-[20px] text-outline">mail</span>
                         </div>
-                            <input id="reg-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-3 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
+                        <input id="reg-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-3 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                     </div>
                 </div>
                 <div>
-                    <label for="reg-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kata Sandi</label>
-                    <div class="mt-2 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                    <label for="reg-password" class="block text-label font-medium text-on-surface-variant mb-2">Kata Sandi</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-[20px] text-outline">lock</span>
                         </div>
-                            <input id="reg-password" type="password" required placeholder="••••••••" autocomplete="new-password" class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white pl-10 pr-10 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition">
-                            <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
-                                <svg class="h-5 w-5 eye-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                <svg class="h-5 w-5 eye-closed hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
-                            </button>
+                        <input id="reg-password" type="password" required placeholder="••••••••" autocomplete="new-password" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-11 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface-variant transition">
+                            <span class="material-symbols-outlined eye-open text-[20px]">visibility</span>
+                            <span class="material-symbols-outlined eye-closed hidden text-[20px]">visibility_off</span>
+                        </button>
                     </div>
                 </div>
-                <button type="submit" class="flex w-full justify-center rounded-xl px-3 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-2 transition-all hover:brightness-110" style="background: linear-gradient(135deg, #2563eb, #1e96ef);">Buat Akun</button>
-                <p class="text-center text-sm text-gray-600 dark:text-gray-400">Sudah punya akun? <a href="#" id="show-login" class="font-semibold hover:brightness-110 transition" style="color: #2563eb;">Masuk</a></p>
+                <button type="submit" class="flex w-full justify-center items-center gap-2 rounded-xl px-4 py-3 text-body font-semibold text-on-primary bg-primary shadow-lg shadow-primary/20 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all hover:shadow-xl hover:shadow-primary/30 hover:brightness-110">
+                    <span class="material-symbols-outlined text-[20px]">person_add</span>
+                    Buat Akun
+                </button>
+                <p class="text-center text-body text-on-surface-variant">Sudah punya akun? <a href="#" id="show-login" class="font-semibold text-primary hover:underline">Masuk</a></p>
             </form>
         </div>
     </div>
@@ -285,17 +325,15 @@ document.getElementById('show-register').addEventListener('click', (e) => {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
     document.getElementById('auth-title').textContent = 'Buat Akun';
-    document.getElementById('auth-subtitle').textContent = 'Bergabung dengan App Chat dan mulai chatting';
+    document.getElementById('auth-subtitle').textContent = 'Bergabung dengan ChatSphere dan mulai chatting';
 });
-
 document.getElementById('show-login').addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('register-form').classList.add('hidden');
     document.getElementById('login-form').classList.remove('hidden');
     document.getElementById('auth-title').textContent = 'Selamat Datang';
-    document.getElementById('auth-subtitle').textContent = 'Masuk untuk melanjutkan ke App Chat';
+    document.getElementById('auth-subtitle').textContent = 'Masuk untuk melanjutkan ke ChatSphere';
 });
-
 document.querySelectorAll('.toggle-password').forEach(btn => {
     btn.addEventListener('click', () => {
         const input = btn.closest('.relative').querySelector('input');
@@ -305,26 +343,20 @@ document.querySelectorAll('.toggle-password').forEach(btn => {
         btn.querySelector('.eye-closed').classList.toggle('hidden', !isPassword);
     });
 });
-
 document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     document.getElementById('auth-error').classList.add('hidden');
     const email = document.getElementById('login-email');
     const pass = document.getElementById('login-password');
     const btn = e.target.querySelector('button[type="submit"]');
-    
-    // Validation
     if (!email.value.includes('@') || !email.value.includes('.')) {
         document.getElementById('auth-error-text').textContent = 'Format email tidak valid';
         document.getElementById('auth-error').classList.remove('hidden');
         return;
     }
-
-    // Loading state
     const originalText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
-    
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
     try {
         const res = await fetch('api.php?action=login', {
             method: 'POST',
@@ -332,21 +364,13 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             body: JSON.stringify({ email: email.value, password: pass.value })
         });
         const data = await res.json();
-        if (data.status === 'success') {
-            window.location.replace('');
-        } else {
-            document.getElementById('auth-error-text').textContent = data.message;
-            document.getElementById('auth-error').classList.remove('hidden');
-        }
+        if (data.status === 'success') { window.location.replace(''); }
+        else { document.getElementById('auth-error-text').textContent = data.message; document.getElementById('auth-error').classList.remove('hidden'); }
     } catch (err) {
         document.getElementById('auth-error-text').textContent = 'Kesalahan: ' + err.message;
         document.getElementById('auth-error').classList.remove('hidden');
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-    }
+    } finally { btn.disabled = false; btn.innerHTML = originalText; }
 });
-
 document.getElementById('register-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     document.getElementById('auth-error').classList.add('hidden');
@@ -354,8 +378,6 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const email = document.getElementById('reg-email');
     const pass = document.getElementById('reg-password');
     const btn = e.target.querySelector('button[type="submit"]');
-
-    // Validation
     if (!email.value.includes('@') || !email.value.includes('.')) {
         document.getElementById('auth-error-text').textContent = 'Format email tidak valid';
         document.getElementById('auth-error').classList.remove('hidden');
@@ -366,12 +388,9 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         document.getElementById('auth-error').classList.remove('hidden');
         return;
     }
-
-    // Loading state
     const originalText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
-
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
     try {
         const res = await fetch('api.php?action=register', {
             method: 'POST',
@@ -379,31 +398,26 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
             body: JSON.stringify({ name: name.value, email: email.value, password: pass.value })
         });
         const data = await res.json();
-        if (data.status === 'success') {
-            window.location.replace('');
-        } else {
-            document.getElementById('auth-error-text').textContent = data.message;
-            document.getElementById('auth-error').classList.remove('hidden');
-        }
+        if (data.status === 'success') { window.location.replace(''); }
+        else { document.getElementById('auth-error-text').textContent = data.message; document.getElementById('auth-error').classList.remove('hidden'); }
     } catch (err) {
         document.getElementById('auth-error-text').textContent = 'Kesalahan: ' + err.message;
         document.getElementById('auth-error').classList.remove('hidden');
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-    }
+    } finally { btn.disabled = false; btn.innerHTML = originalText; }
 });
 </script>
 
 <?php else: ?>
-<h1 class="sr-only">App Chat</h1>
-<div id="app-section" class="h-dvh md:h-screen flex flex-col md:flex-row w-full bg-white dark:bg-gray-900 md:bg-[#e7ebf0] dark:md:bg-gray-950 overflow-hidden relative">
 
+<!-- ==================== MAIN APP ==================== -->
+<div id="app-section" class="h-dvh md:h-screen flex flex-col md:flex-row w-full bg-background overflow-hidden relative">
+
+    <!-- Logout Modal -->
     <div id="logout-overlay" class="logout-overlay" onclick="if(event.target===this)closeLogoutModal()">
         <div class="logout-card">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
+            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-error-container flex items-center justify-center">
+                <span class="material-symbols-outlined text-error text-[28px]">logout</span>
+            </div>
             <h3>Keluar</h3>
             <p>Apakah Anda yakin ingin keluar dari akun ini?</p>
             <div class="btn-group">
@@ -412,88 +426,129 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
             </div>
         </div>
     </div>
-    <div id="settings-overlay" class="fixed inset-0 bg-black/40 z-20 hidden opacity-0 transition-opacity duration-200" onclick="closeSettings()"></div>
-    <div id="settings-panel" class="fixed inset-y-0 left-0 z-30 w-72 bg-white dark:bg-gray-900 shadow-xl transform -translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="bg-[#2563eb] dark:bg-[#1e40af] p-5 text-white">
+
+    <!-- Settings Overlay -->
+    <div id="settings-overlay" class="settings-overlay" onclick="closeSettings()"></div>
+    <div id="settings-panel" class="fixed inset-y-0 left-0 z-30 w-80 bg-surface dark:bg-surface-container-low shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-outline-variant/50">
+        <!-- Settings Header -->
+        <div class="bg-primary p-6 text-white">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-title font-semibold">Pengaturan</span>
+                <button onclick="closeSettings()" class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25 transition">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
             <div class="flex items-center gap-3">
-                <div id="settings-avatar" class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-xl font-bold">?</div>
+                <div id="settings-avatar" class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-xl font-bold">?</div>
                 <div class="min-w-0">
-                    <div id="settings-name" class="font-semibold text-base truncate">-</div>
+                    <div id="settings-name" class="font-semibold text-title truncate">-</div>
                     <div id="settings-email" class="text-sm text-white/70 truncate">-</div>
                 </div>
             </div>
         </div>
-        <div class="p-3 space-y-1 flex-1 overflow-y-auto">
-            <div id="settings-form-section" class="px-3 py-4 space-y-3 hidden">
-                <div id="settings-msg" class="text-xs hidden"></div>
-                <input id="set-name" type="text" placeholder="Nama" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input id="set-email" type="email" placeholder="Email" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input id="set-new-password" type="password" placeholder="Kata sandi baru" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input id="set-current-password" type="password" placeholder="Kata sandi saat ini *" class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button id="set-save-btn" class="w-full bg-[#2563eb] dark:bg-blue-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-[#1e96ef] transition">Simpan Perubahan</button>
-                <button id="set-cancel-btn" class="w-full text-gray-500 text-sm py-1.5 hover:text-gray-700 transition">Batal</button>
+        <!-- Settings Content -->
+        <div class="flex-1 overflow-y-auto scrollbar-hide">
+            <div id="settings-form-section" class="p-4 space-y-3 hidden">
+                <div id="settings-msg" class="text-xs hidden rounded-lg p-3"></div>
+                <div>
+                    <label class="block text-label text-on-surface-variant mb-1.5">Nama</label>
+                    <input id="set-name" type="text" placeholder="Nama" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                </div>
+                <div>
+                    <label class="block text-label text-on-surface-variant mb-1.5">Email</label>
+                    <input id="set-email" type="email" placeholder="Email" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                </div>
+                <div>
+                    <label class="block text-label text-on-surface-variant mb-1.5">Kata sandi baru</label>
+                    <input id="set-new-password" type="password" placeholder="Kata sandi baru (opsional)" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                </div>
+                <div>
+                    <label class="block text-label text-on-surface-variant mb-1.5">Kata sandi saat ini *</label>
+                    <input id="set-current-password" type="password" placeholder="Kata sandi saat ini" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                </div>
+                <button id="set-save-btn" class="w-full bg-primary text-on-primary text-body font-semibold py-2.5 rounded-xl hover:brightness-110 transition shadow-md shadow-primary/15 active:scale-[0.98]">Simpan Perubahan</button>
+                <button id="set-cancel-btn" class="w-full text-on-surface-variant text-body py-2 hover:text-on-surface transition">Batal</button>
             </div>
-            <div id="settings-menu">
-                <button onclick="toggleTheme()" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition">
-                    <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
-                    <svg id="theme-icon-light" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+            <div id="settings-menu" class="p-2">
+                <button onclick="toggleTheme()" class="flex items-center gap-3 w-full px-4 py-3 text-body text-on-surface hover:bg-surface-container dark:hover:bg-surface-container-high rounded-xl transition">
+                    <span id="theme-icon-light" class="material-symbols-outlined text-[22px] text-primary">dark_mode</span>
+                    <span id="theme-icon-dark" class="material-symbols-outlined text-[22px] text-primary hidden">light_mode</span>
                     <span id="theme-text">Ganti ke Mode Gelap</span>
                 </button>
-                <button id="settings-edit-profile-btn" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <button id="settings-edit-profile-btn" class="flex items-center gap-3 w-full px-4 py-3 text-body text-on-surface hover:bg-surface-container dark:hover:bg-surface-container-high rounded-xl transition">
+                    <span class="material-symbols-outlined text-[22px] text-primary">edit</span>
                     Edit Profil
                 </button>
-                <button onclick="showLogoutModal()" class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1044 21 19 21H15"/><path d="M10 17L15 12L10 7"/><path d="M15 12H3"/></svg>
+                <button onclick="showLogoutModal()" class="flex items-center gap-3 w-full px-4 py-3 text-body text-error hover:bg-error-container/50 rounded-xl transition">
+                    <span class="material-symbols-outlined text-[22px]">logout</span>
                     Keluar
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-80 md:border-r md:border-gray-200 dark:md:border-gray-800 md:bg-white dark:md:bg-gray-900 min-h-0">
-        <div class="bg-[#2563eb] px-4 py-3 text-white flex items-center justify-center shrink-0 relative">
-             <button id="settings-btn" aria-label="Pengaturan" class="absolute left-4 hover:bg-[#1e96ef] rounded-lg p-2 transition">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="6" r="4" stroke="#ffffff" stroke-width="1.5"/>
-                    <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.791 19 17C19 17.3453 18.923 17.6804 18.775 18" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
+    <!-- ==================== ACCOUNTS VIEW (SIDEBAR) ==================== -->
+    <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-[320px] md:border-r md:border-outline-variant bg-surface dark:bg-surface-container-low min-h-0">
+        <!-- Sidebar Header -->
+        <div class="bg-surface dark:bg-surface-container-low px-5 py-4 flex items-center justify-between shrink-0 border-b border-outline-variant/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-primary-container text-[22px]" style="font-variation-settings: 'FILL' 1;">chat</span>
+                </div>
+                <span class="text-headline font-display font-bold text-on-background">ChatSphere</span>
+            </div>
+            <button id="settings-btn" aria-label="Pengaturan" class="w-10 h-10 rounded-full hover:bg-surface-container dark:hover:bg-surface-container-high flex items-center justify-center transition text-on-surface-variant">
+                <span class="material-symbols-outlined text-[22px]">settings</span>
             </button>
-            <span class="font-semibold text-base">Pesan</span>
         </div>
-        <div id="user-list" class="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-950 md:bg-white dark:md:bg-gray-900 min-h-0"></div>
+        <!-- User List -->
+        <div id="user-list" class="flex-1 overflow-y-auto scrollbar-hide p-3"></div>
     </div>
 
-    <div id="chat-view" class="hidden md:flex flex flex-col flex-1 min-h-0 min-w-0 bg-[#e7ebf0]">
-        <div id="empty-state" class="hidden absolute inset-0 z-20 flex-col items-center justify-center text-gray-400 dark:text-gray-500 px-6 bg-[#e7ebf0] dark:bg-gray-900">
-            <svg class="w-24 h-24 text-gray-300 mb-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <p class="text-lg font-medium text-gray-500">Pilih user untuk mulai chat</p>
-            <p class="text-sm text-gray-400 mt-1">Pilih percakapan dari sidebar kiri</p>
+    <!-- ==================== CHAT VIEW ==================== -->
+    <div id="chat-view" class="hidden md:flex flex flex-col flex-1 min-h-0 min-w-0 bg-surface-dim dark:bg-background">
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden absolute inset-0 z-20 flex-col items-center justify-center text-on-surface-variant px-6 bg-surface-dim dark:bg-background">
+            <div class="w-20 h-20 rounded-full bg-surface-container dark:bg-surface-container-high flex items-center justify-center mb-5">
+                <span class="material-symbols-outlined text-outline text-[40px]">chat_bubble_outline</span>
+            </div>
+            <p class="text-headline text-on-surface font-semibold">Pilih user untuk mulai chat</p>
+            <p class="text-body text-on-surface-variant mt-1">Pilih percakapan dari sidebar</p>
         </div>
 
+        <!-- Chat Inner -->
         <div id="chat-inner" class="hidden flex flex-col flex-1 min-h-0">
-            <div class="bg-[#2563eb] dark:bg-blue-900 px-4 py-3 text-white flex items-center shrink-0 relative">
-                 <button id="back-to-accounts" aria-label="Kembali ke Daftar Pesan" class="hover:bg-[#1e96ef] rounded-lg p-2 transition mr-1">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19L5 12L12 5"/></svg>
+            <!-- Chat Header -->
+            <div class="bg-surface dark:bg-surface-container px-4 py-3 flex items-center shrink-0 border-b border-outline-variant/50 relative z-10">
+                <button id="back-to-accounts" aria-label="Kembali" class="md:hidden hover:bg-surface-container dark:hover:bg-surface-container-high rounded-full p-2 transition mr-1 text-on-surface-variant">
+                    <span class="material-symbols-outlined">arrow_back</span>
                 </button>
-                <span id="chat-title" class="font-semibold text-base truncate">Chat</span>
+                <div class="flex-1 min-w-0">
+                    <span id="chat-title" class="text-title text-on-surface font-semibold truncate block">Chat</span>
+                </div>
             </div>
-            <div id="chat-container" class="flex-1 overflow-y-auto min-h-0 px-3 py-4 bg-[#e7ebf0] dark:bg-gray-900">
-                <div id="chat-loading" class="hidden text-center text-gray-400 text-sm py-8">Memuat pesan...</div>
+            <!-- Chat Container -->
+            <div id="chat-container" class="flex-1 overflow-y-auto custom-scrollbar min-h-0 px-4 py-4 bg-surface-dim dark:bg-background">
+                <div id="chat-loading" class="hidden text-center text-on-surface-variant text-body py-8 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+                    Memuat pesan...
+                </div>
                 <div id="wrapper-chat"></div>
             </div>
-            <form id="form-chat" class="shrink-0">
-                <div class="bg-white px-3 py-2 flex items-center gap-2">
-                    <input type="text" name="content" placeholder="Tulis pesan..." class="flex-1 border-0 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] bg-[#f0f4f8] dark:bg-gray-700 dark:text-white transition min-h-[44px]" id="content" autocomplete="off">
-                     <button type="submit" aria-label="Kirim Pesan" class="bg-[#2563eb] text-white rounded-full w-[44px] h-[44px] hover:bg-[#1e96ef] active:scale-95 transition-all flex items-center justify-center shrink-0">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/></svg>
+            <!-- Chat Input -->
+            <form id="form-chat" class="shrink-0 bg-surface dark:bg-surface-container border-t border-outline-variant/50">
+                <div class="px-4 py-3 flex items-center gap-2">
+                    <div class="flex-1 flex items-center bg-surface-container dark:bg-surface-container-high rounded-2xl border border-outline-variant/50 focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary/50 transition-all">
+                        <input type="text" name="content" placeholder="Tulis pesan..." class="flex-1 bg-transparent border-0 text-body text-on-surface placeholder-outline py-3 pl-4 focus:outline-none focus:ring-0 min-h-[44px]" id="content" autocomplete="off">
+                    </div>
+                    <button type="submit" aria-label="Kirim Pesan" class="bg-primary text-on-primary rounded-full w-11 h-11 hover:brightness-110 active:scale-90 transition-all flex items-center justify-center shrink-0 shadow-md shadow-primary/20">
+                        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">send</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
 <script>
 let userId = null;
@@ -538,7 +593,6 @@ function showChat(id) {
     if (id === receiverId) return;
     chatSwitching = true;
     receiverId = id;
-    console.log('showChat: receiverId =', receiverId);
     setActiveUser(id);
     if (!isDesktop()) { document.getElementById('accounts-view').classList.add('hidden'); document.getElementById('chat-view').classList.remove('hidden'); }
     document.getElementById('empty-state').classList.add('hidden');
@@ -555,15 +609,14 @@ const settingsPanel = document.getElementById('settings-panel');
 const settingsOverlay = document.getElementById('settings-overlay');
 
 function openSettings() {
-    settingsOverlay.classList.remove('hidden');
-    requestAnimationFrame(() => { settingsOverlay.classList.remove('opacity-0'); settingsPanel.classList.remove('-translate-x-full'); });
+    settingsOverlay.classList.add('show');
+    requestAnimationFrame(() => { settingsPanel.classList.remove('-translate-x-full'); });
 }
 function closeSettings() {
-    settingsOverlay.classList.add('opacity-0');
     settingsPanel.classList.add('-translate-x-full');
+    settingsOverlay.classList.remove('show');
     document.getElementById('settings-form-section').classList.add('hidden');
     document.getElementById('settings-menu').classList.remove('hidden');
-    setTimeout(() => settingsOverlay.classList.add('hidden'), 200);
 }
 settingsBtn.addEventListener('click', openSettings);
 
@@ -601,35 +654,44 @@ document.getElementById('set-save-btn').addEventListener('click', async () => {
     const msg = document.getElementById('settings-msg');
     msg.classList.add('hidden');
     const currentPassword = document.getElementById('set-current-password').value;
-    if (!currentPassword) { msg.textContent = 'Kata sandi saat ini wajib diisi'; msg.className = 'text-xs text-red-500'; msg.classList.remove('hidden'); return; }
+    if (!currentPassword) { msg.textContent = 'Kata sandi saat ini wajib diisi'; msg.className = 'text-xs text-error bg-error-container rounded-lg p-3'; msg.classList.remove('hidden'); return; }
     try {
         const data = await apiFetch('api.php?action=updateProfile', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: document.getElementById('set-name').value.trim(), email: document.getElementById('set-email').value.trim(), currentPassword, newPassword: document.getElementById('set-new-password').value })
         });
-        if (data.status === 'success') { msg.textContent = 'Profil berhasil diperbarui'; msg.className = 'text-xs text-green-600'; msg.classList.remove('hidden'); document.getElementById('set-new-password').value = ''; document.getElementById('set-current-password').value = ''; loadProfile(); }
-        else { msg.textContent = data.message; msg.className = 'text-xs text-red-500'; msg.classList.remove('hidden'); }
-    } catch (err) { msg.textContent = 'Kesalahan: ' + err.message; msg.className = 'text-xs text-red-500'; msg.classList.remove('hidden'); }
+        if (data.status === 'success') { msg.textContent = 'Profil berhasil diperbarui'; msg.className = 'text-xs text-green-600 bg-green-50 dark:bg-green-900/30 rounded-lg p-3'; msg.classList.remove('hidden'); document.getElementById('set-new-password').value = ''; document.getElementById('set-current-password').value = ''; loadProfile(); }
+        else { msg.textContent = data.message; msg.className = 'text-xs text-error bg-error-container rounded-lg p-3'; msg.classList.remove('hidden'); }
+    } catch (err) { msg.textContent = 'Kesalahan: ' + err.message; msg.className = 'text-xs text-error bg-error-container rounded-lg p-3'; msg.classList.remove('hidden'); }
 });
 
 async function loadUsers() {
     try {
         const data = await apiFetch('api.php?action=getUsers');
         const container = document.getElementById('user-list');
-    container.innerHTML = '';
-    data.users.forEach((user, index) => {
-        const name = user.name.charAt(0).toUpperCase() + user.name.slice(1);
-        const initial = user.name.charAt(0).toUpperCase();
-        const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-amber-500', 'bg-teal-500', 'bg-pink-500'];
-        const color = colors[index % colors.length];
-        const div = document.createElement('div');
-        div.className = 'user-item flex items-center px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition cursor-pointer min-h-[56px]';
-        div.dataset.userId = user.id;
-        div.onclick = () => showChat(user.id);
-        div.innerHTML = `<div class="w-11 h-11 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div><div class="ml-3 flex-1 min-w-0"><h2 class="text-[15px] font-semibold text-gray-900">${escapeHtml(name)}</h2><p class="text-xs text-gray-400 truncate">Ketuk untuk mulai chat</p></div>`;
-        container.appendChild(div);
-    });
-} catch (err) { document.getElementById('user-list').innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan periksa jaringan Anda.</div>'; }
+        container.innerHTML = '';
+        data.users.forEach((user, index) => {
+            const name = user.name.charAt(0).toUpperCase() + user.name.slice(1);
+            const initial = user.name.charAt(0).toUpperCase();
+            const avatarColors = [
+                'bg-blue-500', 'bg-emerald-500', 'bg-violet-500',
+                'bg-amber-500', 'bg-teal-500', 'bg-rose-500',
+                'bg-indigo-500', 'bg-cyan-500'
+            ];
+            const color = avatarColors[index % avatarColors.length];
+            const div = document.createElement('div');
+            div.className = 'user-item flex items-center gap-3 px-3 py-3 hover:bg-surface-container dark:hover:bg-surface-container-high cursor-pointer rounded-xl mx-1';
+            div.dataset.userId = user.id;
+            div.onclick = () => showChat(user.id);
+            div.innerHTML = `
+                <div class="w-12 h-12 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div>
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-title text-on-surface font-semibold truncate">${escapeHtml(name)}</h2>
+                    <p class="text-label text-on-surface-variant truncate mt-0.5">Ketuk untuk mulai chat</p>
+                </div>`;
+            container.appendChild(div);
+        });
+    } catch (err) { document.getElementById('user-list').innerHTML = '<div class="text-center text-on-surface-variant text-body py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-[32px] text-outline">wifi_off</span>Koneksi terputus</div>'; }
 }
 
 function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
@@ -644,12 +706,12 @@ async function loadChatTitle() {
 async function loadMessages() {
     try {
         const data = await apiFetch('api.php?action=getMessages&receiver_id=' + receiverId);
-        if (data.status === 'error') { wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">' + escapeHtml(data.message) + '</div>'; return; }
+        if (data.status === 'error') { wrapperChat.innerHTML = '<div class="text-center text-on-surface-variant text-body py-8">' + escapeHtml(data.message) + '</div>'; return; }
         userId = data.user_id;
         wrapperChat.innerHTML = '';
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content, msg.created_at));
         scrollToBottom();
-    } catch (err) { if (err.message === 'Unauthorized') throw err; wrapperChat.innerHTML = '<div class="text-center text-gray-400 text-sm py-8">Koneksi terputus. Silakan periksa jaringan Anda.</div>'; }
+    } catch (err) { if (err.message === 'Unauthorized') throw err; wrapperChat.innerHTML = '<div class="text-center text-on-surface-variant text-body py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-[32px] text-outline">wifi_off</span>Koneksi terputus</div>'; }
 }
 
 function buildMeta(isOwn, timeText) {
@@ -686,15 +748,11 @@ function appendMessage(messageId, senderId, content, createdAt) {
         bubble.addEventListener('click', function(e) {
             e.stopPropagation();
             if (isEditing) return;
-            if (actions && actions.parentNode) {
-                actions.remove();
-                actions = null;
-                return;
-            }
+            if (actions && actions.parentNode) { actions.remove(); actions = null; return; }
             document.querySelectorAll('.msg-actions').forEach(m => m.remove());
             actions = document.createElement('div');
             actions.className = 'msg-actions';
-            actions.innerHTML = '<button class="edit-action">Edit</button><button class="delete-action">Hapus</button>';
+            actions.innerHTML = '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button><button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>';
             item.appendChild(actions);
             actions.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; editMessage(messageId, bubble); });
             actions.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; deleteMessage(messageId, item); });
@@ -721,12 +779,17 @@ document.addEventListener('click', function(e) { document.querySelectorAll('.msg
 function editMessage(messageId, bubble) {
     isEditing = true;
     const originalText = bubble.textContent;
-    const input = document.createElement('input'); input.type = 'text'; input.value = originalText; input.className = 'w-full bg-white text-gray-800 p-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm';
-    const actions = document.createElement('div'); actions.className = 'flex gap-1 mt-1 justify-end';
-    const saveBtn = document.createElement('button'); saveBtn.type = 'button'; saveBtn.className = 'text-xs bg-[#2563eb] text-white px-2.5 py-1 rounded-lg hover:bg-[#1e96ef] transition'; saveBtn.textContent = 'Simpan';
-    const cancelBtn = document.createElement('button'); cancelBtn.type = 'button'; cancelBtn.className = 'text-xs bg-gray-200 text-gray-600 px-2.5 py-1 rounded-lg hover:bg-gray-300 transition'; cancelBtn.textContent = 'Batal';
+    const input = document.createElement('input'); input.type = 'text'; input.value = originalText;
+    input.className = 'w-full bg-surface dark:bg-surface-container-high text-on-surface p-2 rounded-xl border border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/40 text-body';
+    const actions = document.createElement('div'); actions.className = 'flex gap-1.5 mt-2 justify-end';
+    const saveBtn = document.createElement('button'); saveBtn.type = 'button';
+    saveBtn.className = 'text-tiny bg-primary text-on-primary px-3 py-1.5 rounded-lg font-semibold hover:brightness-110 transition';
+    saveBtn.textContent = 'Simpan';
+    const cancelBtn = document.createElement('button'); cancelBtn.type = 'button';
+    cancelBtn.className = 'text-tiny bg-surface-container dark:bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-lg font-semibold hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition';
+    cancelBtn.textContent = 'Batal';
     actions.appendChild(cancelBtn); actions.appendChild(saveBtn);
-    bubble.innerHTML = ''; bubble.className = 'bg-white p-2 rounded-2xl rounded-br-sm shadow-sm border border-gray-200';
+    bubble.innerHTML = ''; bubble.className = 'bg-surface dark:bg-surface-container-high p-3 rounded-2xl rounded-br-sm shadow-sm border border-outline-variant/50';
     bubble.appendChild(input); bubble.appendChild(actions); input.focus(); input.setSelectionRange(input.value.length, input.value.length);
     cancelBtn.onclick = function() { cancelEdit(messageId, bubble, originalText); };
     input.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveEdit(messageId, bubble, input.value); else if (e.key === 'Escape') cancelEdit(messageId, bubble, originalText); });
@@ -763,7 +826,7 @@ function attachMessageActions(item, messageId) {
         document.querySelectorAll('.msg-actions').forEach(m => m.remove());
         act = document.createElement('div');
         act.className = 'msg-actions';
-        act.innerHTML = '<button class="edit-action">Edit</button><button class="delete-action">Hapus</button>';
+        act.innerHTML = '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button><button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>';
         item.appendChild(act);
         act.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; editMessage(messageId, bubble); });
         act.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; deleteMessage(messageId, item); });
@@ -826,7 +889,6 @@ function toggleTheme() {
         document.getElementById('theme-icon-light').classList.add('hidden');
     }
 }
-updateThemeIcons();
 
 function updateThemeIcons() {
     if (document.documentElement.classList.contains('dark')) {
@@ -839,7 +901,8 @@ function updateThemeIcons() {
         document.getElementById('theme-icon-dark').classList.add('hidden');
     }
 }
-</script></div>
+updateThemeIcons();
+</script>
 
 <?php endif; ?>
 
