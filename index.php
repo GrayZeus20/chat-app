@@ -118,6 +118,7 @@ session_start();
             padding: 10px 14px; max-width: 100%; word-wrap: break-word;
             line-height: 1.4; font-size: 14px;
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+            user-select: none; -webkit-user-select: none;
         }
         .bubble-other {
             background: #ffffff; color: #1e293b;
@@ -125,6 +126,7 @@ session_start();
             padding: 10px 14px; max-width: 100%; word-wrap: break-word;
             line-height: 1.4; font-size: 14px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            user-select: none; -webkit-user-select: none;
         }
         .dark .bubble-other { background: #292932; color: #e4e1ed; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
         .dark .bubble-own { box-shadow: 0 2px 8px rgba(128, 131, 255, 0.2); }
@@ -742,7 +744,7 @@ function appendMessage(messageId, senderId, content, createdAt) {
     bubble.textContent = content;
     item.appendChild(bubble);
     item.appendChild(buildMeta(isOwn, timeText));
-    if (isOwn && messageId && !String(messageId).startsWith('temp-')) {
+    if (messageId && !String(messageId).startsWith('temp-')) {
         bubble.style.cursor = 'pointer';
         let actions = null;
         bubble.addEventListener('click', function(e) {
@@ -752,10 +754,21 @@ function appendMessage(messageId, senderId, content, createdAt) {
             document.querySelectorAll('.msg-actions').forEach(m => m.remove());
             actions = document.createElement('div');
             actions.className = 'msg-actions';
-            actions.innerHTML = '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button><button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>';
+            
+            let html = '';
+            if (isOwn) {
+                html += '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button>';
+                html += '<button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>';
+            }
+            html += '<button class="copy-action"><span class="material-symbols-outlined text-[16px]">content_copy</span>Salin</button>';
+            actions.innerHTML = html;
+            
             item.appendChild(actions);
-            actions.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; editMessage(messageId, bubble); });
-            actions.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; deleteMessage(messageId, item); });
+            if (isOwn) {
+                actions.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; editMessage(messageId, bubble); });
+                actions.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; deleteMessage(messageId, item); });
+            }
+            actions.querySelector('.copy-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; copyToClipboard(content); });
         });
     }
     const lastWrapper = wrapperChat.lastElementChild;
@@ -826,14 +839,25 @@ function attachMessageActions(item, messageId) {
         document.querySelectorAll('.msg-actions').forEach(m => m.remove());
         act = document.createElement('div');
         act.className = 'msg-actions';
-        act.innerHTML = '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button><button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>';
+        act.innerHTML = '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button><button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button><button class="copy-action"><span class="material-symbols-outlined text-[16px]">content_copy</span>Salin</button>';
         item.appendChild(act);
         act.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; editMessage(messageId, bubble); });
         act.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; deleteMessage(messageId, item); });
+        act.querySelector('.copy-action').addEventListener('click', function(ev) { ev.stopPropagation(); act.remove(); act = null; copyToClipboard(bubble.textContent); });
     });
 }
 
 function scrollToBottom() { chatContainer.scrollTop = chatContainer.scrollHeight; }
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full text-tiny shadow-lg z-50 animate-bounce';
+        toast.textContent = 'Pesan disalin';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }).catch(err => { console.error('Gagal menyalin:', err); });
+}
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
