@@ -9,7 +9,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ChatSphere</title>
+    <title>Chats</title>
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -28,56 +28,29 @@ session_start();
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#2563eb",
-                        "on-primary": "#ffffff",
-                        "primary-container": "#d9eafd",
-                        "on-primary-container": "#1e40af",
-                        "secondary": "#bccdcc",
-                        "on-secondary": "#1e293b",
-                        "secondary-container": "#e2eeed",
-                        "on-secondary-container": "#2d4a48",
-                        "tertiary": "#9aa6b2",
-                        "on-tertiary": "#ffffff",
-                        "tertiary-container": "#dce4eb",
-                        "on-tertiary-container": "#3b4a56",
-                        "error": "#dc2626",
-                        "on-error": "#ffffff",
-                        "error-container": "#fee2e2",
-                        "on-error-container": "#991b1b",
-                        "background": "#f8fafc",
-                        "on-background": "#1e293b",
-                        "surface": "#ffffff",
-                        "on-surface": "#1e293b",
-                        "surface-dim": "#f1f5f9",
-                        "surface-variant": "#e2e8f0",
-                        "on-surface-variant": "#64748b",
-                        "outline": "#94a3b8",
-                        "outline-variant": "#e2e8f0",
-                        "inverse-surface": "#1e293b",
-                        "inverse-on-surface": "#f8fafc",
+                        "primary": "#2563eb", "on-primary": "#ffffff",
+                        "primary-container": "#d9eafd", "on-primary-container": "#1e40af",
+                        "secondary": "#bccdcc", "on-secondary": "#1e293b",
+                        "secondary-container": "#e2eeed", "on-secondary-container": "#2d4a48",
+                        "tertiary": "#9aa6b2", "on-tertiary": "#ffffff",
+                        "tertiary-container": "#dce4eb", "on-tertiary-container": "#3b4a56",
+                        "error": "#dc2626", "on-error": "#ffffff",
+                        "error-container": "#fee2e2", "on-error-container": "#991b1b",
+                        "background": "#f8fafc", "on-background": "#1e293b",
+                        "surface": "#ffffff", "on-surface": "#1e293b",
+                        "surface-dim": "#f1f5f9", "surface-variant": "#e2e8f0",
+                        "on-surface-variant": "#475569",
+                        "outline": "#94a3b8", "outline-variant": "#e2e8f0",
+                        "inverse-surface": "#1e293b", "inverse-on-surface": "#f8fafc",
                         "inverse-primary": "#93c5fd",
                         "surface-bright": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f8fafc",
-                        "surface-container": "#f1f5f9",
-                        "surface-container-high": "#e8eef6",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f8fafc",
+                        "surface-container": "#f1f5f9", "surface-container-high": "#e8eef6",
                         "surface-container-highest": "#dde5f0"
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.75rem",
-                        "lg": "1rem",
-                        "xl": "1.25rem",
-                        "2xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "sidebar": "300px",
-                        "gutter": "24px"
-                    },
-                    "fontFamily": {
-                        "display": ["Inter"],
-                        "body": ["Inter"]
-                    },
+                    "borderRadius": { "DEFAULT": "0.75rem", "lg": "1rem", "xl": "1.25rem", "2xl": "1.5rem", "full": "9999px" },
+                    "spacing": { "sidebar": "300px", "gutter": "24px" },
+                    "fontFamily": { "display": ["Inter"], "body": ["Inter"] },
                     "fontSize": {
                         "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
                         "headline": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
@@ -91,17 +64,13 @@ session_start();
         }
     </script>
     <script>
+        // Default: light mode. Only dark if explicitly saved.
         if (localStorage.theme === 'dark') {
             document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
         }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; overscroll-behavior: none; transition: background-color 0.3s, color 0.3s; }
         input, button, a, .cursor-pointer { touch-action: manipulation; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -111,31 +80,70 @@ session_start();
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #34343d; }
 
-        /* Chat Bubbles */
+        /* ========== DARK MODE OVERRIDES ========== */
+        .dark { background-color: #13131b; color: #e4e1ed; }
+        .dark .bg-background { background-color: #13131b; }
+        .dark .text-on-background { color: #e4e1ed; }
+        .dark .bg-surface { background-color: #1b1b23; }
+        .dark .text-on-surface { color: #e4e1ed; }
+        .dark .bg-surface-dim { background-color: #13131b; }
+        .dark .bg-surface-container { background-color: #292932; }
+        .dark .bg-surface-container-low { background-color: #1b1b23; }
+        .dark .bg-surface-container-high { background-color: #34343d; }
+        .dark .bg-surface-container-highest { background-color: #3e3e47; }
+        .dark .text-on-surface-variant { color: #c7c4d7; }
+        .dark .bg-surface-bright { background-color: #393841; }
+        .dark .border-outline-variant { border-color: #464554; }
+        .dark .text-outline { color: #908fa0; }
+        .dark .text-primary { color: #c0c1ff; }
+        .dark .bg-primary { background-color: #c0c1ff; }
+        .dark .text-on-primary { color: #1000a9; }
+        .dark .bg-primary-container { background-color: #8083ff; }
+        .dark .text-on-primary-container { color: #e1e0ff; }
+        .dark .text-error { color: #ffb4ab; }
+        .dark .bg-error-container { background-color: #93000a; color: #ffdad6; }
+        .dark .bg-inverse-surface { background-color: #e4e1ed; }
+        .dark .text-inverse-on-surface { color: #303038; }
+        .dark .shadow-xl { box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .dark .shadow-lg { box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+        .dark .shadow-md { box-shadow: 0 3px 12px rgba(0,0,0,0.3); }
+        .dark .hover\:bg-surface-container:hover { background-color: #292932; }
+        .dark .placeholder-outline::placeholder { color: #908fa0; }
+        .dark .border-outline-variant\/50 { border-color: rgba(70,69,84,0.5); }
+        .dark .border-outline-variant\/30 { border-color: rgba(70,69,84,0.3); }
+
+        /* ========== LIGHT MODE CONTRAST FIX ========== */
+        .placeholder-outline::placeholder { color: #64748b; opacity: 1; }
+        .msg-meta { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 11px; }
+        .msg-meta-own { justify-content: flex-end; color: #64748b; font-weight: 500; }
+        .msg-meta-other { justify-content: flex-start; color: #64748b; font-weight: 500; }
+        .dark .msg-meta-own, .dark .msg-meta-other { color: #a1a1aa; }
+
+        /* ========== CHAT BUBBLES ========== */
         .bubble-own {
-            background: var(--color-primary); color: #ffffff;
+            background-color: #2563eb; color: #ffffff;
             border-radius: 20px 20px 6px 20px;
             padding: 10px 14px; max-width: 100%; word-wrap: break-word;
             line-height: 1.4; font-size: 14px;
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
             user-select: none; -webkit-user-select: none;
         }
+        .dark .bubble-own { background-color: #c0c1ff; color: #1000a9; box-shadow: 0 2px 8px rgba(128,131,255,0.2); }
         .bubble-other {
-            background: #ffffff; color: #1e293b;
+            background-color: #ffffff; color: #1e293b;
             border-radius: 20px 20px 20px 6px;
             padding: 10px 14px; max-width: 100%; word-wrap: break-word;
             line-height: 1.4; font-size: 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
             user-select: none; -webkit-user-select: none;
+            border: 1px solid #e2e8f0;
         }
-        .dark .bubble-other { background: #292932; color: #e4e1ed; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-        .dark .bubble-own { box-shadow: 0 2px 8px rgba(128, 131, 255, 0.2); }
+        .dark .bubble-other { background-color: #292932; color: #e4e1ed; border-color: #464554; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
 
         .msg-item:not(:last-child) .bubble-own { border-radius: 20px 20px 6px 20px; }
         .msg-item:not(:first-child) .bubble-own { border-radius: 20px 6px 6px 20px; }
         .msg-item:not(:first-child):not(:last-child) .bubble-own { border-radius: 20px 6px 6px 20px; }
         .msg-item:not(:first-child) .bubble-other { border-radius: 6px 20px 20px 20px; }
-
         .msg-item { position: relative; display: flex; flex-direction: column; max-width: 100%; }
         .msg-col { display: flex; flex-direction: column; gap: 4px; max-width: 80%; }
         @media (min-width: 768px) { .msg-col { max-width: 55%; } }
@@ -143,12 +151,15 @@ session_start();
         .msg-col-other { justify-content: flex-start; align-items: flex-start; }
         .msg-block { display: flex; flex-direction: column; }
         .msg-block + .msg-block { margin-top: 12px; }
-        .msg-meta { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 11px; }
-        .msg-meta-own { justify-content: flex-end; color: #94a3b8; }
-        .msg-meta-other { justify-content: flex-start; color: #94a3b8; }
-        .dark .msg-meta-own, .dark .msg-meta-other { color: #908fa0; }
 
-        /* Message Actions */
+        /* Status icon */
+        .msg-status { font-size: 14px; margin-left: 2px; vertical-align: middle; }
+        .msg-status-sent { color: #94a3b8; }
+        .msg-status-read { color: #2563eb; }
+        .dark .msg-status-sent { color: #908fa0; }
+        .dark .msg-status-read { color: #c0c1ff; }
+
+        /* ========== MESSAGE ACTIONS ========== */
         .msg-actions {
             position: absolute; right: 0; top: 100%;
             background: #ffffff; border-radius: 12px;
@@ -167,25 +178,26 @@ session_start();
         .msg-actions button:hover { background: #f1f5f9; }
         .dark .msg-actions button:hover { background: #34343d; }
 
-        /* User Item */
+        /* ========== USER ITEM ========== */
         .user-item { transition: all 0.15s; }
         .user-item.active { background: #d9eafd; border-left: 3px solid #2563eb; }
         .dark .user-item.active { background: #1f1f27; border-left-color: #c0c1ff; }
         .user-item.active h2 { color: #2563eb; }
         .dark .user-item.active h2 { color: #c0c1ff; }
 
-        /* Message Input */
+        /* ========== MESSAGE INPUT ========== */
         #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
         @media (max-width: 767px) {
             #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; }
             .dark #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
         }
 
-        /* Settings Panel */
+        /* ========== SETTINGS PANEL ========== */
         .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 20; display: none; align-items: stretch; backdrop-filter: blur(4px); animation: fadeIn 0.2s ease; }
         .settings-overlay.show { display: flex; }
+        .dark .settings-overlay { background: rgba(0,0,0,0.6); }
 
-        /* Logout Modal */
+        /* ========== LOGOUT MODAL ========== */
         .logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); animation: fadeIn 0.15s ease; }
         .logout-overlay.show { display: flex; }
         .logout-card {
@@ -195,7 +207,6 @@ session_start();
             animation: scaleIn 0.2s ease; border: 1px solid #e2e8f0;
         }
         .dark .logout-card { background: #1f1f27; border-color: #464554; }
-        .logout-card svg { margin: 0 auto 16px; }
         .logout-card h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
         .dark .logout-card h3 { color: #e4e1ed; }
         .logout-card p { font-size: 14px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
@@ -210,7 +221,7 @@ session_start();
         .logout-card .btn-logout:hover { background: #b91c1c; }
         .logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
 
-        /* Layout */
+        /* ========== LAYOUT ========== */
         #empty-state.hidden { display: none !important; }
         @media (min-width: 768px) { #back-to-accounts { display: none; } }
         @media (max-width: 767px) {
@@ -220,10 +231,9 @@ session_start();
         }
         #user-list { overscroll-behavior: contain; }
 
-        /* Animations */
+        /* ========== ANIMATIONS ========== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body class="bg-background text-on-background">
@@ -231,24 +241,22 @@ session_start();
 <?php if (!isset($_SESSION['user_id'])): ?>
 
 <!-- ==================== AUTH SECTION ==================== -->
-<div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 bg-background dark:bg-background">
+<div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 bg-background">
     <div class="w-full max-w-sm mx-auto">
         <div class="flex justify-center">
             <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 bg-primary">
-                <span class="material-symbols-outlined text-white text-[28px]" style="font-variation-settings: 'FILL' 1;">chat</span>
+                <span class="material-symbols-outlined text-on-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">chat</span>
             </div>
         </div>
         <h2 id="auth-title" class="mt-8 text-center text-display font-display text-on-background">Selamat Datang</h2>
-        <p id="auth-subtitle" class="mt-2 text-center text-body text-on-surface-variant">Masuk untuk melanjutkan ke ChatSphere</p>
+        <p id="auth-subtitle" class="mt-2 text-center text-body text-on-surface-variant">Masuk untuk melanjutkan ke Chats</p>
     </div>
-
     <div class="mt-8 w-full max-w-sm mx-auto">
         <div class="bg-surface dark:bg-surface-container rounded-2xl shadow-xl border border-outline-variant/50 px-8 sm:px-10 py-10">
-            <div id="auth-error" role="alert" class="hidden bg-error-container text-error text-body px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
+            <div id="auth-error" role="alert" class="hidden bg-error-container text-on-error-container text-body px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[18px]">error</span>
                 <span id="auth-error-text"></span>
             </div>
-
             <form id="login-form" class="space-y-5">
                 <div>
                     <label for="login-email" class="block text-label font-medium text-on-surface-variant mb-2">Email</label>
@@ -256,7 +264,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-[20px] text-outline">mail</span>
                         </div>
-                        <input id="login-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-3 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <input id="login-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface pl-11 pr-3 py-3 text-body placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                     </div>
                 </div>
                 <div>
@@ -265,7 +273,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-[20px] text-outline">lock</span>
                         </div>
-                        <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-11 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface pl-11 pr-11 py-3 text-body placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                         <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface-variant transition">
                             <span class="material-symbols-outlined eye-open text-[20px]">visibility</span>
                             <span class="material-symbols-outlined eye-closed hidden text-[20px]">visibility_off</span>
@@ -278,7 +286,6 @@ session_start();
                 </button>
                 <p class="text-center text-body text-on-surface-variant">Belum punya akun? <a href="#" id="show-register" class="font-semibold text-primary hover:underline">Daftar</a></p>
             </form>
-
             <form id="register-form" class="space-y-5 hidden">
                 <div>
                     <label for="reg-name" class="block text-label font-medium text-on-surface-variant mb-2">Nama</label>
@@ -286,7 +293,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-[20px] text-outline">person</span>
                         </div>
-                        <input id="reg-name" type="text" required placeholder="Nama Anda" autocomplete="name" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-3 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <input id="reg-name" type="text" required placeholder="Nama Anda" autocomplete="name" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface pl-11 pr-3 py-3 text-body placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                     </div>
                 </div>
                 <div>
@@ -295,7 +302,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-[20px] text-outline">mail</span>
                         </div>
-                        <input id="reg-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-3 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <input id="reg-email" type="email" required placeholder="you@example.com" autocomplete="email" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface pl-11 pr-3 py-3 text-body placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                     </div>
                 </div>
                 <div>
@@ -304,7 +311,7 @@ session_start();
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-[20px] text-outline">lock</span>
                         </div>
-                        <input id="reg-password" type="password" required placeholder="••••••••" autocomplete="new-password" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white pl-11 pr-11 py-3 text-body text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                        <input id="reg-password" type="password" required placeholder="••••••••" autocomplete="new-password" class="block w-full rounded-xl border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface pl-11 pr-11 py-3 text-body placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                         <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface-variant transition">
                             <span class="material-symbols-outlined eye-open text-[20px]">visibility</span>
                             <span class="material-symbols-outlined eye-closed hidden text-[20px]">visibility_off</span>
@@ -322,90 +329,27 @@ session_start();
 </div>
 
 <script>
-document.getElementById('show-register').addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('login-form').classList.add('hidden');
-    document.getElementById('register-form').classList.remove('hidden');
-    document.getElementById('auth-title').textContent = 'Buat Akun';
-    document.getElementById('auth-subtitle').textContent = 'Bergabung dengan ChatSphere dan mulai chatting';
-});
-document.getElementById('show-login').addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('register-form').classList.add('hidden');
-    document.getElementById('login-form').classList.remove('hidden');
-    document.getElementById('auth-title').textContent = 'Selamat Datang';
-    document.getElementById('auth-subtitle').textContent = 'Masuk untuk melanjutkan ke ChatSphere';
-});
-document.querySelectorAll('.toggle-password').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const input = btn.closest('.relative').querySelector('input');
-        const isPassword = input.type === 'password';
-        input.type = isPassword ? 'text' : 'password';
-        btn.querySelector('.eye-open').classList.toggle('hidden', isPassword);
-        btn.querySelector('.eye-closed').classList.toggle('hidden', !isPassword);
-    });
-});
+document.getElementById('show-register').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('login-form').classList.add('hidden'); document.getElementById('register-form').classList.remove('hidden'); document.getElementById('auth-title').textContent = 'Buat Akun'; document.getElementById('auth-subtitle').textContent = 'Bergabung dengan Chats dan mulai chatting'; });
+document.getElementById('show-login').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('register-form').classList.add('hidden'); document.getElementById('login-form').classList.remove('hidden'); document.getElementById('auth-title').textContent = 'Selamat Datang'; document.getElementById('auth-subtitle').textContent = 'Masuk untuk melanjutkan ke Chats'; });
+document.querySelectorAll('.toggle-password').forEach(btn => { btn.addEventListener('click', () => { const input = btn.closest('.relative').querySelector('input'); const isPassword = input.type === 'password'; input.type = isPassword ? 'text' : 'password'; btn.querySelector('.eye-open').classList.toggle('hidden', isPassword); btn.querySelector('.eye-closed').classList.toggle('hidden', !isPassword); }); });
 document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    document.getElementById('auth-error').classList.add('hidden');
-    const email = document.getElementById('login-email');
-    const pass = document.getElementById('login-password');
+    e.preventDefault(); document.getElementById('auth-error').classList.add('hidden');
+    const email = document.getElementById('login-email'); const pass = document.getElementById('login-password');
     const btn = e.target.querySelector('button[type="submit"]');
-    if (!email.value.includes('@') || !email.value.includes('.')) {
-        document.getElementById('auth-error-text').textContent = 'Format email tidak valid';
-        document.getElementById('auth-error').classList.remove('hidden');
-        return;
-    }
-    const originalText = btn.innerHTML;
-    btn.disabled = true;
+    if (!email.value.includes('@') || !email.value.includes('.')) { document.getElementById('auth-error-text').textContent = 'Format email tidak valid'; document.getElementById('auth-error').classList.remove('hidden'); return; }
+    const originalText = btn.innerHTML; btn.disabled = true;
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
-    try {
-        const res = await fetch('api.php?action=login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email.value, password: pass.value })
-        });
-        const data = await res.json();
-        if (data.status === 'success') { window.location.replace(''); }
-        else { document.getElementById('auth-error-text').textContent = data.message; document.getElementById('auth-error').classList.remove('hidden'); }
-    } catch (err) {
-        document.getElementById('auth-error-text').textContent = 'Kesalahan: ' + err.message;
-        document.getElementById('auth-error').classList.remove('hidden');
-    } finally { btn.disabled = false; btn.innerHTML = originalText; }
+    try { const res = await fetch('api.php?action=login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email.value, password: pass.value }) }); const data = await res.json(); if (data.status === 'success') { window.location.replace(''); } else { document.getElementById('auth-error-text').textContent = data.message; document.getElementById('auth-error').classList.remove('hidden'); } } catch (err) { document.getElementById('auth-error-text').textContent = 'Kesalahan: ' + err.message; document.getElementById('auth-error').classList.remove('hidden'); } finally { btn.disabled = false; btn.innerHTML = originalText; }
 });
 document.getElementById('register-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    document.getElementById('auth-error').classList.add('hidden');
-    const name = document.getElementById('reg-name');
-    const email = document.getElementById('reg-email');
-    const pass = document.getElementById('reg-password');
+    e.preventDefault(); document.getElementById('auth-error').classList.add('hidden');
+    const name = document.getElementById('reg-name'); const email = document.getElementById('reg-email'); const pass = document.getElementById('reg-password');
     const btn = e.target.querySelector('button[type="submit"]');
-    if (!email.value.includes('@') || !email.value.includes('.')) {
-        document.getElementById('auth-error-text').textContent = 'Format email tidak valid';
-        document.getElementById('auth-error').classList.remove('hidden');
-        return;
-    }
-    if (pass.value.length < 6) {
-        document.getElementById('auth-error-text').textContent = 'Kata sandi minimal 6 karakter';
-        document.getElementById('auth-error').classList.remove('hidden');
-        return;
-    }
-    const originalText = btn.innerHTML;
-    btn.disabled = true;
+    if (!email.value.includes('@') || !email.value.includes('.')) { document.getElementById('auth-error-text').textContent = 'Format email tidak valid'; document.getElementById('auth-error').classList.remove('hidden'); return; }
+    if (pass.value.length < 6) { document.getElementById('auth-error-text').textContent = 'Kata sandi minimal 6 karakter'; document.getElementById('auth-error').classList.remove('hidden'); return; }
+    const originalText = btn.innerHTML; btn.disabled = true;
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
-    try {
-        const res = await fetch('api.php?action=register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: name.value, email: email.value, password: pass.value })
-        });
-        const data = await res.json();
-        if (data.status === 'success') { window.location.replace(''); }
-        else { document.getElementById('auth-error-text').textContent = data.message; document.getElementById('auth-error').classList.remove('hidden'); }
-    } catch (err) {
-        document.getElementById('auth-error-text').textContent = 'Kesalahan: ' + err.message;
-        document.getElementById('auth-error').classList.remove('hidden');
-    } finally { btn.disabled = false; btn.innerHTML = originalText; }
+    try { const res = await fetch('api.php?action=register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name.value, email: email.value, password: pass.value }) }); const data = await res.json(); if (data.status === 'success') { window.location.replace(''); } else { document.getElementById('auth-error-text').textContent = data.message; document.getElementById('auth-error').classList.remove('hidden'); } } catch (err) { document.getElementById('auth-error-text').textContent = 'Kesalahan: ' + err.message; document.getElementById('auth-error').classList.remove('hidden'); } finally { btn.disabled = false; btn.innerHTML = originalText; }
 });
 </script>
 
@@ -429,11 +373,10 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         </div>
     </div>
 
-    <!-- Settings Overlay -->
+    <!-- Settings Overlay & Panel -->
     <div id="settings-overlay" class="settings-overlay" onclick="closeSettings()"></div>
     <div id="settings-panel" class="fixed inset-y-0 left-0 z-30 w-80 bg-surface dark:bg-surface-container-low shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-outline-variant/50">
-        <!-- Settings Header -->
-        <div class="bg-primary p-6 text-white">
+        <div class="bg-primary p-6 text-on-primary">
             <div class="flex items-center justify-between mb-4">
                 <span class="text-title font-semibold">Pengaturan</span>
                 <button onclick="closeSettings()" class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25 transition">
@@ -448,25 +391,24 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                 </div>
             </div>
         </div>
-        <!-- Settings Content -->
         <div class="flex-1 overflow-y-auto scrollbar-hide">
             <div id="settings-form-section" class="p-4 space-y-3 hidden">
                 <div id="settings-msg" class="text-xs hidden rounded-lg p-3"></div>
                 <div>
                     <label class="block text-label text-on-surface-variant mb-1.5">Nama</label>
-                    <input id="set-name" type="text" placeholder="Nama" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                    <input id="set-name" type="text" placeholder="Nama" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                 </div>
                 <div>
                     <label class="block text-label text-on-surface-variant mb-1.5">Email</label>
-                    <input id="set-email" type="email" placeholder="Email" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                    <input id="set-email" type="email" placeholder="Email" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                 </div>
                 <div>
                     <label class="block text-label text-on-surface-variant mb-1.5">Kata sandi baru</label>
-                    <input id="set-new-password" type="password" placeholder="Kata sandi baru (opsional)" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                    <input id="set-new-password" type="password" placeholder="Kata sandi baru (opsional)" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                 </div>
                 <div>
                     <label class="block text-label text-on-surface-variant mb-1.5">Kata sandi saat ini *</label>
-                    <input id="set-current-password" type="password" placeholder="Kata sandi saat ini" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high dark:text-white rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
+                    <input id="set-current-password" type="password" placeholder="Kata sandi saat ini" class="w-full border border-outline-variant bg-surface-container dark:bg-surface-container-high text-on-surface rounded-xl px-4 py-2.5 text-body focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
                 </div>
                 <button id="set-save-btn" class="w-full bg-primary text-on-primary text-body font-semibold py-2.5 rounded-xl hover:brightness-110 transition shadow-md shadow-primary/15 active:scale-[0.98]">Simpan Perubahan</button>
                 <button id="set-cancel-btn" class="w-full text-on-surface-variant text-body py-2 hover:text-on-surface transition">Batal</button>
@@ -491,25 +433,22 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 
     <!-- ==================== ACCOUNTS VIEW (SIDEBAR) ==================== -->
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-[320px] md:border-r md:border-outline-variant bg-surface dark:bg-surface-container-low min-h-0">
-        <!-- Sidebar Header -->
         <div class="bg-surface dark:bg-surface-container-low px-5 py-4 flex items-center justify-between shrink-0 border-b border-outline-variant/50">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
                     <span class="material-symbols-outlined text-on-primary-container text-[22px]" style="font-variation-settings: 'FILL' 1;">chat</span>
                 </div>
-                <span class="text-headline font-display font-bold text-on-background">ChatSphere</span>
+                <span class="text-headline font-display font-bold text-on-background">Chats</span>
             </div>
             <button id="settings-btn" aria-label="Pengaturan" class="w-10 h-10 rounded-full hover:bg-surface-container dark:hover:bg-surface-container-high flex items-center justify-center transition text-on-surface-variant">
                 <span class="material-symbols-outlined text-[22px]">settings</span>
             </button>
         </div>
-        <!-- User List -->
         <div id="user-list" class="flex-1 overflow-y-auto scrollbar-hide p-3"></div>
     </div>
 
     <!-- ==================== CHAT VIEW ==================== -->
     <div id="chat-view" class="hidden md:flex flex flex-col flex-1 min-h-0 min-w-0 bg-surface-dim dark:bg-background">
-        <!-- Empty State -->
         <div id="empty-state" class="hidden absolute inset-0 z-20 flex-col items-center justify-center text-on-surface-variant px-6 bg-surface-dim dark:bg-background">
             <div class="w-20 h-20 rounded-full bg-surface-container dark:bg-surface-container-high flex items-center justify-center mb-5">
                 <span class="material-symbols-outlined text-outline text-[40px]">chat_bubble_outline</span>
@@ -517,10 +456,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
             <p class="text-headline text-on-surface font-semibold">Pilih user untuk mulai chat</p>
             <p class="text-body text-on-surface-variant mt-1">Pilih percakapan dari sidebar</p>
         </div>
-
-        <!-- Chat Inner -->
         <div id="chat-inner" class="hidden flex flex-col flex-1 min-h-0">
-            <!-- Chat Header -->
             <div class="bg-surface dark:bg-surface-container px-4 py-3 flex items-center shrink-0 border-b border-outline-variant/50 relative z-10">
                 <button id="back-to-accounts" aria-label="Kembali" class="md:hidden hover:bg-surface-container dark:hover:bg-surface-container-high rounded-full p-2 transition mr-1 text-on-surface-variant">
                     <span class="material-symbols-outlined">arrow_back</span>
@@ -529,7 +465,6 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                     <span id="chat-title" class="text-title text-on-surface font-semibold truncate block">Chat</span>
                 </div>
             </div>
-            <!-- Chat Container -->
             <div id="chat-container" class="flex-1 overflow-y-auto custom-scrollbar min-h-0 px-4 py-4 bg-surface-dim dark:bg-background">
                 <div id="chat-loading" class="hidden text-center text-on-surface-variant text-body py-8 flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
@@ -537,7 +472,6 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
                 </div>
                 <div id="wrapper-chat"></div>
             </div>
-            <!-- Chat Input -->
             <form id="form-chat" class="shrink-0 bg-surface dark:bg-surface-container border-t border-outline-variant/50">
                 <div class="px-4 py-3 flex items-center gap-2">
                     <div class="flex-1 flex items-center bg-surface-container dark:bg-surface-container-high rounded-2xl border border-outline-variant/50 focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary/50 transition-all">
@@ -610,59 +544,31 @@ const settingsBtn = document.getElementById('settings-btn');
 const settingsPanel = document.getElementById('settings-panel');
 const settingsOverlay = document.getElementById('settings-overlay');
 
-function openSettings() {
-    settingsOverlay.classList.add('show');
-    requestAnimationFrame(() => { settingsPanel.classList.remove('-translate-x-full'); });
-}
-function closeSettings() {
-    settingsPanel.classList.add('-translate-x-full');
-    settingsOverlay.classList.remove('show');
-    document.getElementById('settings-form-section').classList.add('hidden');
-    document.getElementById('settings-menu').classList.remove('hidden');
-}
+function openSettings() { settingsOverlay.classList.add('show'); requestAnimationFrame(() => { settingsPanel.classList.remove('-translate-x-full'); }); }
+function closeSettings() { settingsPanel.classList.add('-translate-x-full'); settingsOverlay.classList.remove('show'); document.getElementById('settings-form-section').classList.add('hidden'); document.getElementById('settings-menu').classList.remove('hidden'); }
 settingsBtn.addEventListener('click', openSettings);
 
 async function loadProfile() {
-    try {
-        const data = await apiFetch('api.php?action=getProfile');
-        if (data.status === 'success') {
-            const u = data.user;
-            document.getElementById('settings-name').textContent = u.name.charAt(0).toUpperCase() + u.name.slice(1);
-            document.getElementById('settings-email').textContent = u.email;
-            document.getElementById('settings-avatar').textContent = u.name.charAt(0).toUpperCase();
-        }
-    } catch (err) {}
+    try { const data = await apiFetch('api.php?action=getProfile'); if (data.status === 'success') { const u = data.user; document.getElementById('settings-name').textContent = u.name.charAt(0).toUpperCase() + u.name.slice(1); document.getElementById('settings-email').textContent = u.email; document.getElementById('settings-avatar').textContent = u.name.charAt(0).toUpperCase(); } } catch (err) {}
 }
 
 document.getElementById('settings-edit-profile-btn').addEventListener('click', async () => {
     document.getElementById('settings-menu').classList.add('hidden');
-    const section = document.getElementById('settings-form-section');
-    section.classList.remove('hidden');
+    const section = document.getElementById('settings-form-section'); section.classList.remove('hidden');
     document.getElementById('settings-msg').classList.add('hidden');
-    try {
-        const data = await apiFetch('api.php?action=getProfile');
-        if (data.status === 'success') { document.getElementById('set-name').value = data.user.name; document.getElementById('set-email').value = data.user.email; }
-    } catch (err) {}
-    document.getElementById('set-new-password').value = '';
-    document.getElementById('set-current-password').value = '';
+    try { const data = await apiFetch('api.php?action=getProfile'); if (data.status === 'success') { document.getElementById('set-name').value = data.user.name; document.getElementById('set-email').value = data.user.email; } } catch (err) {}
+    document.getElementById('set-new-password').value = ''; document.getElementById('set-current-password').value = '';
 });
 
-document.getElementById('set-cancel-btn').addEventListener('click', () => {
-    document.getElementById('settings-form-section').classList.add('hidden');
-    document.getElementById('settings-menu').classList.remove('hidden');
-});
+document.getElementById('set-cancel-btn').addEventListener('click', () => { document.getElementById('settings-form-section').classList.add('hidden'); document.getElementById('settings-menu').classList.remove('hidden'); });
 
 document.getElementById('set-save-btn').addEventListener('click', async () => {
-    const msg = document.getElementById('settings-msg');
-    msg.classList.add('hidden');
+    const msg = document.getElementById('settings-msg'); msg.classList.add('hidden');
     const currentPassword = document.getElementById('set-current-password').value;
     if (!currentPassword) { msg.textContent = 'Kata sandi saat ini wajib diisi'; msg.className = 'text-xs text-error bg-error-container rounded-lg p-3'; msg.classList.remove('hidden'); return; }
     try {
-        const data = await apiFetch('api.php?action=updateProfile', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: document.getElementById('set-name').value.trim(), email: document.getElementById('set-email').value.trim(), currentPassword, newPassword: document.getElementById('set-new-password').value })
-        });
-        if (data.status === 'success') { msg.textContent = 'Profil berhasil diperbarui'; msg.className = 'text-xs text-green-600 bg-green-50 dark:bg-green-900/30 rounded-lg p-3'; msg.classList.remove('hidden'); document.getElementById('set-new-password').value = ''; document.getElementById('set-current-password').value = ''; loadProfile(); }
+        const data = await apiFetch('api.php?action=updateProfile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: document.getElementById('set-name').value.trim(), email: document.getElementById('set-email').value.trim(), currentPassword, newPassword: document.getElementById('set-new-password').value }) });
+        if (data.status === 'success') { msg.textContent = 'Profil berhasil diperbarui'; msg.className = 'text-xs text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/30 rounded-lg p-3'; msg.classList.remove('hidden'); document.getElementById('set-new-password').value = ''; document.getElementById('set-current-password').value = ''; loadProfile(); }
         else { msg.textContent = data.message; msg.className = 'text-xs text-error bg-error-container rounded-lg p-3'; msg.classList.remove('hidden'); }
     } catch (err) { msg.textContent = 'Kesalahan: ' + err.message; msg.className = 'text-xs text-error bg-error-container rounded-lg p-3'; msg.classList.remove('hidden'); }
 });
@@ -670,27 +576,17 @@ document.getElementById('set-save-btn').addEventListener('click', async () => {
 async function loadUsers() {
     try {
         const data = await apiFetch('api.php?action=getUsers');
-        const container = document.getElementById('user-list');
-        container.innerHTML = '';
+        const container = document.getElementById('user-list'); container.innerHTML = '';
         data.users.forEach((user, index) => {
             const name = user.name.charAt(0).toUpperCase() + user.name.slice(1);
             const initial = user.name.charAt(0).toUpperCase();
-            const avatarColors = [
-                'bg-blue-500', 'bg-emerald-500', 'bg-violet-500',
-                'bg-amber-500', 'bg-teal-500', 'bg-rose-500',
-                'bg-indigo-500', 'bg-cyan-500'
-            ];
+            const avatarColors = ['bg-blue-500','bg-emerald-500','bg-violet-500','bg-amber-500','bg-teal-500','bg-rose-500','bg-indigo-500','bg-cyan-500'];
             const color = avatarColors[index % avatarColors.length];
             const div = document.createElement('div');
             div.className = 'user-item flex items-center gap-3 px-3 py-3 hover:bg-surface-container dark:hover:bg-surface-container-high cursor-pointer rounded-xl mx-1';
             div.dataset.userId = user.id;
             div.onclick = () => showChat(user.id);
-            div.innerHTML = `
-                <div class="w-12 h-12 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div>
-                <div class="flex-1 min-w-0">
-                    <h2 class="text-title text-on-surface font-semibold truncate">${escapeHtml(name)}</h2>
-                    <p class="text-label text-on-surface-variant truncate mt-0.5">Ketuk untuk mulai chat</p>
-                </div>`;
+            div.innerHTML = `<div class="w-12 h-12 ${color} rounded-full flex items-center justify-center text-white font-semibold text-base shrink-0 shadow-sm">${initial}</div><div class="flex-1 min-w-0"><h2 class="text-title text-on-surface font-semibold truncate">${escapeHtml(name)}</h2><p class="text-label text-on-surface-variant truncate mt-0.5">Ketuk untuk mulai chat</p></div>`;
             container.appendChild(div);
         });
     } catch (err) { document.getElementById('user-list').innerHTML = '<div class="text-center text-on-surface-variant text-body py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-[32px] text-outline">wifi_off</span>Koneksi terputus</div>'; }
@@ -699,10 +595,7 @@ async function loadUsers() {
 function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
 async function loadChatTitle() {
-    try {
-        const data = await apiFetch('api.php?action=getUserName&id=' + receiverId);
-        if (data.status === 'success') { document.getElementById('chat-title').textContent = data.name.charAt(0).toUpperCase() + data.name.slice(1); }
-    } catch (err) {}
+    try { const data = await apiFetch('api.php?action=getUserName&id=' + receiverId); if (data.status === 'success') { document.getElementById('chat-title').textContent = data.name.charAt(0).toUpperCase() + data.name.slice(1); } } catch (err) {}
 }
 
 async function loadMessages() {
@@ -712,15 +605,9 @@ async function loadMessages() {
         userId = data.user_id;
         wrapperChat.innerHTML = '';
         data.messages.forEach(msg => appendMessage(msg.id, msg.sender_id, msg.content, msg.created_at));
+        updateStatusIcons();
         scrollToBottom();
     } catch (err) { if (err.message === 'Unauthorized') throw err; wrapperChat.innerHTML = '<div class="text-center text-on-surface-variant text-body py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-[32px] text-outline">wifi_off</span>Koneksi terputus</div>'; }
-}
-
-function buildMeta(isOwn, timeText) {
-    const meta = document.createElement('div');
-    meta.className = 'msg-meta ' + (isOwn ? 'msg-meta-own' : 'msg-meta-other');
-    meta.innerHTML = `<span>${escapeHtml(timeText)}</span>`;
-    return meta;
 }
 
 function formatTime(dateStr) {
@@ -728,6 +615,25 @@ function formatTime(dateStr) {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return '';
     return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+
+function updateStatusIcons() {
+    document.querySelectorAll('.msg-status').forEach(el => el.remove());
+    const allItems = wrapperChat.querySelectorAll('.msg-item');
+    let lastOwnItem = null;
+    allItems.forEach(item => {
+        if (item.querySelector('.bubble-own')) lastOwnItem = item;
+    });
+    if (lastOwnItem) {
+        const meta = lastOwnItem.querySelector('.msg-meta');
+        if (meta) {
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined msg-status msg-status-read';
+            icon.style.fontVariationSettings = "'FILL' 1, 'wght' 600";
+            icon.textContent = 'done_all';
+            meta.appendChild(icon);
+        }
+    }
 }
 
 function appendMessage(messageId, senderId, content, createdAt) {
@@ -742,8 +648,11 @@ function appendMessage(messageId, senderId, content, createdAt) {
     const bubble = document.createElement('div');
     bubble.className = isOwn ? 'bubble-own' : 'bubble-other';
     bubble.textContent = content;
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta ' + (isOwn ? 'msg-meta-own' : 'msg-meta-other');
+    meta.innerHTML = '<span>' + escapeHtml(timeText) + '</span>';
     item.appendChild(bubble);
-    item.appendChild(buildMeta(isOwn, timeText));
+    item.appendChild(meta);
     if (messageId && !String(messageId).startsWith('temp-')) {
         bubble.style.cursor = 'pointer';
         let actions = null;
@@ -754,29 +663,18 @@ function appendMessage(messageId, senderId, content, createdAt) {
             document.querySelectorAll('.msg-actions').forEach(m => m.remove());
             actions = document.createElement('div');
             actions.className = 'msg-actions';
-            
             let html = '';
-            if (isOwn) {
-                html += '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button>';
-                html += '<button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>';
-            }
+            if (isOwn) { html += '<button class="edit-action"><span class="material-symbols-outlined text-[16px]">edit</span>Edit</button>'; html += '<button class="delete-action"><span class="material-symbols-outlined text-[16px]">delete</span>Hapus</button>'; }
             html += '<button class="copy-action"><span class="material-symbols-outlined text-[16px]">content_copy</span>Salin</button>';
             actions.innerHTML = html;
-            
             item.appendChild(actions);
-            if (isOwn) {
-                actions.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; editMessage(messageId, bubble); });
-                actions.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; deleteMessage(messageId, item); });
-            }
+            if (isOwn) { actions.querySelector('.edit-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; editMessage(messageId, bubble); }); actions.querySelector('.delete-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; deleteMessage(messageId, item); }); }
             actions.querySelector('.copy-action').addEventListener('click', function(ev) { ev.stopPropagation(); actions.remove(); actions = null; copyToClipboard(content); });
         });
     }
     const lastWrapper = wrapperChat.lastElementChild;
     const sameSender = lastWrapper && lastWrapper.dataset.senderId == String(senderId);
-    if (sameSender) {
-        const existingColumn = lastWrapper.querySelector('.msg-col');
-        if (existingColumn) { existingColumn.appendChild(item); return; }
-    }
+    if (sameSender) { const existingColumn = lastWrapper.querySelector('.msg-col'); if (existingColumn) { existingColumn.appendChild(item); return; } }
     const wrapper = document.createElement('div');
     wrapper.dataset.senderId = senderId;
     wrapper.className = 'msg-block ' + (isOwn ? 'msg-col-own' : 'msg-col-other');
@@ -795,12 +693,8 @@ function editMessage(messageId, bubble) {
     const input = document.createElement('input'); input.type = 'text'; input.value = originalText;
     input.className = 'w-full bg-surface dark:bg-surface-container-high text-on-surface p-2 rounded-xl border border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/40 text-body';
     const actions = document.createElement('div'); actions.className = 'flex gap-1.5 mt-2 justify-end';
-    const saveBtn = document.createElement('button'); saveBtn.type = 'button';
-    saveBtn.className = 'text-tiny bg-primary text-on-primary px-3 py-1.5 rounded-lg font-semibold hover:brightness-110 transition';
-    saveBtn.textContent = 'Simpan';
-    const cancelBtn = document.createElement('button'); cancelBtn.type = 'button';
-    cancelBtn.className = 'text-tiny bg-surface-container dark:bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-lg font-semibold hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition';
-    cancelBtn.textContent = 'Batal';
+    const saveBtn = document.createElement('button'); saveBtn.type = 'button'; saveBtn.className = 'text-tiny bg-primary text-on-primary px-3 py-1.5 rounded-lg font-semibold hover:brightness-110 transition'; saveBtn.textContent = 'Simpan';
+    const cancelBtn = document.createElement('button'); cancelBtn.type = 'button'; cancelBtn.className = 'text-tiny bg-surface-container dark:bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-lg font-semibold hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition'; cancelBtn.textContent = 'Batal';
     actions.appendChild(cancelBtn); actions.appendChild(saveBtn);
     bubble.innerHTML = ''; bubble.className = 'bg-surface dark:bg-surface-container-high p-3 rounded-2xl rounded-br-sm shadow-sm border border-outline-variant/50';
     bubble.appendChild(input); bubble.appendChild(actions); input.focus(); input.setSelectionRange(input.value.length, input.value.length);
@@ -820,11 +714,7 @@ function cancelEdit(messageId, bubble, originalText) { bubble.innerHTML = ''; bu
 
 async function deleteMessage(messageId, item) {
     if (!confirm('Hapus pesan ini?')) return;
-    try {
-        const data = await apiFetch('api.php?action=deleteMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messageId }) });
-        if (data.status === 'success') { const col = item.parentElement; const block = col ? col.parentElement : null; item.remove(); if (col && col.children.length === 0 && block) { block.remove(); } }
-        else { alert('Gagal menghapus: ' + data.message); }
-    } catch (err) { if (err.message === 'Unauthorized') throw err; alert('Gagal menghapus pesan'); }
+    try { const data = await apiFetch('api.php?action=deleteMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messageId }) }); if (data.status === 'success') { const col = item.parentElement; const block = col ? col.parentElement : null; item.remove(); if (col && col.children.length === 0 && block) { block.remove(); } updateStatusIcons(); } else { alert('Gagal menghapus: ' + data.message); } } catch (err) { if (err.message === 'Unauthorized') throw err; alert('Gagal menghapus pesan'); }
 }
 
 function attachMessageActions(item, messageId) {
@@ -852,10 +742,10 @@ function scrollToBottom() { chatContainer.scrollTop = chatContainer.scrollHeight
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
         const toast = document.createElement('div');
-        toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full text-tiny shadow-lg z-50 animate-bounce';
-        toast.textContent = 'Pesan disalin';
+        toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-5 py-2.5 rounded-full text-label font-medium shadow-lg z-50';
+        toast.innerHTML = '<span class="material-symbols-outlined text-[16px] mr-1" style="vertical-align:middle;">check_circle</span>Pesan disalin';
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
+        setTimeout(() => { toast.style.transition = 'opacity 0.3s'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 1800);
     }).catch(err => { console.error('Gagal menyalin:', err); });
 }
 
@@ -865,12 +755,13 @@ form.addEventListener('submit', async (event) => {
     if (!chatContent) return;
     const tempId = 'temp-' + Date.now();
     appendMessage(tempId, userId, chatContent);
+    updateStatusIcons();
     scrollToBottom();
     try {
         const data = await apiFetch('api.php?action=saveChat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: chatContent, receiverId }) });
         if (data.status === 'success' && data.message_id) {
             const el = wrapperChat.querySelector(`[data-message-id="${tempId}"]`);
-            if (el) { el.dataset.messageId = data.message_id; const meta = el.querySelector('.msg-meta span'); if (meta && meta.textContent === 'Mengirim...') { meta.textContent = formatTime(new Date().toISOString()); } attachMessageActions(el, data.message_id); }
+            if (el) { el.dataset.messageId = data.message_id; const meta = el.querySelector('.msg-meta span'); if (meta && meta.textContent === 'Mengirim...') { meta.textContent = formatTime(new Date().toISOString()); } attachMessageActions(el, data.message_id); updateStatusIcons(); }
         }
     } catch (err) { console.error('Error:', err); }
     contentInput.value = '';
@@ -885,9 +776,9 @@ function initPusher() {
     if (pusher) { pusher.disconnect(); }
     pusher = new Pusher('579716c8e98cf3fb7f38', { cluster: 'ap1' });
     channel = pusher.subscribe('chat');
-    channel.bind('receive', function(data) { if (data.sender_id == userId) return; if (data.sender_id != receiverId) return; appendMessage(data.message_id, data.sender_id, data.content, data.created_at); scrollToBottom(); });
+    channel.bind('receive', function(data) { if (data.sender_id == userId) return; if (data.sender_id != receiverId) return; appendMessage(data.message_id, data.sender_id, data.content, data.created_at); updateStatusIcons(); scrollToBottom(); });
     channel.bind('edit', function(data) { const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId); if (!isForThisChat) return; const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`); if (item) { const bubble = item.querySelector('.bubble-own, .bubble-other'); if (bubble) bubble.textContent = data.content; } });
-    channel.bind('delete', function(data) { const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId); if (!isForThisChat) return; const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`); if (item) { const col = item.parentElement; const block = col ? col.parentElement : null; item.remove(); if (col && col.children.length === 0 && block) { block.remove(); } } });
+    channel.bind('delete', function(data) { const isForThisChat = (data.sender_id == userId && data.receiver_id == receiverId) || (data.sender_id == receiverId && data.receiver_id == userId); if (!isForThisChat) return; const item = wrapperChat.querySelector(`[data-message-id="${data.message_id}"]`); if (item) { const col = item.parentElement; const block = col ? col.parentElement : null; item.remove(); if (col && col.children.length === 0 && block) { block.remove(); } updateStatusIcons(); } });
 }
 
 function showLogoutModal() { document.getElementById('logout-overlay').classList.add('show'); }
@@ -899,35 +790,33 @@ loadProfile();
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
 function toggleTheme() {
-    if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-        document.getElementById('theme-text').textContent = 'Ganti ke Mode Gelap';
-        document.getElementById('theme-icon-light').classList.remove('hidden');
-        document.getElementById('theme-icon-dark').classList.add('hidden');
-    } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-        document.getElementById('theme-text').textContent = 'Ganti ke Mode Terang';
-        document.getElementById('theme-icon-dark').classList.remove('hidden');
-        document.getElementById('theme-icon-light').classList.add('hidden');
-    }
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.theme = isDark ? 'dark' : 'light';
+    const txt = document.getElementById('theme-text');
+    const iconDark = document.getElementById('theme-icon-dark');
+    const iconLight = document.getElementById('theme-icon-light');
+    if (txt) txt.textContent = isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap';
+    if (isDark) { iconDark && iconDark.classList.remove('hidden'); iconLight && iconLight.classList.add('hidden'); }
+    else { iconLight && iconLight.classList.remove('hidden'); iconDark && iconDark.classList.add('hidden'); }
 }
 
 function updateThemeIcons() {
+    const txt = document.getElementById('theme-text');
+    const iconDark = document.getElementById('theme-icon-dark');
+    const iconLight = document.getElementById('theme-icon-light');
+    if (!txt || !iconDark || !iconLight) return;
     if (document.documentElement.classList.contains('dark')) {
-        document.getElementById('theme-text').textContent = 'Ganti ke Mode Terang';
-        document.getElementById('theme-icon-dark').classList.remove('hidden');
-        document.getElementById('theme-icon-light').classList.add('hidden');
+        txt.textContent = 'Ganti ke Mode Terang';
+        iconDark.classList.remove('hidden');
+        iconLight.classList.add('hidden');
     } else {
-        document.getElementById('theme-text').textContent = 'Ganti ke Mode Gelap';
-        document.getElementById('theme-icon-light').classList.remove('hidden');
-        document.getElementById('theme-icon-dark').classList.add('hidden');
+        txt.textContent = 'Ganti ke Mode Gelap';
+        iconLight.classList.remove('hidden');
+        iconDark.classList.add('hidden');
     }
 }
 updateThemeIcons();
 </script>
-
 <?php endif; ?>
 
 </body>
