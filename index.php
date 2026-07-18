@@ -109,7 +109,6 @@ session_start();
         .dark .shadow-lg { box-shadow: 0 6px 24px rgba(0,0,0,0.4) !important; }
         .dark .shadow-md { box-shadow: 0 3px 12px rgba(0,0,0,0.3) !important; }
         .dark .hover\:bg-surface-container:hover { background-color: #292932 !important; }
-        .dark .hover\:bg-surface-container-high:hover { background-color: #34343d !important; }
         .dark .placeholder-outline::placeholder { color: #908fa0 !important; }
         .dark .border-outline-variant\/50 { border-color: rgba(70,69,84,0.5) !important; }
         .dark .border-outline-variant\/30 { border-color: rgba(70,69,84,0.3) !important; }
@@ -119,7 +118,7 @@ session_start();
         .msg-meta { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 11px; }
         .msg-meta-own { justify-content: flex-end; color: #64748b; font-weight: 500; }
         .msg-meta-other { justify-content: flex-start; color: #64748b; font-weight: 500; }
-        .dark .msg-meta-own, .dark .msg-meta-other { color: #a1a1aa !important; }
+        .dark .msg-meta-own, .dark .msg-meta-other { color: #a1a1aa; }
 
         /* ========== CHAT BUBBLES ========== */
         .bubble-own {
@@ -158,8 +157,8 @@ session_start();
         .msg-status { font-size: 14px; margin-left: 2px; vertical-align: middle; }
         .msg-status-sent { color: #94a3b8; }
         .msg-status-read { color: #2563eb; }
-        .dark .msg-status-sent { color: #908fa0 !important; }
-        .dark .msg-status-read { color: #c0c1ff !important; }
+        .dark .msg-status-sent { color: #908fa0; }
+        .dark .msg-status-read { color: #c0c1ff; }
 
         /* ========== MESSAGE ACTIONS ========== */
         .msg-actions {
@@ -176,28 +175,28 @@ session_start();
             font-size: 13px; background: none; border: none;
             cursor: pointer; transition: background 0.15s; color: #1e293b;
         }
-        .dark .msg-actions button { color: #e4e1ed !important; }
+        .dark .msg-actions button { color: #e4e1ed; }
         .msg-actions button:hover { background: #f1f5f9; }
-        .dark .msg-actions button:hover { background-color: #34343d !important; }
+        .dark .msg-actions button:hover { background: #34343d; }
 
         /* ========== USER ITEM ========== */
         .user-item { transition: all 0.15s; }
         .user-item.active { background: #d9eafd; border-left: 3px solid #2563eb; }
-        .dark .user-item.active { background-color: #1f1f27 !important; border-left-color: #c0c1ff !important; }
+        .dark .user-item.active { background: #1f1f27; border-left-color: #c0c1ff; }
         .user-item.active h2 { color: #2563eb; }
-        .dark .user-item.active h2 { color: #c0c1ff !important; }
+        .dark .user-item.active h2 { color: #c0c1ff; }
 
         /* ========== MESSAGE INPUT ========== */
         #form-chat { padding-bottom: env(safe-area-inset-bottom, 0px); }
         @media (max-width: 767px) {
             #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.06); position: sticky; bottom: 0; z-index: 15; }
-            .dark #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.3) !important; }
+            .dark #form-chat { box-shadow: 0 -4px 20px rgba(0,0,0,0.3); }
         }
 
         /* ========== SETTINGS PANEL ========== */
         .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 20; display: none; align-items: stretch; backdrop-filter: blur(4px); animation: fadeIn 0.2s ease; }
         .settings-overlay.show { display: flex; }
-        .dark .settings-overlay { background: rgba(0,0,0,0.6) !important; }
+        .dark .settings-overlay { background: rgba(0,0,0,0.6); }
 
         /* ========== LOGOUT MODAL ========== */
         .logout-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); animation: fadeIn 0.15s ease; }
@@ -208,17 +207,17 @@ session_start();
             text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.15);
             animation: scaleIn 0.2s ease; border: 1px solid #e2e8f0;
         }
-        .dark .logout-card { background-color: #1f1f27 !important; border-color: #464554 !important; }
+        .dark .logout-card { background: #1f1f27; border-color: #464554; }
         .logout-card h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
-        .dark .logout-card h3 { color: #e4e1ed !important; }
+        .dark .logout-card h3 { color: #e4e1ed; }
         .logout-card p { font-size: 14px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
-        .dark .logout-card p { color: #908fa0 !important; }
+        .dark .logout-card p { color: #908fa0; }
         .logout-card .btn-group { display: flex; gap: 10px; }
         .logout-card button { flex: 1; padding: 12px 0; border-radius: 12px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
         .logout-card .btn-cancel { background: #f1f5f9; color: #475569; }
-        .dark .logout-card .btn-cancel { background: #34343d !important; color: #c7c4d7 !important; }
+        .dark .logout-card .btn-cancel { background: #34343d; color: #c7c4d7; }
         .logout-card .btn-cancel:hover { background: #e2e8f0; }
-        .dark .logout-card .btn-cancel:hover { background: #464554 !important; }
+        .dark .logout-card .btn-cancel:hover { background: #464554; }
         .logout-card .btn-logout { background: #dc2626; color: white; }
         .logout-card .btn-logout:hover { background: #b91c1c; }
         .logout-card .btn-logout:active, .logout-card .btn-cancel:active { transform: scale(0.97); }
@@ -435,8 +434,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-[320px] md:border-r md:border-outline-variant bg-surface dark:bg-surface-container-low min-h-0">
         <div class="bg-surface dark:bg-surface-container-low px-5 py-4 flex items-center justify-between shrink-0 border-b border-outline-variant/50">
             <a href="/" class="flex items-center gap-3">
-                <img src="logo.png" alt="Ngobrol" class="h-9 w-auto">
-                <span class="text-headline font-display font-bold text-on-background">Ngobrol</span>
+                <img src="logo.jpg" alt="Logo" class="h-9 w-auto">
             </a>
             <button id="settings-btn" aria-label="Pengaturan" class="w-10 h-10 rounded-full hover:bg-surface-container dark:hover:bg-surface-container-high flex items-center justify-center transition text-on-surface-variant">
                 <span class="material-symbols-outlined text-[22px]">settings</span>
