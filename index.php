@@ -66,9 +66,9 @@ session_start();
         .msg-meta-own{justify-content:flex-end;color:#64748b;font-weight:500}
         .msg-meta-other{justify-content:flex-start;color:#64748b;font-weight:500}
         .dark .msg-meta-own,.dark .msg-meta-other{color:#a1a1aa}
-        .bubble-own{background-color:#2563eb;color:#fff;border-radius:20px 20px 6px 20px;padding:10px 14px;max-width:100%;word-wrap:break-word;line-height:1.4;font-size:14px;box-shadow:0 2px 8px rgba(37,99,235,.15);user-select:none;-webkit-user-select:none}
+        .bubble-own{background-color:#2563eb;color:#fff;border-radius:20px 20px 6px 20px;padding:10px 14px;max-width:100%;word-wrap:break-word;line-height:1.4;font-size:14px;box-shadow:0 2px 8px rgba(37,99,235,.15);user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
         .dark .bubble-own{background-color:#c0c1ff!important;color:#1000a9!important}
-        .bubble-other{background-color:#fff;color:#1e293b;border-radius:20px 20px 20px 6px;padding:10px 14px;max-width:100%;word-wrap:break-word;line-height:1.4;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);user-select:none;-webkit-user-select:none;border:1px solid #e2e8f0}
+        .bubble-other{background-color:#fff;color:#1e293b;border-radius:20px 20px 20px 6px;padding:10px 14px;max-width:100%;word-wrap:break-word;line-height:1.4;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;border:1px solid #e2e8f0}
         .dark .bubble-other{background-color:#292932!important;color:#e4e1ed!important;border-color:#464554!important}
         .msg-item:not(:last-child) .bubble-own{border-radius:20px 20px 6px 20px}
         .msg-item:not(:first-child) .bubble-own{border-radius:20px 6px 6px 20px}
@@ -227,7 +227,7 @@ document.getElementById('register-form').addEventListener('submit',async e=>{e.p
     <!-- ==================== SIDEBAR ==================== -->
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-[320px] md:border-r md:border-outline-variant bg-surface dark:bg-surface-container-low min-h-0">
         <div class="bg-surface dark:bg-surface-container-low px-5 py-4 flex items-center justify-between shrink-0 border-b border-outline-variant/50">
-            <a href="/" class="flex items-center gap-3"><img src="logo.png" alt="Logo" class="h-9 w-auto"></a>
+            <a href="/" class="flex items-center gap-3"><img src="logo.jpg" alt="Logo" class="h-9 w-auto"></a>
             <button id="settings-btn" aria-label="Pengaturan" class="w-10 h-10 rounded-full hover:bg-surface-container dark:hover:bg-surface-container-high flex items-center justify-center transition text-on-surface-variant"><span class="material-symbols-outlined text-[22px]">settings</span></button>
         </div>
         <!-- Search Kontak -->
@@ -557,6 +557,13 @@ function attachMessageActions(item,messageId){
 }
 
 function scrollToBottom(){chatContainer.scrollTop=chatContainer.scrollHeight}
+
+// ==================== ANTI COPY-PASTE ====================
+const chatContainerEl=document.getElementById('wrapper-chat');
+chatContainerEl.addEventListener('contextmenu',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
+chatContainerEl.addEventListener('copy',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
+chatContainerEl.addEventListener('cut',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
+chatContainerEl.addEventListener('selectstart',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
 
 function copyToClipboard(text){
     navigator.clipboard.writeText(text).then(()=>{
