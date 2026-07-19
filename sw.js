@@ -2,7 +2,7 @@ const CACHE = 'ngobrol-v1';
 const PRECACHE_ASSETS = [
   'index.php',
   'manifest.json',
-  'logo.png'
+  'icon.svg'
 ];
 
 self.addEventListener('install', (e) => {
