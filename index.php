@@ -83,7 +83,9 @@ session_start();
         .msg-block+.msg-block{margin-top:12px}
         .msg-status{font-size:14px;margin-left:2px;vertical-align:middle}
         .msg-status-read{color:#2563eb}.dark .msg-status-read{color:#c0c1ff}
-        .msg-actions{position:absolute;right:0;top:100%;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:30;min-width:130px;overflow:hidden;margin-top:4px;border:1px solid #e2e8f0}
+        .msg-actions{position:absolute;top:100%;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:30;min-width:130px;overflow:hidden;margin-top:4px;border:1px solid #e2e8f0}
+        .msg-col-own .msg-actions{right:0}
+        .msg-col-other .msg-actions{left:0}
         .dark .msg-actions{background:#292932!important;border-color:#464554!important}
         .msg-actions button{display:flex;align-items:center;gap:8px;width:100%;padding:10px 16px;text-align:left;font-size:13px;background:none;border:none;cursor:pointer;transition:background .15s;color:#1e293b}
         .dark .msg-actions button{color:#e4e1ed!important}
