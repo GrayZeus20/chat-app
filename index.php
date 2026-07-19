@@ -91,6 +91,7 @@ session_start();
         .dark .msg-actions button{color:#e4e1ed!important}
         .msg-actions button:hover{background:#f1f5f9}
         .dark .msg-actions button:hover{background:#34343d!important}
+        #user-list{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
         .user-item{transition:all .15s}
         .user-item.active{background:#d9eafd;border-left:3px solid #2563eb}
         .dark .user-item.active{background:#1f1f27!important;border-left-color:#c0c1ff!important}
@@ -566,6 +567,10 @@ chatContainerEl.addEventListener('contextmenu',e=>{if(e.target.closest('.bubble-
 chatContainerEl.addEventListener('copy',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
 chatContainerEl.addEventListener('cut',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
 chatContainerEl.addEventListener('selectstart',e=>{if(e.target.closest('.bubble-own,.bubble-other')){e.preventDefault()}});
+
+const userListEl=document.getElementById('user-list');
+userListEl.addEventListener('contextmenu',e=>e.preventDefault());
+userListEl.addEventListener('selectstart',e=>e.preventDefault());
 
 function copyToClipboard(text){
     navigator.clipboard.writeText(text).then(()=>{
