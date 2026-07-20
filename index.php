@@ -230,7 +230,7 @@ document.getElementById('register-form').addEventListener('submit',async e=>{e.p
     <!-- ==================== SIDEBAR ==================== -->
     <div id="accounts-view" class="flex flex-col flex-1 md:flex md:flex-none md:w-[320px] md:border-r md:border-outline-variant bg-surface dark:bg-surface-container-low min-h-0">
         <div class="bg-surface dark:bg-surface-container-low px-5 py-4 flex items-center justify-between shrink-0 border-b border-outline-variant/50">
-            <a href="/" class="flex items-center gap-3"><img src="icon.png" alt="Logo" class="h-9 w-auto"></a>
+            <a href="/" class="flex items-center gap-3"><img src="icon.svg" alt="Logo" class="h-12 w-auto"></a>
             <button id="settings-btn" aria-label="Pengaturan" class="w-10 h-10 rounded-full hover:bg-surface-container dark:hover:bg-surface-container-high flex items-center justify-center transition text-on-surface-variant"><span class="material-symbols-outlined text-[22px]">settings</span></button>
         </div>
         <!-- Search Kontak -->
