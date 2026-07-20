@@ -137,7 +137,7 @@ session_start();
 <!-- ==================== AUTH SECTION ==================== -->
 <div id="auth-section" class="flex min-h-dvh flex-col justify-center px-4 sm:px-6 py-12 bg-background">
     <div class="w-full max-w-sm mx-auto">
-        <div class="flex justify-center"><img src="icon.svg" alt="Ngobrol" class="h-16 w-16"></div>
+        <div class="flex justify-center"><img src="logo.png" alt="Ngobrol" class="h-16 w-16"></div>
         <h2 id="auth-title" class="mt-8 text-center text-display font-display text-on-background">Selamat Datang</h2>
         <p id="auth-subtitle" class="mt-2 text-center text-body text-on-surface-variant">Masuk untuk melanjutkan ke Ngobrol</p>
     </div>
