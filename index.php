@@ -4,6 +4,7 @@ $sessionLifetime = 86400 * 30;
 @ini_set('session.gc_probability', 0);
 session_set_cookie_params(['lifetime' => $sessionLifetime, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
 session_start();
+require_once __DIR__ . '/config.php';
 ?><!DOCTYPE html>
 <html lang="id">
 <head>
@@ -591,7 +592,7 @@ contentInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.p
 
 function initPusher(){
     if(pusher)pusher.disconnect();
-    pusher=new Pusher('579716c8e98cf3fb7f38',{cluster:'ap1'});
+    pusher=new Pusher('<?= PUSHER_APP_KEY ?>',{cluster:'<?= PUSHER_APP_CLUSTER ?>'});
     channel=pusher.subscribe('chat');
     channel.bind('receive',function(d){if(d.sender_id==userId||d.sender_id!=receiverId)return;appendMessage(d.message_id,d.sender_id,d.content,d.created_at);updateStatusIcons();scrollToBottom()});
     channel.bind('edit',function(d){const ok=(d.sender_id==userId&&d.receiver_id==receiverId)||(d.sender_id==receiverId&&d.receiver_id==userId);if(!ok)return;const item=wrapperChat.querySelector(`[data-message-id="${d.message_id}"]`);if(item){const b=item.querySelector('.bubble-own,.bubble-other');if(b)b.textContent=d.content}});
