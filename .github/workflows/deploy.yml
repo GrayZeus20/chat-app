@@ -19,6 +19,10 @@ jobs:
           echo "define('DB_USER', '${{ secrets.DB_USER }}');" >> env.php
           echo "define('DB_PASS', '${{ secrets.DB_PASS }}');" >> env.php
           echo "define('DB_NAME', '${{ secrets.DB_NAME }}');" >> env.php
+          echo "define('PUSHER_APP_ID', '${{ secrets.PUSHER_APP_ID }}');" >> env.php
+          echo "define('PUSHER_APP_KEY', '${{ secrets.PUSHER_APP_KEY }}');" >> env.php
+          echo "define('PUSHER_APP_SECRET', '${{ secrets.PUSHER_APP_SECRET }}');" >> env.php
+          echo "define('PUSHER_APP_CLUSTER', '${{ secrets.PUSHER_APP_CLUSTER || 'ap1' }}');" >> env.php
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction

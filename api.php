@@ -202,7 +202,7 @@ function handleSaveChat() {
                     'receiver_id' => $receiverId, 'content' => $content,
                     'created_at' => date('c')
                 ]);
-            } catch (Throwable $e) {}
+            } catch (Throwable $e) { error_log("PUSHER_FAIL: " . get_class($e) . ": " . $e->getMessage()); }
         }
         echo json_encode(['status' => 'success', 'message_id' => $messageId]);
     } else {
@@ -256,7 +256,7 @@ function handleEditMessage() {
                     'message_id' => $messageId, 'content' => $content,
                     'sender_id' => $senderId, 'receiver_id' => $message['receiver_id']
                 ]);
-            } catch (Throwable $e) {}
+            } catch (Throwable $e) { error_log("PUSHER_FAIL: " . get_class($e) . ": " . $e->getMessage()); }
         }
         echo json_encode(['status' => 'success']);
     } else {
@@ -309,7 +309,7 @@ function handleDeleteMessage() {
                     'message_id' => $messageId, 'sender_id' => $senderId,
                     'receiver_id' => $message['receiver_id']
                 ]);
-            } catch (Throwable $e) {}
+            } catch (Throwable $e) { error_log("PUSHER_FAIL: " . get_class($e) . ": " . $e->getMessage()); }
         }
         echo json_encode(['status' => 'success']);
     } else {
